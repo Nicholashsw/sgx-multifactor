@@ -1,0 +1,1 @@
+cs_spreads_monthly.csv: 143,978 rows, cs_half_bp median 23.5bp, p25 9.3, p75 43.6, p95 135.8 (recomputed 2026-08-20)

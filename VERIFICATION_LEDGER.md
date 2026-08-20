@@ -1,0 +1,246 @@
+# Verification Ledger. FYP A1083 consolidation, Phase A
+
+Built 2026-08-20 from a full read of all ten source folders: every notebook dump (code plus executed outputs), every memo, paper, script and result file, plus nine branch-level audit reports written during this pass (in `audit/`).
+
+Statuses, per the consolidation brief:
+
+- **VERIFIED**: traces to executed output on real-source data. Evidence class in brackets: [cell] = executed notebook cell output quoted in the branch audit; [artifact] = result CSV/JSON present in the folder that matches the claim and whose inputs are real-lineage, but whose producing run's stdout is not in the archive; [recomputed] = this audit re-ran the number from the archived real data and matched it.
+- **UNSUPPORTED**: claimed in prose (memo, paper, markdown cell) with no executed evidence anywhere in the folders.
+- **CONTAMINATED**: traces to fabricated data (seed-42 synthetic family, or the `fill_missing_stock_columns` adler32 ticker-hash fallback).
+
+Disposition says what REPORT_FINAL.md does with the claim. Every number carried into REPORT_FINAL is VERIFIED here; everything else is in EXCLUSIONS.md.
+
+Universe authority order used to resolve conflicts: liquid100 / broad Compustat > PIT roster > 30-name STI.
+
+---
+
+## A. Data and universes
+
+| ID | Claim | Evidence | Inputs | Status | Disposition |
+|---|---|---|---|---|---|
+| A1 | Compustat Global SGP panel: 694 gvkeys post-filter (704 pre-filter), 1985–2026, 338 delisted firms retained, ~3.26M daily rows, total returns prccd/ajexdi×trfd | SGX_Survivorship_Decomposition CELL 5 prints "137,975 firm-months / 694 firms" (1995+ filter); TSMOM NB1 prints 704 gvkeys / 3.26M rows / 49% ever-inactive; PRE_REGISTRATION §1 (150,410 firm-months) | WRDS comp_global_daily | VERIFIED [cell] | KEEP. State 694 post-filter / 704 raw and say so |
+| A2 | "liquid100 validated at 0.974 cap-weighted correlation against the WRDS SGP country index" (REPORT.md §2) | The executed 0.974 is a TSMOM **Sharpe** (liquid100 k=3, t=4.65, SGX_WideUniverse_TSMOM_Seasonality). No cap-weighted-correlation-vs-WRDS-index computation exists anywhere in the folders |: | UNSUPPORTED (misattributed number) | REPLACE with A3/A4 |
+| A3 | Bloomberg EW-30 panel vs Compustat PIT top-30: monthly return correlation 0.967, vols 16.6% vs 16.9% (n=300) | SGX_WideUniverse_TSMOM_Seasonality CELL: "corr(Bloomberg EW-30, Compustat point-in-time top-30) = 0.967 n=300" | Bloomberg xlsm + Compustat | VERIFIED [cell] | KEEP as the cross-vendor panel validation |
+| A4 | Bloomberg 30-name EW panel vs STI index: corr 0.947 (n=300); rebuilt-panel EW vol 16.15% vs STI 16.21%, corr 0.95 | SGX_TSMOM_Seasonality CELL ("corr(EW panel, STI): 0.947"); SGX_Panel_Rebuild CELLs 6/8 | Bloomberg xlsm | VERIFIED [cell] | KEEP |
+| A5 | Per-name vendor validation: 238 confident matches, median return correlation 0.9998, median abs diff 8.1 bps/mo | SGX_Validation_PIT_and_Mechanism CELL 11; vendor_matches.csv (238 rows) | Bloomberg PIT panel vs Compustat daily | VERIFIED [cell] | KEEP |
+| A6 | "r = 0.979 across 8,035 name-months" Compustat-vs-Bloomberg return agreement | Risk_Module_Memo / PROVENANCE memo prose; needed panels not in archive; SGX3 audit could not reproduce (strategy-level corr 0.787 is a different construct) |: | UNSUPPORTED | EXCLUDE; A3/A5 carry the cross-vendor validation |
+| A7 | PIT STI roster: 76 quarterly snapshots 2008Q1–2026Q4, 54 unique names, ~30 per snapshot; SGX3_2.xlsm 54-name subset | SGX_Validation_PIT_and_Mechanism CELL 4/5 (76 snapshots, 54 names, 30/snapshot); sector-valuation notebooks build from SGX3_2.xlsm PIT sheets | SGX3.xlsm / SGX3_2.xlsm | VERIFIED [cell] | KEEP. Note trailing 2026Q4 snapshot rows are template rows; cite sample end ≤ 2026-07 |
+| A8 | STI membership churn across 75 quarterly reviews: 30 additions, 30 deletions (prose in two places says 51/51) | Executed CELL 5 of Validation notebook: "30 additions, 30 deletions...; quarters with any change: 26 of 75" | pit_members_long.csv | VERIFIED [cell]; the 51/51 prose is wrong | KEEP 30/30 |
+| A9 | 30-name diagnostic export: PX_LAST is the only genuine independent field in `panel_stock_generated.csv`; TOT_RETURN/PX_VOLUME/MKT_CAP are fixed multiples of price (23/30 tickers exactly equal the fallback 100·PX/PX0); PX_TO_BOOK and DIV_YIELD constant within ticker; ROE absent | SGX_Strategy_Audit CELLs (field gate), independently re-executed by the performance-audit pass; matches `fill_missing_stock_columns` signature quoted from pipeline.ipynb | panel_stock_generated.csv | VERIFIED [cell+recomputed] | KEEP, scoped to that export. Note TOT_RETURN in that file carries zero dividend content |
+| A10 | The Bloomberg workbook `bloombergapi4_fixed.xlsm` itself is genuine (real IPO-ragged listing starts: CLI 2021-09, MINT 2010-10, FLT 2016-06, KDCREIT 2014-12, THBEV 2006-05, CICT 2002-07; plausible DBS market-cap path 23.8bn→159.9bn; live pull log 2026-04-06) | STI SGX2 branch audit direct workbook inspection; ROBUSTNESS_MEMO cell-level checks; clean re-extractions (panel_real.csv, STI SGX2 folder rebuild) carry genuine fundamentals | xlsm | VERIFIED [recomputed] | KEEP. The contamination was in the notebook loader fallback, never in the workbook |
+| A11 | macro_monthly.csv is real (CEIC + Bloomberg macro, 1,347 rows × 52 cols, series back to 1914) | STI SGX2 pipeline.ipynb executed build log | CEIC xlsx + Bloomberg xlsx | VERIFIED [cell] | KEEP; settles the provenance of rf/VIX inputs used by TSMOM |
+| A12 | Markit Securities Finance SG: 1,443,330 daily rows, 572 names, 2002-05–2026-07, fee/DCBS/lendable fields; match 71.8% of name-months | SGX_Borrow_Markit.ipynb executed load and match prints | Markit via WRDS | VERIFIED [cell] | KEEP. Note Markit-dependent results are estimated on covered names |
+
+## B. Survivorship methodology module
+
+| ID | Claim | Evidence | Inputs | Status | Disposition |
+|---|---|---|---|---|---|
+| B1 | Delisting survivorship bias on SGX is NEGATIVE: −0.89 pp/yr on the whole listed universe (8.85 PIT vs 7.96 survivors-only); −1.01 pp/yr within PIT index members | SGX_Survivorship_Decomposition CELL 5 [display_data], exact | sgp_panel.pkl (Compustat SGP) | VERIFIED [cell] | KEEP as the central methodological finding |
+| B2 | Mechanism: 198 of 338 delistings (58.6%) are acquisitions/mergers; acquired names average +3.44%/mo in their final 12 months vs +0.96%/mo survivor baseline; one bankruptcy exit | Decomposition CELLs 3/5 (counts in fig surv1, returns table printed) | same | VERIFIED [cell] | KEEP |
+| B3 | Pre-registered alternative (index membership flips the sign) formally REJECTED: sign identical in both universes | Decomposition CELLs 4–5; PRE_REGISTRATION §7 records the rejection | same | VERIFIED [cell] | KEEP |
+| B4 | SDC matching confirmed 226 of 338 exits (all Completed; forms: Merger 94, AcqRemInt 61, AcqMajInt 44, AcqPartInt 26, Assets 1); within code-10: 61 confirmed, 53 no deal | truncation_audit_v3.csv, code10_with_sdc.csv (226 unique gvkeys verified by recount) | SDC M&A + Compustat | VERIFIED [artifact+recomputed] | KEEP |
+| B5 | Four-category delisting taxonomy (cash takeout / stock merger / solvent liquidation / suspension-insolvency) | verdict_ledger.csv instantiates it on 5 hand-adjudicated firms with Factiva/BT citations; 115-row code-10 worksheet triaged, verdicts blank | Factiva, SDC | VERIFIED [artifact], narrow | KEEP with honest scope: taxonomy established, full adjudication incomplete (5 of 338 fully adjudicated) |
+| B6 | Bias magnitude partially identified at [−1.12, −0.07] pp/yr across 97 unresolved exits | Nothing in any folder produces these numbers or the 97 count (unresolved worksheets cover 79 gvkeys) |: | UNSUPPORTED | EXCLUDE |
+| B7 | Forcing −100% on the 37 triaged wipeouts moves the bias −0.89 → −0.60 pp/yr | SOURCE_GUIDE.md prose; no executed cell |: | UNSUPPORTED (pending recompute on staged panel) | EXCLUDE unless recomputed; if recomputed, report as sensitivity |
+| B8 | Frozen suspension prints make −0.89 an upper bound on magnitude (wipeout losses not in returns): Van der Horst last Compustat price exactly equals the suspension print, true outcome −100%; Goodwood last price 22 months before deal announcement; 34 rows DATE_OR_MATCH_ERROR, 5 PROBABLE_TRUNCATION | stale_price_worksheet.csv, verdict_ledger.csv, truncation_audit_v3.csv | Compustat + SDC + Factiva | VERIFIED [artifact] | KEEP as the stated reason −0.89 is a bound, replacing B6/B7 |
+| B9 | Strategy-level, blue-chip 71-name track (canonical spec, quarterly PIT + BVPS): naive survivor long-only 17.37%/yr, Sharpe 1.002, DD −44.2% → PIT-quarterly 7.91%/yr, Sharpe 0.447, DD −62.7%; L/S 10.35%/0.586 → 5.03%/0.313; post-GFC long 14.98/1.067 → 9.86/0.667 | backtest_survivorship_final.ipynb CELL 5, exact; survivorship_summary_final.csv | SGX2_v4.xlsm (Bloomberg, workbook not in archive; VBA builder present) | VERIFIED [cell] | KEEP as the blue-chip strategy-level survivorship result |
+| B10 | Blue-chip alpha statement: naive +0.71%/mo t=4.60 → corrected +0.25%/mo t=1.19; post-crisis +0.55%/mo t=2.60; benchmark inflation 9.8% vs 5.5%/yr | SGX2_Paper Table 3 prose only; the canonical notebook has no regression cell and no monthly series for the final spec survives in the archive. Audit recomputation on the superseded earlier-spec series gives 0.742 (t 4.03) → 0.487 (t 2.33): direction holds, endpoint differs |: | UNSUPPORTED | EXCLUDE the t=4.60→1.19 pair; B9 carries the finding |
+| B11 | Broad-universe (Compustat, 1991–2026): survivorship correction REVERSES the L/S: survivor L/S alpha 0.46%/mo t=1.01 vs PIT 1.32%/mo t=3.82; long-only survivor 14.9%/α0.87 t2.25 vs PIT 11.6%/α0.54 t2.08 | canonical_table2.csv, exact; producing script canonical_rerun.py in folder | sg_broad_quarterly.csv (Compustat) + WRDS constituents | VERIFIED [artifact] | KEEP |
+| B12 | PIT 54-name roster: survivorship correction near-symmetric across legs, long −5.43 pp/yr, short +5.26 pp/yr | SGX_PIT_Attribution executed cells; R_A_survivorship.csv matches to full precision | SGX3_2.xlsm PIT panel | VERIFIED [cell] | KEEP; reconciles long-only vs long-short exposure to the bias |
+| B13 | Trap 1: applying the membership filter to both eligibility and returns reintroduces the bias; caught by a reconciliation gap 1.25e-2 → 5.6e-17 after fix (eligibility from filtered panel, returns from unfiltered) | SGX_PIT_Attribution CELL 6 markdown + executed reconciliation | PIT panel | VERIFIED [cell] | KEEP |
+| B14 | Trap 2: Bloomberg post-delisting price padding must be truncated at last genuine move; truncation independently recovers real delistings (CMA 2014-05, KPLD 2015-03, NOL 2016-06, GLP 2017-12, NOBL 2018-11, SPH 2022-03) | SGX_Sector_Macro_Interaction / SGX_PIT_Attribution executed cells | Bloomberg PIT panel | VERIFIED [cell] | KEEP |
+| B15 | WRDS-track survivorship decomposition (S&P BMI membership variant): 12.4%/0.57 → 10.8%/0.48 long-only; gap +1.56pp/yr, NW t=0.74, crisis-concentrated (+19.3pp GFC) | Result txts + Survivorship_Paper (external WRDS session; no notebook in archive) | WRDS panel | UNSUPPORTED (executed externally, artifacts absent) | EXCLUDE from headline numbers; direction consistent with B1 |
+
+## C. Core cross-sectional pipeline (broad Compustat universe, SGX2 track)
+
+| ID | Claim | Evidence | Inputs | Status | Disposition |
+|---|---|---|---|---|---|
+| C1 | Broad-universe ICs (427 months, ~199 names/mo PIT): Composite 0.049 t=5.93; DY 0.077 t=12.32; ROE 0.067 t=10.28; EY 0.062 t=9.96; MOM12 0.060 t=6.93; B/M 0.004 t=0.63 (dead); size −0.050 t=−6.56 | canonical_table1.csv, exact; canonical_rerun.py present | sg_broad_quarterly.csv + World_Index_Constituents.csv | VERIFIED [artifact] | KEEP |
+| C2 | PIT universe ≈199.4 names/month (range 37–292), 427 months | canonical_results.json | same | VERIFIED [artifact] | KEEP. "704 companies" = gvkeys; 786 = securities (SecIDs); state both |
+| C3 | Size tiers (breadth/liquidity): IC t 1.06 / 4.10 / 8.87 large→small; L/S alpha 0.25 (t 0.81) / 0.78 (2.99) / 1.38 (4.13); liq-screened small book 18.4%/yr, Sharpe 0.85, alpha 1.92 t=5.12 | canonical_table3.csv, exact | same | VERIFIED [artifact] | KEEP. Supersedes stale size_tier_results.csv (Sharpes −0.01/0.32/0.68 are canonical, not 0.15/0.54/0.78) |
+| C4 | Weighting is load-bearing: EW L/S +0.53 t=1.93 → VW −0.08 t=−0.27; 10% cap 0.25 t=0.88; a 5% cap on ~100 names is EW in disguise (max weight 5.4% vs EW 5.2%) | weighting_comparison.csv matching weighting_scheme_test.md | top-100 PIT Compustat panel | VERIFIED [artifact] | KEEP |
+| C5 | Leave-one-out: dropping MOM12 collapses the broad L/S to +0.157 t=0.68; dropping size raises it to +0.677 t=2.84 | attribution_loo.csv | same | VERIFIED [artifact] | KEEP |
+| C6 | Sector contributions: Real Estate largest net (+0.134); Financials gross large, nets +0.055; CommSvcs −0.096 | attribution_sector.csv | same | VERIFIED [artifact] | KEEP |
+| C7 | Sector-neutral ranking kills the broad L/S: +0.526 t=1.93 → +0.169 t=0.69; Brinson-Fachler alloc +0.51 / sel +1.28 / inter +2.98 (sum +4.78 vs actual +5.12); vol-target 12% alpha +0.663 t=3.08; cost sensitivity break-even 86bp | FINAL_STATUS_pending_closed.md prose; finish.py implements all four, stdout not captured | sg_broad_quarterly.csv | UNSUPPORTED (pending recompute via finish.py on staged panel) | EXCLUDE unless recomputed this pass |
+| C8 | IC alignment diagnostics on the broad panel (contemporaneous ≈ 0 vs forward 0.0448 t=6.45; U-shaped deciles D1 +1.030 / D10 +1.573) | ic_alignment_diagnostic.md prose; run on the UNFILTERED panel, author-flagged "re-run on PIT before use" | unfiltered panel | UNSUPPORTED | EXCLUDE (superseded by the PIT alignment work, F7/I6) |
+| C9 | IBES layer lifts broad composite 1.321 t3.82 → 1.523 t4.73 | layer2_layer4_results.md prose, no execution; 75/25 blend not pre-specified; contradicted in spirit by the executed IBES orthogonality null (E10) |: | UNSUPPORTED | EXCLUDE; the executed IBES result is the null (E10) |
+| C10 | REALIS property-beta IC −0.0148 t=−2.36 on broad universe; composite survives property-neutralisation | layer2_layer4_results.md prose, no execution; author holds "loosely"; sector sanity check fails |: | UNSUPPORTED | EXCLUDE |
+| C11 | 71-name blue-chip PIT ICs: Composite 0.0697 t=5.90 (66% positive months); PE_INV t 5.55; DY 5.12; ROE 3.17; BM 2.77; MOM12 2.44; size 0.12 | ic_results_71_final.csv, matches SGX2_Paper Table 1 exactly | SGX2_v4 71-name panel | VERIFIED [artifact] | KEEP (blue-chip track IC table) |
+| C12 | 30-survivor re-run (real workbook): Composite IC 0.0752 t=5.05; long-only 18.84%/yr Sharpe 1.007; OOS 13.22%/0.933 | STI SGX2 factor_model.ipynb CELL 4 / backtest.ipynb CELL 4, executed; folder CSVs match | real 30-name workbook panel | VERIFIED [cell] on a survivor-biased universe | KEEP only as diagnostic baseline, clearly superseded by C11 for publication; this is the source of the live site's "IC 0.075 (t=5.05)" |
+
+## D. Cost, capacity and borrow (waterfall module)
+
+| ID | Claim | Evidence | Inputs | Status | Disposition |
+|---|---|---|---|---|---|
+| D1 | Definitive leakage waterfall on the winning broad composite (2003–26, N=282): gross 1.661%/mo t=5.13 → +Corwin-Schultz per-name spreads 0.755 t=2.25 (CS cost 0.906%/mo, the dominant leak) → +Markit availability 0.527 t=1.59 → +fees 0.282 t=0.85 | waterfall_definitive.csv, stages exact; DEFINITIVE_waterfall_and_capacity.md; identifier-based Markit match (632/786 via crosswalk, crosswalk verified) | PIT WRDS panel + Markit + CS spreads | VERIFIED [artifact] | KEEP as the headline waterfall |
+| D2 | Earlier flat-cost waterfall (10/20bp, fuzzy Markit): t 5.13→4.51→3.89→2.28→1.57 | cost_waterfall.csv | same | VERIFIED [artifact] | KEEP as superseded bracket only |
+| D3 | Binding-name capacity ≈ SGD 4,000/month at 5% ADV (7k at 10%); every month < SGD 1m | DEFINITIVE memo prose; no artifact, no code |: | UNSUPPORTED | EXCLUDE; D8 carries the capacity conclusion for that book |
+| D4 | Corwin-Schultz recipe inverts liquidity ordering on illiquid names (naive 20/46/60 bps illiquid→liquid); traded-days correction restores it (83/71/62) | SGX_Effective_Spreads_and_Costs CELLs 5/8, executed | Compustat daily H/L | VERIFIED [cell] | KEEP (also corrections log) |
+| D5 | Markit fee/availability by cap quintile: median fee 6.00 / 5.00 / 3.50 / 0.75 / 0.54 %/yr smallest→largest; bottom two quintiles effectively zero lendable inventory | SGX_Borrow_Markit.ipynb executed table | panel_markit.csv | VERIFIED [cell] | KEEP |
+| D6 | Real fees alone destroy the naive short book (−0.021%/mo t=−0.11, avg 46 bps/mo); the availability screen rescues it by forcing large caps (S$10m AUM: +0.578 t=3.47; S$50m: +0.447 t=3.27; significant to S$500m) | SGX_Borrow_Markit.ipynb executed scenario table | same | VERIFIED [cell] | KEEP |
+| D7 | Implementable L/S at S$50m with real borrow: long +0.392 t=1.40, short +0.372 t=2.72, combined +0.764 t=2.23; short leg stays more reliable than long | SGX_Borrow_Markit.ipynb executed | same | VERIFIED [cell] | KEEP |
+| D8 | Borrow waterfall on the price-signal composite book: L/S 1.661 t=4.94 → borrow-feasible (inventory + DCBS<5) 0.712 t=2.53 Sharpe 0.56, a 57% reduction; long-only top-30% +0.713%/mo t=4.19 Sharpe 0.85 with no borrow required → long-only dominates | SGX_Borrow_Execution_ThirdSleeve CELLs 4/6, executed; borrow_waterfall.csv matches | markit_monthly + cs_signals | VERIFIED [cell] | KEEP |
+| D9 | Availability stats behind D8: 60.7% of short-leg name-months have active available inventory; 37.9% general collateral; median fee 0.048%/yr (p90 0.110) | Borrow notebook CELL 4 executed | same | VERIFIED [cell] | KEEP; REPLACES the unexecuted "22.6% zero lendable / 0.024%/yr mean fee / 53% of alpha lost (0.636→0.299)" recollection |
+| D10 | "22.6% of short-leg names zero lendable; short-leg mean fee 0.024%/yr; naive L/S 0.636 t2.25 → 0.299 t1.07 (53% lost)" | Markdown recollection in SGX_Remaining_Items CELL 17 of a run not present anywhere |: | UNSUPPORTED | EXCLUDE, replaced by D6/D9 |
+| D11 | Execution lag negligible: L/S 1.451→1.419 (t 3.74→3.59) trading at t+1 first close; long-only unchanged | Borrow notebook CELL 9 executed; execution_lag.csv | Compustat daily | VERIFIED [cell] | KEEP |
+| D12 | STI-core capacity ~S$50M at 10% participation (5% of months infeasible), feasibility-bound not cost-bound; net alpha +0.35→+0.28%/mo from S$1M to S$1bn | capacity_analysis.csv artifact matches memo; Risk_Module_Memo Step 1; the S$100M@20% variant is memo-only | STI panel + spreads + riskvol | VERIFIED [artifact] (S$50M line); the 20%-participation doubling is UNSUPPORTED | KEEP S$50M; drop the "~S$100M at 20%" claim |
+| D13 | TSMOM/fundamental-sleeve binding-name capacity degenerate (median ~SGD 0.01–0.1m) without a liquidity constraint at construction | TSMOM SGX_Attribution_And_Leakage executed capacity cells | liquid100 panel | VERIFIED [cell] | KEEP in TSMOM module |
+| D14 | Corwin-Schultz cross-vendor levels: Compustat naive median 49bp vs Bloomberg prior ~44bp; cs_spreads_monthly 143,978 name-months, median half-spread 23.5bp | Compustat side executed; Bloomberg side a hard-coded dict; 143,978/23.5bp memo prose (file present but unverified this pass) | cs files | VERIFIED [cell] Compustat side; Bloomberg comparator and 23.5bp figure UNSUPPORTED pending file check | KEEP Compustat numbers; drop the rest unless checked |
+
+## E. STI-core pipeline and risk characterisation (SGX3 track)
+
+| ID | Claim | Evidence | Inputs | Status | Disposition |
+|---|---|---|---|---|---|
+| E1 | STI-core primary: +0.396%/mo, NW-t 2.26, 10.1% ann (top-6, exit-classified, 4-month lag); the published +0.40%/mo t=2.82 implies a 7–8 name book and is replaced by 2.26 throughout | sti_core_returns.csv recompute matches; jumpmodel_test_a.json baseline; rederived_table3 STI row; PROVENANCE memo book-size sweep (book 6 → t 2.26; book 8 → t 3.03) | panel_pit_v2.csv | VERIFIED [artifact+recomputed] | KEEP; t=2.82 appears only in the corrections log |
+| E2 | Reference Table I does not reproduce: 0 of 9 factors survive Bonferroni (threshold t=2.77); best univariate |t| = 2.767 (B/M); corrected premia table (BM +0.26 t2.77 marginal; DY +0.23 t2.56; EY +0.41 t1.94; ROE +0.04 t0.41; MOM12 +0.11 t0.89; size −0.07; Amihud −0.01) | rederived_table1_fm.csv and _multivariate.csv, exact | panel_pit_v2 lineage | VERIFIED [artifact] | KEEP |
+| E3 | Independent Compustat reproduction of the STI-core: annual fundamentals +0.27%/mo t=1.82; quarterly hybrid +0.36%/mo t=2.26 (n=222). The memo's "+0.42 t=2.68" run was overwritten and survives nowhere | compustat_backtest.csv and compustat_backtest_quarterly.csv recomputed by SGX3 audit | Compustat g_funda/g_fundq + Security Monthly | VERIFIED [artifact+recomputed] for 0.27/0.36; the 0.42/2.68 variant UNSUPPORTED | KEEP +0.36 t=2.26 as the reproduction headline; EXCLUDE +0.42 |
+| E4 | Benchmark contamination: benchmark built from t+1 members credits entrant appreciation; Bench A vs Bench B differ +0.395%/mo; STI headline unaffected (2.56 vs 2.52) but broad-universe null reverses (top-100 0.073 t0.24 → 0.468 t1.67; top-150 +0.861 t3.30; top-200 +0.860 t3.61) | SGX_IC_Alpha_Gap_Analysis CELL 2 executed table; benchmark_sensitivity.csv | panel_topN_lag.csv | VERIFIED [cell] | KEEP; the entrant decomposition (+25.11% vs +0.72%, +0.391 inflation) is memo-only, quote the measured +0.395 gap instead |
+| E5 | Corrected decile payoff (forward-return bug fixed): monotone, D1 −0.518 t=−3.08 … D10 +0.476; D10−D1 +0.995%/mo t=2.74. Bug: groupby shift(-1) pulled non-adjacent months for 274 dropped names (avg mis-assigned +19.97%) | deciles_corrected.csv recomputes exactly; bug forensics documented in CANONICAL memo (counts memo-only) | panel_topN_lag.csv | VERIFIED [artifact] (corrected numbers); forensic counts documented | KEEP corrected table + corrections-log entry |
+| E6 | L/S leg decomposition (top-100, 10/leg, Bench B): long +0.492 t=1.75 (47%), short +0.547 t=3.30 (53%), spread +1.039 t=2.82; binding constraint is borrow | leg_decomposition.csv; Risk_Module_Memo | same | VERIFIED [artifact] | KEEP |
+| E7 | Leakage funnel (top-100, book 10): published-bench 0.097 t0.31 → investable bench 0.492 t1.75 → flat 10bp 0.468 → CS half-spread 0.407 → +impact 0.349 → sector cap 0.411 → drop illiquid tertile 0.186 t1.12. Frictions ~14bps; tradability screen −22.5bps; insignificant at every stage | SGX_Alpha_Attribution_Leakage CELL 2 executed, exact | same | VERIFIED [cell] | KEEP |
+| E8 | Attribution: removing Fin/RE raises alpha to +0.689 t=2.99; leave-one-group-out MOMENTUM +12.4bps only positive, QUALITY −50.2bps; dropping ROE lifts +0.468 t1.67 → +0.97%/mo t=4.71; size/liquidity monotone down-cap (Small +31.3 t2.15; Illiquid +24.3); concentration top-1 27.9%, top-5 69.9%, top-10 96.7% | SGX_Alpha_Attribution_Leakage executed cells; attrib_* CSVs | same | VERIFIED [cell] | KEEP; ROE-drop flagged post-hoc, no holdout |
+| E9 | Repeatability NO: leave-out-top-5 0.210 t0.94; subperiods 2008-13 +0.084 t0.13 / 2014-19 +0.141 t0.43 / 2020-26 +1.187 t3.52; calm +1.205 t3.91 vs turbulent −0.123; bull +0.963 vs bear −0.050 | executed cells; subperiods.csv, regime_attribution.csv | same | VERIFIED [cell] | KEEP |
+| E10 | IBES analyst revisions add nothing (pre-registered): REV_NET IC 0.0221 t1.17, marginal FM −0.179%/mo t−0.90; all four signals subsumed; mechanism = momentum correlation (REV_NET vs MOM6 +0.275) | SGX_IBES_Revisions_Analysis executed; ibes_revision_test.json | IBES via WRDS | VERIFIED [cell] | KEEP |
+| E11 | Holdings-based attribution: MOMENTUM +0.427 t2.61 and VALUE +0.257 t3.86 carry the return; QUALITY 0.985z exposure for +0.023 t0.26; stock-specific residual −0.15%/mo (no selection skill) | SGX_Attribution_Holdings_Brinson executed; attrib_holdings.csv | panel lineage | VERIFIED [cell] | KEEP |
+| E12 | Brinson reconciled: selection +8.379 t2.20, interaction −2.578, total +5.717%/yr; must be reported with all three terms | brinson_rerun.csv; executed | same | VERIFIED [cell] | KEEP with the interaction term |
+| E13 | Capacity S$50M at 10% participation, feasibility-bound (see D12) | capacity_analysis.csv | STI panel | VERIFIED [artifact] | KEEP |
+| E14 | Tail metrics: daily 95% VaR/ES −1.72/−2.74, 99% −3.14/−4.73; maxDD −50.3%; stress table (GFC −39.4 vs STI −36.8; COVID −17.1 vs −21.3) | SGX_Analysis_Notebook CELL 7 stream; strategy_daily.csv, stress_episodes.csv | daily panel | VERIFIED [cell] | KEEP |
+| E15 | CAPM alpha +0.45%/mo t=2.59, beta 0.93, 25% idiosyncratic; multi-factor alpha +0.16 t1.17 (style-explained, momentum-led). MOM loading +0.43 t7.3 is memo-only | variance_decomp.json matches alphas; loading t memo-only | same | VERIFIED [artifact] core numbers; loading t-stat UNSUPPORTED | KEEP alphas; drop the +0.43 t7.3 loading claim |
+| E16 | Constrained backtest: sector cap 33% +0.489 t2.51; +beta band [0.7,1.3] +0.572 t3.08; alpha survives institutional constraints | constrained_backtest.csv, exact | same | VERIFIED [artifact] | KEEP |
+| E17 | Sector concentration: majority Fin/REIT 61% of months, >50% single sector 29%, peak 83% (2020) | exposures_timeseries.csv + memo | same | VERIFIED [artifact] | KEEP |
+| E18 | Bootstrap inference: alpha 95% CI [+0.05, +0.73], P(alpha>0)=98.7%; maxDD −50.3% is typical (bootstrap median −46%); data-snooping P(max|t|≥2.82 across 40 correlated specs) ≈ 0.3% | mc_alpha/mc_dd/mc_sharpe.npy + memo; SGX3 audit checked distributions | strategy series | VERIFIED [artifact] | KEEP |
+| E19 | Cross-vendor r=0.979 across 8,035 name-months | memo-only (see A6) |: | UNSUPPORTED | EXCLUDE |
+| E20 | Table II legacy modules (Barra bias 0.29, GBM Sharpe 0.24, MVO 0.75, HMM 0.36 vs 0.70) | from uninspectable early sessions; PROVENANCE memo marks unverified |: | UNSUPPORTED | EXCLUDE numbers; the overlay-null conclusion is independently carried by E21 |
+| E21 | 8 overlays tested, 8 failed to add risk-adjusted return (Barra, HMM, GBM, statistical jump model, IBES, jump-aware sizing, GARCH targeting, Markov switching); MVO the only overlay with genuine benefit (drawdown halved, no alpha) | The last 5 are executed in SGX3 notebooks (jumpmodel_test_a.json: penalised jump model best = no switching; jump_sizing FAIL vs bar; garch_sizing FAIL; ms FAIL; IBES FAIL). Barra/HMM/GBM rest on E20-era sessions | SGX3 notebooks | VERIFIED [cell] for the five executed; first three UNSUPPORTED individually | KEEP as "eight tested, eight failed" with the three legacy rows marked as unverifiable in detail; numbers quoted only for the executed five |
+
+## F. Factor anatomy (sector-valuation and alignment)
+
+| ID | Claim | Evidence | Inputs | Status | Disposition |
+|---|---|---|---|---|---|
+| F1 | Sector-neutralising roughly halves value ICs: DY t 4.544→2.634, BM 3.354→2.071, MOM 2.875→1.552 | SGX_Sector_Macro_Interaction CELL 25, exact | survivor-30 panel (real workbook) | VERIFIED [cell] | KEEP; note survivor-universe estimate, PIT variant costs ~10% not ~31% |
+| F2 | Macro interactions are risk not alpha: d10Y interaction contemporaneous IC t=5.02 vs predictive t=−0.70; dSORA the only persistent macro shock (AR(1)=0.757), predictive t=+1.12 (positive, insignificant) | SGX_Sector_Macro_Interaction CELLs 17/etc, exact | panel + macro_monthly | VERIFIED [cell] | KEEP with the insignificance stated |
+| F3 | Contemporaneous IC structurally wrong-signed for price-denominated ratios (BM h0 t=−1.72 vs h1 +3.35; DY −1.05 vs +4.54) | SGX_IC_Alignment_Embargo CELLs 7/17 | same | VERIFIED [cell] | KEEP |
+| F4 | Canonical alignment h=1 with 4-month embargo is a convention, not an optimum (grid flat beyond L=2; 81 tests logged; L0/L4 IC corr 0.910) | SGX_IC_Alignment_Embargo executed | same | VERIFIED [cell] | KEEP, phrased as convention |
+| F5 | PIT roster core result: long-only 0.537%/mo NW-t 2.71; L/S 0.920 t=3.11; funnel dies at the illiquid screen (0.385, t=1.30); only BM survives LOFO | SGX_PIT_Attribution executed; R_B/R_C/R_D/R_F CSVs match to full precision | SGX3_2 PIT panel | VERIFIED [cell] | KEEP |
+| F6 | Weighting on the PIT roster: value weighting kills significance (0.339%/mo t=1.21 vs EW); score-cap t 2.12 (fixed engine; in-notebook absolute-cap run was buggy and never binds) | R_H_grid_fixed.csv from pit_engine.py (cap = max_wt/n); supersedes the stale in-notebook grid | same | VERIFIED [artifact, fixed engine] | KEEP citing R_H_grid_fixed.csv |
+| F7 | 15%-cap trap: a 15% absolute cap on a 6-name book is mathematically infeasible (6×15%<100%) and silently reverts to equal weighting, manufacturing false robustness | SGX_PIT_Attribution executed print (n=6 infeasible) + narrative of the caught bug |: | VERIFIED [cell] | KEEP (corrections log + methods) |
+| F8 | IC-to-alpha gap is decile-shape, not alignment: correctly aligned IC t / portfolio t ratio 0.9–1.4 across 14 cells; momentum quintile payoff U-shaped, ROE reverse-J | TSMOM SGX_IC_Alignment_And_Lag executed (ratio grid); SGX momentum Decile_Shape_Diagnostic executed profiles | liquid100 | VERIFIED [cell] | KEEP |
+| F9 | 52WH placebo: 12 random subsets matched in size to the liquid half confirm the screen, not sample size, drives conditional results (placebo max t=0.58) | SGX_Validation_PIT_and_Mechanism CELL executed | cs_signals | VERIFIED [cell] | KEEP, attributed to the price-signal family (REPORT.md had attributed it to the size-tier story) |
+
+## G. Multiple-testing discipline
+
+| ID | Claim | Evidence | Inputs | Status | Disposition |
+|---|---|---|---|---|---|
+| G1 | Pre-registered grid: 65 tests (62 + 3 IBES extension) on dev window 1995-01–2019-12; 24 clear |NW t|>1.96; exactly 1 clears |t|>3.0; 0 survive BHY (min p 0.074) | spec_results_N65.csv / spec_results_full.csv; BHY independently recomputed to 1e-14; counts recounted | dev-window Compustat panel | VERIFIED [artifact+recomputed] | KEEP |
+| G2 | "…1 clears |t|>3.0 by 0.02" | The clearing spec is B/index/raw/EW/LS at t=3.674 (clears by 0.67); it also uniquely passes the bootstrap reality check but fails BHY (p=0.074) and has DSR prob 0.836 | same | VERIFIED numbers, WRONG margin phrasing | CORRECT the wording |
+| G3 | Amendment discipline: pre-registration lock date and panel hash blank; §8 amendment log empty despite 62→65 extension; both BHY corrections (m=62, m=65) supplied and conclusion invariant | PRE_REGISTRATION.md + both CSVs |: | VERIFIED [artifact] as a disclosed weakness | KEEP as a stated limitation |
+| G4 | Price-signal family multiple testing (M=55): gross Bonferroni 15/55, BHY 19/55, bootstrap (crit 3.57) 12/55; NET 0/22 clear bootstrap; DSR fails PH-liquid gross (p=0.019) and net (p=0.001) | SGX_Remaining_Items CELLs 4–6 executed; multiple_testing.csv row-for-row | 55-series family | VERIFIED [cell] | KEEP |
+| G5 | Data-snooping bootstrap on STI-core (P(max|t|≥2.82) ≈ 0.3% at ρ=0.9 across 40 specs) | mc outputs + memo (see E18) | strategy series | VERIFIED [artifact] | KEEP |
+
+## H. TSMOM module
+
+| ID | Claim | Evidence | Inputs | Status | Disposition |
+|---|---|---|---|---|---|
+| H1 | MOP construction verified (sign of k-mo excess return, 15% target, |w|≤2, lagged ewm vol); 30-name Bloomberg k=3: Sharpe 0.876 vs EW long 0.706; maxDD −52.6→−28.9%; skew −0.30→+0.42 | SGX_TSMOM_Seasonality executed | Bloomberg panel | VERIFIED [cell] but survivorship-inflated universe | KEEP with supersession note (H2/H3) |
+| H2 | Survivorship-clean standalone TSMOM: liquid100 k=3, 2001–26: Sharpe 0.974 t=4.65 (vs Bloomberg 0.876); PIT top-30 Sharpe 0.565 (the 30-name 0.876 was inflated ~as expected); 1988–2000 a null ("one strong window out of three") | SGX_WideUniverse_TSMOM_Seasonality + Decay_Context executed | Compustat liquid100 | VERIFIED [cell] | KEEP as the module's standalone numbers |
+| H3 | Horizon structure shifted forward: t=2.547 at h=3, fades to 1.121 by h=12; h=3 is a searched cell, block-bootstrap p=0.001 (5 cells) / 0.0005 (20) | executed grid | same | VERIFIED [cell] | KEEP |
+| H4 | Combination reversal under borrow constraints: pre-borrow sleeve correlation −0.136 justified combining; borrow-constrained, costed, matched 2003+ window (N=283): correlation +0.333, combo Sharpe 0.460 t=1.71 < TSMOM alone 0.543 t=2.11 | SGX_Combined_Strategy CELL 9; SGX_Attribution_And_Leakage CELL 13; SGX_Borrow_Constrained executed | liquid100 + Markit | VERIFIED [cell] | KEEP as the module finding |
+| H5 | Implementation honesty: no skip-month in the wide-universe signal; +1-month lag halves Sharpe 0.727→0.510 (notebooks call the lagged number realistic); fundamental sleeve concentrated (top-10 names = 83% of P&L, deletion → t 0.46) vs TSMOM breadth-robust (25%, survives t 3.10); TSMOM leakage 0.773→0.576 survives, fundamental sleeve 0.810→−0.013 does not; gross GFC +27.9% is gross-only (crisis alpha dies costed) | TSMOM executed cells across NB5/7/8 | same | VERIFIED [cell] | KEEP |
+| H6 | Amihud look-ahead correction: sleeve Sharpe 0.606 → 0.563 after lagging the 12-month window | SGX_Combined_Canonical_Spec CELL 0/2 executed (AM_bug vs AM quantified) | same | VERIFIED [cell] | KEEP (corrections log) |
+| H7 | Turnover base correction: unlevered turnover charged against levered returns produced a spurious 1,400%/mo figure | SGX_Combined_Strategy markdown documenting the caught bug; corrected engines executed | same | VERIFIED [cell-adjacent, documented and fixed in executed code] | KEEP (corrections log) |
+
+## I. Price-signal family (52-week high, reversal)
+
+| ID | Claim | Evidence | Inputs | Status | Disposition |
+|---|---|---|---|---|---|
+| I1 | Subsumption flips with liquidity/turnover: liquid half PH|MOM +0.829 t=2.66 vs MOM|PH −0.055 t=−0.18; STI-30 the reverse (MOM|PH +0.602 t=+3.34, PH|MOM −0.250 t=−1.17) | SGX_Breadth CELL 11; SGX_PriceSignals CELL 20, executed | Compustat + Bloomberg panels | VERIFIED [cell] | KEEP |
+| I2 | Mechanism = share turnover (not breadth, not ADV): monotone turnover terciles (Low MOM +0.75 t2.77 / MOM|PH +1.12 t5.95; High PH +1.59 t3.65); framing corrected twice, final = turnover | SGX_Turnover_and_Jumps CELLs 8–9 executed; supersession chain documented | cs_signals + turnover_monthly | VERIFIED [cell] | KEEP |
+| I3 | Low-turnover momentum subsumes 52WH: MOM|PH residual t=5.67 in the M=55 family; survives every gross correction and breakpoint variation | multiple_testing.csv + breakpoint table executed | same | VERIFIED [cell] | KEEP |
+| I4 | High-turnover/liquid 52WH: the raw spread clears Bonferroni and bootstrap (t=3.74/3.65 > crit 3.57); the PH|MOM residual clears BHY/HLZ only (t 3.20–3.32, fails bootstrap; liquid-third residual fails Bonferroni p=0.0707); NET nothing survives any correction (0/22, max t 3.44) | multiple_testing.csv row-for-row | same | VERIFIED [cell] | KEEP with the spread-vs-residual distinction stated precisely (REPORT.md's blanket phrasing corrected) |
+| I5 | Net of spreads: liquid-third PH +1.05 t=2.66 (gross 1.45 t=3.74, break-even 302bp); full universe dies +0.21 t=0.54; every net momentum cell t≤1.1; mid-cap claim withdrawn (net t=1.85) | SGX_Effective_Spreads CELLs 12/14 executed | + spreads_traded-days | VERIFIED [cell] | KEEP |
+| I6 | Alignment self-audit: 52WH contemporaneous IC 0.376 (t=35) vs t+1 0.0528 (t=4.84); REV_1M contemporaneous IC −1.0000 (the tell); effective breadth 16–42 vs nominal thousands | SGX_IC_Alignment_Diagnostic executed | same | VERIFIED [cell] | KEEP |
+| I7 | Jump momentum in low turnover (+0.39 t=2.33 at K=60) is K-fragile (t 1.01 at K=120) | K=60 executed; K=30/120 printed from a hard-coded FileNotFound fallback (jumps_K.py absent) |: | K=60 VERIFIED [cell]; K-sensitivity UNSUPPORTED | KEEP the conservative downgrade (do not claim the signal), noting the sensitivity evidence gap |
+| I8 | Jumps: 1.00% of days, 18.7% of variance; decomposition rescues nothing (cont-MOM|PH +0.01 t=0.02) | SGX_Turnover_and_Jumps CELLs 13–15 executed | Compustat daily | VERIFIED [cell] | KEEP |
+
+## J. Calendar seasonality
+
+| ID | Claim | Evidence | Inputs | Status | Disposition |
+|---|---|---|---|---|---|
+| J1 | "Nothing on SGX cleared the multiple-testing bar" (REPORT.md §9.3) | TSMOM executed: August SURVIVES Bonferroni (−2.45%/mo, t=−3.80, p=0.012); Halloween +10.9 vs −3.3%/yr but t=1.87; Heston-Sadka present statistically on wide universe (p=0.048/0.005), tradably absent; turn-of-month never tested on SGX | liquid100 + Bloomberg | VERIFIED numbers, WRONG blanket claim | CORRECT to "no tradable seasonality; the August effect is the one statistical survivor" |
+
+## K. Volatility management and skew
+
+| ID | Claim | Evidence | Inputs | Status | Disposition |
+|---|---|---|---|---|---|
+| K1 | Moreira-Muir overlay benefit is skew-conditional ex post: 208 JKP series, 8 markets; slope −0.0186 t=−3.95 (country+theme FE); dSR +0.127 (skew<−2) vs −0.028 (skew>1); robust across 8 specs | VolManagement_Global_208Series CELL 5 executed | JKP | VERIFIED [cell] | KEEP |
+| K2 | Not a volatility confound: corr(skew,vol)=−0.037; horse race skew t=−3.77 vs vol t=+0.25; gradient inside every vol tercile | Skew_vs_Volatility_Confound executed | JKP | VERIFIED [cell] | KEEP |
+| K3 | Unexploitable ex ante: skew predictive R²=0.0032 at 12M vs 0.2465 for volatility (n=98,932); crash logit vol OR 2.005/sd vs skew 0.963 | Skew_Forecastability CELL 5 executed | JKP | VERIFIED [cell] | KEEP |
+| K4 | Ex-ante gate fails: best searched rule +0.003 Sharpe; all bootstrap CIs span zero; White reality-check p=0.576 | ExAnte_Rule_Bootstrap executed | JKP | VERIFIED [cell] | KEEP |
+| K5 | "Merton jump-diffusion and Markov-switching both forecast skew worse than the naive sample moment" (REPORT.md §9.4) | No code or output anywhere in the folders; results_appendix is self-declared prose-only and about variance/ES, not skew forecasting |: | UNSUPPORTED | EXCLUDE |
+
+## L. Jump-diffusion and regime risk measurement
+
+| ID | Claim | Evidence | Inputs | Status | Disposition |
+|---|---|---|---|---|---|
+| L1 | Merton fit on STI-core daily returns: sigma 0.759%/day, lambda 0.230/day (~58 jumps/yr), muJ −0.069%, sigmaJ 1.856%; variance split 42.1% diffusive / 57.9% jump; KS 0.0156 vs Gaussian 0.0719; 99% ES: empirical −4.73, Merton −4.43 (0.30pp err), Gaussian −3.13 (1.60pp, 33.8% understatement) | SGX_JumpModel_Analysis executed; jumpmodel_test_b.json | strategy daily series | VERIFIED [cell] | KEEP; licenses sizing/limits claims only |
+| L2 | GJR-GARCH-skewt beats Merton by 713 BIC; only model passing conditional VaR backtests at both levels; supersedes Merton for conditional risk (persistence figure 0.98 memo-only) | garch_model_comparison.csv + garch_var_backtest.csv executed | same | VERIFIED [cell]; persistence number UNSUPPORTED | KEEP (add to REPORT_FINAL; REPORT.md omitted it); drop the 0.98 figure |
+| L3 | GARCH look-ahead trap: same-month forecast inflated Sharpe 0.73→1.05; lagged corrected Sharpe 0.734 (vs constant-leverage 0.776), gain indistinguishable from zero | corrected run executed (garch_sizing_results.csv); the 1.054 pre-correction figure documented in memo | same | VERIFIED [cell] corrected result; trap documented | KEEP (corrections log) |
+| L4 | Markov-switching: filtered probabilities Sharpe 0.433 vs smoothed 0.958 (+0.525 illusion); corr(filtered,smoothed)=0.21; filtered actively hurts baseline 0.618 | ms_sizing_results.csv / ms_fits.json executed | same | VERIFIED [cell] | KEEP (corrections log + module) |
+| L5 | Jump-aware sizing: naive +0.38%/mo is 73% constant leverage; timing worth Sharpe +0.050 (CI [+0.002,+0.091], beats Gaussian control +0.119) but FAILS the pre-registered +0.10 bar | jump_sizing_* files executed | same | VERIFIED [cell] | KEEP |
+| L6 | Regime overlay null diagnosed (beta-neutrality collision, filtered-vs-smoothed lag, single-digit transitions, spreads); inverse-realised-vol benchmark never run | executed nulls (E21) + results_appendix diagnosis (prose) | same | VERIFIED [cell] for the nulls; diagnosis is interpretation; benchmark gap disclosed | KEEP with the open benchmark stated |
+
+## M. 30-name diagnostic track (corrected)
+
+| ID | Claim | Evidence | Inputs | Status | Disposition |
+|---|---|---|---|---|---|
+| M1 | Corrected re-run on real prices only: no signal |t|>1.96 (best MOM12 t=1.376, IC 0.0236); long-only trails buy-and-hold even at zero cost (Sharpe 0.298 vs 0.316); L/S is a diversifier (corr −0.11, beta −0.13, +1.10%/mo in down months); 20% overlay Sharpe 0.326 vs 0.316, maxDD −47.3 vs −55.7 (in-sample, in-noise, hypothesis only) | SGX_Strategy_Audit executed and independently re-run by this audit; all 7 CSVs byte-match | panel_stock_generated.csv PX_LAST only | VERIFIED [cell+recomputed] | KEEP as diagnostic; overlay framed as hypothesis |
+| M2 | Original three-notebook outputs (IC 0.010 t 0.84 composite etc. in project-blob ic_results.csv; 17.56%/Sharpe 1.43; OOS 1.364) | Trace to build_synthetic_panel (np.random.seed(42), 28 hardcoded tickers) and fill_missing_stock_columns (adler32) in the project pipeline.ipynb; multiple branches reproduce the generator exactly | seed-42 synthetic | CONTAMINATED | EXCLUDE (already excluded); quarantine note: the fabricated blobs still sit in the claude.ai project mount |
+| M3 | Bloomberg-track papers: lagged family (IC 0.058 t3.07, 11.02%, Sharpe 0.518, alpha 7.69%) from sgx_factor_pipeline_lag.py; no-lag family (IC 0.068 t3.70) from the no-lag script; FYP_Report claims lag but reports no-lag numbers; composite IC weights are full-sample (look-ahead in weights); returns are PX_LAST-only (ex-dividend) | scripts present; run artifacts absent; ROBUSTNESS_MEMO regime insignificance (p=0.19) never edited in | real xlsm | UNSUPPORTED as run artifacts (code present), and methodologically compromised (in-sample IC weights, ex-div returns) | EXCLUDE from headline results; superseded by M1 and the PIT tracks |
+
+## N. Corrections log (each entry traced)
+
+| # | Correction | Evidence | Status |
+|---|---|---|---|
+| N1 | Silent synthetic fallback; all downstream rejected and rebuilt | Generator quoted (seed-42 + adler32); detector runs executed in three branches (exact reproduction 5/5 tickers; corr-structure audit) | VERIFIED |
+| N2 | Forward-return alignment bug (shift(-1) vs PIT lookup): fake U-shape, flat L/S → corrected monotone, +0.995 t2.74 | deciles_corrected.csv recomputes; memo forensics | VERIFIED (forensic counts memo-level) |
+| N3 | GARCH look-ahead Sharpe 0.73→1.05 caught; corrected 0.734 | executed corrected run + memo | VERIFIED |
+| N4 | Markov smoothed-probability +0.525 illusion; filtered used | executed | VERIFIED |
+| N5 | Amihud window included month t; sleeve Sharpe 0.606→0.563 | SGX_Combined_Canonical_Spec executed (AM_bug quantified) | VERIFIED |
+| N6 | Turnover on unlevered weights vs levered returns (spurious 1,400%/mo) | documented + corrected engines executed | VERIFIED |
+| N7 | Corwin-Schultz inversion on illiquid names; traded-days fix | executed (D4) | VERIFIED |
+| N8 | Membership filter double application; reconciliation 1.25e-2 → 5.6e-17 | executed (B13) | VERIFIED |
+| N9 | PX_LAST-only returns discarded 4.55 pp/yr; TOT_RETURN adopted | SGX_Panel_Rebuild CELL 10 executed | VERIFIED |
+| N10 | Published t=2.82 → 2.26 via implied book breadth; papers edited (four variants clean; Paper_A_STI_Core_final, SGX_MultiFactor_Paper Table I, Paper_B v3 still stale) | PROVENANCE memo + SGX3 audit grep of all paper variants | VERIFIED, with residual staleness listed in EXCLUSIONS |
+| N11 | Benchmark contamination (t+1-membership benchmark): +0.395%/mo measured gap; STI unaffected, broad null reverses | executed (E4) | VERIFIED (new entry, was not in REPORT.md's log) |
+| N12 | Absolute-cap weighting bug on small books (15%/6-name infeasible; engine fix cap=max_wt/n) | executed (F6/F7) | VERIFIED (new entry) |
+| N13 | STI churn misquote 51/51 → executed 30/30 | executed (A8) | VERIFIED (new entry) |
+
+## O. External-track / live-site numbers (Phase B relevance)
+
+| ID | Claim | Evidence | Status | Disposition |
+|---|---|---|---|---|
+| O1 | "Survivorship cuts Sharpe 0.98→0.61 (long-only), 0.64→0.25 (L/S)" (live site, REPORT.md §11) | NOW TRACED: backtest_survivorship.ipynb CELL 6 executed (survivor 0.975 → PIT 0.607; L/S 0.635 → 0.249). BUT that run backfilled PX_TO_BOOK for survivors from panel_stock.csv (contamination risk if the resident copy was the fabricated blob) and is superseded by the canonical quarterly+BVPS run (1.002→0.447; L/S 0.586→0.313) | EXECUTED but SUSPECT and SUPERSEDED | REPLACE on site in Phase B with B9's canonical numbers |
+| O2 | "Composite factor IC 0.075 (t=5.05)" (live site, REPORT.md §11) | NOW TRACED: STI SGX2 factor_model.ipynb CELL 4 executed on the real 30-survivor workbook panel (0.0752, t=5.049) | VERIFIED [cell] but survivor-biased universe, superseded by C11 (71-name PIT: 0.0697, t=5.90) | REPLACE on site with C11 |
+| O3 | "Value carries the signal; momentum and quality do not" (site) | Consistent with C11/E2/E11 verified results in direction; exact site phrasing bundles universes | PARTIALLY SUPPORTED | REWRITE precisely in Phase B |
+
+## P. Addenda from the final verification pass
+
+| ID | Claim | Evidence | Status | Disposition |
+|---|---|---|---|---|
+| A13 | 30-name Bloomberg panel size: 7,891 security-months, 30 tickers, 2001-01 to 2026-01 | STI SGX2 pipeline.ipynb executed print ("Real panel: 7,891 rows, 30 tickers"); panel_real.csv identical shape | VERIFIED [cell] | KEEP |
+| A14 | liquid100 eligibility floor: price >= SGD 0.20, top 100 by lagged market cap | TSMOM notebook construction code (executed cells) | VERIFIED [cell] | KEEP |
+| F10 | Event-time embargo calibration: a fixed 4-month embargo leaves 24.0% of firm-quarters unpublished (8.6% at 6 months); pre-2004 pdateq backfilled | SGX momentum branch, Fundamental_Lag_Calibration.ipynb executed | VERIFIED [cell] | KEEP; REPORT_FINAL section 3 cites this row (tag corrected from F4) |
+| D12a | Capacity infeasibility ladder detail: 5% of months infeasible at S$50M, 43% at S$200M (94/218), >70% at S$500M+ | capacity_analysis.csv recomputed by the verification pass | VERIFIED [artifact+recomputed] | KEEP |
+| L7 | Property exposure (statistical betas): aggregate REALIS lead-lag null (all |t|<1.5, no Fin_RE differential vs placebo sectors); beta persistence 0.577 at 12m; volume-growth differential t=−2.61 fails the 8-test Bonferroni bar (2.73), reported suggestive only | SGX_REALIS_Foundation and SGX_Property_Exposure executed | VERIFIED [cell] as a suggestive-only finding | KEEP in limitations |
+| E18a | Bootstrap alpha CI [+0.05, +0.73] and G5's 0.3% data-snooping probability: figure-legend evidence only; mc_*.npy inputs absent from archive | SGX3 audit: PLAUSIBLE/figure-only | UNSUPPORTED at the executed-output bar | EXCLUDE from REPORT_FINAL (P(alpha>0)=98.7% and maxDD median are stream-verified and kept) |
+| E22 | Memo-only book-size sweep (3-name t 1.06 to 25-name t 4.80) and weighting row (cap +0.068 t 0.22), both on the top-100 10-name book, mislabelled STI-core in earlier drafts | Risk_Module_Memo prose; no artifact | UNSUPPORTED | EXCLUDE; breadth statement carried by E4, weighting by C4/F6 |
+| H8 | Cached-inputs caveat: TSMOM combination results (H4), waterfall/concentration (H5), Amihud quantification (H6) and the 14-cell IC/alpha ratio grid (F8) execute from in-branch cached inputs (canon.py / attrib_base.py / pickled panels) whose construction is upstream in the same branch; lineage real, re-execution requires those caches | TSMOM branch audit | VERIFIED [cell, cached inputs] | KEEP with this disclosure |
+
+## Q. Rescued by re-execution (2026-08-20, this consolidation pass)
+
+| ID | Claim | Evidence | Status | Disposition |
+|---|---|---|---|---|
+| B7r | Forcing −100% terminal returns on the 37 triaged wipeouts moves the bias −0.89 → −0.60 pp/yr | rescue_survivorship_sensitivity.py executed on sgp_panel_monthly.csv (baseline replicated exactly: 8.85 / 7.96 / −0.89); output logged | VERIFIED [recomputed] | KEEP as sensitivity (upgrades B7 from UNSUPPORTED) |
+| B6a | Executed magnitude bracket: −0.89 (as-recorded prices) to −0.40 (37 wipeouts + 25 ambiguous forced −100%); all-53-residual variant −0.44. Sign robust under every assumption | same script, three scenarios | VERIFIED [recomputed] | KEEP; replaces the unverifiable [−1.12, −0.07] bracket |
+| C7r | finish.py re-executed on sg_broad_quarterly.csv reproduces the FINAL_STATUS memo exactly: sector-neutral L/S +0.526 t1.93 → +0.169 t0.69 (long +0.360 t1.68 → +0.191 t0.96); Brinson-Fachler +0.51/+1.28/+2.98, sum +4.78 vs actual +5.12; 12% vol target +0.663 t3.08 (post-hoc); cost ladder t 2.66@0bp → 1.92@40 → 1.17@80, break-even 86 bp one-way at 25% monthly turnover | rescue_finish_output.txt | VERIFIED [recomputed] | KEEP (upgrades C7 from UNSUPPORTED). Cost-base caveat from the branch audit stands: the L/S sensitivity charges the long book's turnover on both legs |
+| D14r | cs_spreads_monthly.csv verified: 143,978 name-months, median half-spread 23.5 bp (p25 9.3 / p75 43.6 / p95 135.8), 100% populated | recomputed directly from the staged file | VERIFIED [recomputed] | KEEP (upgrades the 23.5bp element of D14/W4) |
