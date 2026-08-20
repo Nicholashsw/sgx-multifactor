@@ -1,27 +1,11 @@
-# Results — survivorship-corrected factor study
+# Results
 
-Aggregated outputs from the point-in-time (PIT), survivorship-bias-corrected pipeline.
-**No raw vendor panels are included** (those are Bloomberg-licensed and kept local).
+## results/verified/ (current)
 
-## Point-in-time survivorship method
-The original study used the *current* index constituents, which biases factor returns
-upward (delisted/removed names are dropped). The corrected pipeline rebuilds the
-universe as-of each date:
+Aggregated result files backing VERIFICATION_LEDGER.md, all from executed runs on real vendor data. Highlights: `canonical_table1/2/3.csv` (broad-universe ICs, survivorship reversal, size tiers), `waterfall_definitive.csv` (gross 1.661 t=5.13 to 0.282 t=0.85), `survivorship_summary_final.csv` (the canonical quarterly-PIT blue-chip run: Sharpe 1.002 naive to 0.447 corrected), `ic_results_71_final.csv` (71-name PIT ICs, composite 0.0697 t=5.90), `spec_results_N65.csv` (the 65-test grid; zero survive BHY), `deciles_corrected.csv` (monotone payoff after the forward-return bug fix), `compustat_backtest_quarterly.csv` (independent reproduction +0.36 t=2.26), Markit borrow scenarios, jump/GARCH/Markov overlay tests, and the re-executed sensitivity outputs (`rescue_*`).
 
-1. `src/PullHistoricalMembership.bas` / `src/PublicationPulls.bas` — pull as-of-date
-   index membership (`INDX_MWEIGHT_HIST` + `END_DATE_OVERRIDE`), producing a
-   MasterUniverse that **includes names that later left or were delisted**.
-2. `src/PIT_Survivorship_v2.bas` — survivorship-free price/fundamental puller
-   (auto-retry + diagnostics; supersedes the v1 macro).
-3. `notebooks/backtest_survivorship.ipynb` — re-runs factor IC and the long-short
-   backtest on the corrected universe.
+No raw vendor panels ship; these are strategy-level series and test statistics.
 
-## Files
-| File | Content |
-|---|---|
-| `survivorship_summary.csv` | summary stats, corrected universe |
-| `survivorship_comparison.csv` | corrected vs naive (survivorship-biased) side by side |
-| `ic_results.csv`, `ic_results_real.csv` | factor information coefficients (naive / corrected) |
-| `backtest_results.csv`, `backtest_real.csv` | long-short backtest (naive / corrected) |
+## Top-level CSVs (superseded diagnostics, kept for the record)
 
-Raw inputs (`panel_*`, `membership_pit.csv`) are Bloomberg-derived and are **not** redistributed.
+`ic_results.csv`, `ic_results_real.csv`, `backtest_results.csv`, `backtest_real.csv` are the 30-name survivor-universe diagnostic re-runs on the real Bloomberg workbook: real data, executed, but a survivorship-biased universe that carries no inferential weight (ledger C12). `survivorship_summary.csv` and `survivorship_comparison.csv` are the FIRST 71-name survivorship pass (Sharpe 0.975 to 0.607), superseded by `verified/survivorship_summary_final.csv` (1.002 to 0.447) because its book-to-market factor was backfilled from a contaminated file and its membership was yearly rather than quarterly. See EXCLUSIONS.md. Do not quote the superseded pair.
