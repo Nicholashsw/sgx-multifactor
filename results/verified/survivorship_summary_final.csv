@@ -1,0 +1,7 @@
+Run,Ann_Return_%,Ann_Vol_%,Sharpe,Sortino,Max_DD_%,Calmar,N
+A  Survivor-only  [Long],17.37,16.32,1.002,1.54,-44.18,0.393,240
+B  PIT yearly  [Long],7.82,19.33,0.435,0.506,-67.13,0.116,240
+C  PIT quarterly  [Long],7.91,18.65,0.447,0.543,-62.65,0.126,240
+A  Survivor-only  [L/S],10.35,17.75,0.586,0.749,-32.45,0.319,240
+B  PIT yearly  [L/S],2.14,17.32,0.147,0.198,-65.26,0.033,240
+C  PIT quarterly  [L/S],5.03,16.78,0.313,0.406,-45.48,0.111,240

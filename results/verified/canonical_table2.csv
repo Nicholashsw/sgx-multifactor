@@ -1,0 +1,5 @@
+Universe,Leg,Ann%,Sharpe,MaxDD%,Alpha%mo,Alpha_t,Beta
+Survivor-only,Long,14.9,0.59,-63.2,0.87,2.25,1.12
+Survivor-only,LS,-2.3,0.11,-92.5,0.46,1.01,-0.26
+Point-in-time,Long,11.6,0.55,-69.0,0.54,2.08,1.03
+Point-in-time,LS,8.0,0.46,-87.6,1.32,3.82,-0.44
