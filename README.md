@@ -52,11 +52,15 @@ The project caught and fixed, in the open: a silent synthetic-data fallback (all
 
 ```bash
 pip install -r requirements.txt
-python code/make_synthetic.py        # labelled synthetic replicas (no entitlements needed)
-python code/pipeline.py              # builds the panel; fails loudly if real exports are absent
-python code/factor_model.py
-python code/backtest.py
+cd code
+python make_synthetic.py                       # labelled synthetic replicas (no entitlements needed)
+cp synthetic_panel_stock.csv panel_stock.csv   # feed the replicas to the model under the expected names
+cp synthetic_macro_monthly.csv macro_monthly.csv
+python factor_model.py
+python backtest.py
 ```
+
+With real vendor exports in place, run `python pipeline.py` first instead of the copy step; it fails loudly if any export is missing (there is no synthetic fallback in the pipeline). Verified end to end on the synthetic route at commit time.
 
 Real-data reproduction requires NTU-equivalent entitlements (Bloomberg, WRDS Compustat/IBES/Markit/SDC, CEIC, JKP); routes are in DATA.md.
 
