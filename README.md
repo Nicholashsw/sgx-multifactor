@@ -32,11 +32,12 @@ The answer: the Singapore market contains real, correctly signed, replicable cro
 | Path | Content |
 |---|---|
 | [REPORT_FINAL.md](REPORT_FINAL.md) | The consolidated research report; every number provenance-tagged |
+| [paper/SGX_Multifactor_Research_Report.pdf](paper/SGX_Multifactor_Research_Report.pdf) | The same report rendered to PDF (10 pages) for reading offline; REPORT_FINAL.md remains the document of record |
 | [VERIFICATION_LEDGER.md](VERIFICATION_LEDGER.md) | Claim-by-claim trace to executed evidence (VERIFIED / UNSUPPORTED / CONTAMINATED) |
 | [EXCLUSIONS.md](EXCLUSIONS.md) | Everything cut, and why, including the fabricated-data quarantine |
 | [MODULE_MAP.md](MODULE_MAP.md), `modules/` | How ten research branches fold into one core narrative plus seven modules |
 | [DATA.md](DATA.md) | Sources, licensing, reproduction routes; no licensed data ships |
-| `figures/` | 43 figures at 200 dpi, all from verified real-data runs |
+| `figures/` | 43 figures at 200 dpi, all from verified real-data runs — indexed in [figures/README.md](figures/README.md) |
 | `code/` | Consolidated clean code: pipeline, factor model, backtest, PIT engines, canonical reruns, sensitivity scripts |
 | `src/` | VBA data layer (Bloomberg and CapIQ pull machinery, point-in-time membership) |
 | `results/verified/` | Aggregated result files backing the ledger |

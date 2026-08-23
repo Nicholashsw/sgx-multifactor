@@ -11,7 +11,7 @@ What was cut from the final body of work, and why. Ledger IDs refer to VERIFICAT
 | SGX_FYP_Report.docx §VII.C walk-forward OOS Sharpe 1.364 / full-sample 1.432 | irreconcilable with the fixed pipeline (Sharpe ~0.52); synthetic-era remnant left in a real-data paper | M3 |
 | The first 71-name survivorship run's B/M factor (survivor PX_TO_BOOK backfilled from a resident panel_stock.csv that is demonstrably fabricated in the project blobs) and therefore the run's headline pair Sharpe 0.975→0.607, L/S 0.635→0.249 | backtest_survivorship.ipynb CELL 6; superseded by the BVPS + quarterly-PIT canonical run | O1 |
 
-Quarantine note: the fabricated CSV family still sits in the claude.ai project mount ("STI SGX2" project) under the same filenames as clean re-runs in the working folder. The clean pipelines also write these filenames. Any future consumer must check provenance by content, not name. Deleting the blobs requires project-owner action (read-only mount from here).
+Quarantine note: the fabricated CSV family still sits in the original research workspace (not in this repository) under the same filenames as clean re-runs in the working folder. The clean pipelines also write these filenames. Any future consumer must check provenance by content, not name. Deleting the blobs requires project-owner action (read-only mount from here).
 
 ## 2. Unsupported (prose only, no executed evidence in the folders)
 
