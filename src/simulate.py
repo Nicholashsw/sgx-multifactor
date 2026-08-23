@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -178,9 +179,10 @@ fig.text(0.5, 0.005,
          f"|   Heston: κ={kappa}, θ={theta}, ξ={xi}, ρ={rho}",
          ha="center", fontsize=8, color="#666", style="italic")
 
-plt.savefig("/home/claude/sim/simulations.png", dpi=140, bbox_inches="tight", facecolor="white")
-print("Saved: /home/claude/sim/simulations.png")
+os.makedirs("sim", exist_ok=True)
+plt.savefig("sim/simulations.png", dpi=140, bbox_inches="tight", facecolor="white")
+print("Saved: sim/simulations.png")
 
 # Save stats CSV too
-stats.to_csv("/home/claude/sim/diagnostics.csv", index=False)
-print("Saved: /home/claude/sim/diagnostics.csv")
+stats.to_csv("sim/diagnostics.csv", index=False)
+print("Saved: sim/diagnostics.csv")

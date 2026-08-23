@@ -13,3 +13,4 @@ data/raw/
 fred_data/
 outputs/
 *.parquet
+sim/
