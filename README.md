@@ -42,7 +42,7 @@ The answer: the Singapore market contains real, correctly signed, replicable cro
 | `src/` | VBA data layer (Bloomberg and CapIQ pull machinery, point-in-time membership) |
 | `results/verified/` | Aggregated result files backing the ledger |
 | `data/synthetic/` | Labelled synthetic replicas (SYN01–SYN30, seeded) so the pipeline runs for cloners |
-| `notebooks/` | Survivorship backtests, including the canonical quarterly-PIT run |
+| `notebooks/` | Survivorship backtests, including the canonical quarterly-PIT run. **Source only — these ship without stored cell outputs**, because executing them requires licensed Bloomberg/Compustat panels and saved outputs would embed vendor rows. The executed evidence for every survivorship number is in `results/verified/` (`survivorship_summary_final.csv`) and traced in VERIFICATION_LEDGER.md (B1, B9, B11). `backtest_survivorship.ipynb` is the superseded first pass (see EXCLUSIONS.md §1); `backtest_survivorship_final.ipynb` is the canonical quarterly-PIT spec. |
 | `reports/`, `figs/`, `results/*.csv` (top level) | Historical drafts and the superseded diagnostic-track outputs, kept for the record; superseded numbers are catalogued in EXCLUSIONS.md |
 
 ## The corrections are part of the contribution
