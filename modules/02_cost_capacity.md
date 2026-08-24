@@ -1,0 +1,5 @@
+# Module 2. Cost and capacity waterfall
+
+Finding: the broad-universe composite is statistically real and economically untradeable. Gross 1.661%/mo (t=5.13) falls to 0.282%/mo (t=0.85) after per-name Corwin-Schultz spreads (0.906%/mo, the dominant leak; median half-spread 23.5 bp over 143,978 name-months), the Markit availability screen, and fees. The short side is availability-constrained, not fee-constrained: the bottom two cap quintiles hold effectively zero lendable inventory, and requiring real inventory mechanically forces the short book into large caps, where it survives to S$500m AUM (implementable L/S +0.764%/mo t=2.23 at S$50m). On the price-signal book, long-only (+0.713%/mo, t=4.19, Sharpe 0.85) dominates the borrow-feasible long-short. STI-core capacity is ~S$50M, feasibility-bound rather than cost-bound.
+
+Evidence: REPORT_FINAL.md section 6; ledger rows D1-D14r. Figures: cost_markit_*, cost_capacity_sti_core, cost_net_of_spread, cost_decay. Results: results/verified/waterfall_definitive.csv, borrow_markit.csv, ls_markit.csv, borrow_waterfall.csv, capacity_analysis.csv.

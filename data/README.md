@@ -1,12 +1,5 @@
-# Data — LICENSED, not shipped
+# Data. Licensed, not shipped
 
-The factor panel is built from **licensed** vendor data and is therefore **not committed**:
+The factor panels are built from licensed vendor data (Bloomberg, Compustat/WRDS, IBES, Markit, SDC, CapIQ, CEIC, JKP) and are not committed. See DATA.md at the repo root for the full source list, fields, windows and reproduction routes.
 
-| Source | Fields / tickers | How to obtain |
-|---|---|---|
-| **Bloomberg** (`Module1_SGX_Bloomberg.bas`) | SGX equity prices, market cap, volume, fundamentals via BDH/BDP | Bloomberg Terminal / BQL |
-| **Capital IQ** (`Module_CapIQ_SGX.bas`) | Point-in-time fundamentals, factor inputs | S&P Capital IQ |
-
-To run without a vendor subscription, `src/simulate.py` generates a **synthetic panel** matching
-the schema (same columns/factor structure) so the full pipeline is reproducible end-to-end.
-No raw vendor export (`.xlsm`) is included in this repository.
+To run without entitlements: `python code/make_synthetic.py` writes labelled synthetic replicas (`data/synthetic/synthetic_panel_stock.csv`, `synthetic_macro_monthly.csv`; tickers SYN01 to SYN30, seeded generator). No number computed from them is a research result. Note: `src/simulate.py` is a GBM teaching simulation, not the synthetic-panel generator.

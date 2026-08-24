@@ -1,0 +1,9 @@
+stage,alpha_pct_mo,NW_t
+"0. Raw, contaminated benchmark (as published)",0.09682148710808466,0.3136408360831277
+1. Corrected benchmark (investable cohort),0.491846743456865,1.7540907717681908
+2. + 4-month reporting embargo (already in),0.491846743456865,1.7540907717681908
+3. + flat 10bp one-way cost,0.4683173316921594,1.6700012520845948
+4. + Corwin-Schultz half-spread per name,0.4073632835850096,1.4482745732271205
+5. + 25bp market-impact proxy,0.34853975417324495,1.2385199370076492
+6. + sector cap (max 3/sector),0.4114611342377692,1.5427879897551502
+7. + drop illiquid tertile (tradability screen),0.18630636067481224,1.1172071406521555

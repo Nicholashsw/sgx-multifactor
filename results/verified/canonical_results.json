@@ -1,0 +1,154 @@
+{
+ "universe": {
+  "unfiltered_avg_per_month": 352.94613583138175,
+  "PIT_avg_per_month": 199.43793911007026,
+  "PIT_min": 37,
+  "PIT_max": 292,
+  "months": 427,
+  "companies": 786
+ },
+ "table1": [
+  {
+   "Factor": "Z_DIV_YIELD",
+   "Mean_IC": 0.0768,
+   "t": 12.32,
+   "n": 234
+  },
+  {
+   "Factor": "Z_ROE",
+   "Mean_IC": 0.0674,
+   "t": 10.28,
+   "n": 270
+  },
+  {
+   "Factor": "Z_EY",
+   "Mean_IC": 0.0624,
+   "t": 9.96,
+   "n": 277
+  },
+  {
+   "Factor": "Z_MOM_12_1",
+   "Mean_IC": 0.0595,
+   "t": 6.93,
+   "n": 426
+  },
+  {
+   "Factor": "Composite",
+   "Mean_IC": 0.0485,
+   "t": 5.93,
+   "n": 367
+  },
+  {
+   "Factor": "Z_MOM_6_1",
+   "Mean_IC": 0.05,
+   "t": 5.89,
+   "n": 426
+  },
+  {
+   "Factor": "Z_BM_Ratio",
+   "Mean_IC": 0.0041,
+   "t": 0.63,
+   "n": 306
+  },
+  {
+   "Factor": "Z_Amihud",
+   "Mean_IC": -0.0052,
+   "t": -0.88,
+   "n": 360
+  },
+  {
+   "Factor": "Z_LogMktCap",
+   "Mean_IC": -0.0495,
+   "t": -6.56,
+   "n": 426
+  }
+ ],
+ "table2": [
+  {
+   "Universe": "Survivor-only",
+   "Leg": "Long",
+   "Ann%": 14.9,
+   "Sharpe": 0.59,
+   "MaxDD%": -63.2,
+   "Alpha%mo": 0.87,
+   "Alpha_t": 2.25,
+   "Beta": 1.12
+  },
+  {
+   "Universe": "Survivor-only",
+   "Leg": "LS",
+   "Ann%": -2.3,
+   "Sharpe": 0.11,
+   "MaxDD%": -92.5,
+   "Alpha%mo": 0.46,
+   "Alpha_t": 1.01,
+   "Beta": -0.26
+  },
+  {
+   "Universe": "Point-in-time",
+   "Leg": "Long",
+   "Ann%": 11.6,
+   "Sharpe": 0.55,
+   "MaxDD%": -69.0,
+   "Alpha%mo": 0.54,
+   "Alpha_t": 2.08,
+   "Beta": 1.03
+  },
+  {
+   "Universe": "Point-in-time",
+   "Leg": "LS",
+   "Ann%": 8.0,
+   "Sharpe": 0.46,
+   "MaxDD%": -87.6,
+   "Alpha%mo": 1.32,
+   "Alpha_t": 3.82,
+   "Beta": -0.44
+  }
+ ],
+ "table3": [
+  {
+   "Tier": "Large",
+   "AvgNames": 30,
+   "IC": 0.0144,
+   "IC_t": 1.06,
+   "LS_Ann%": -3.7,
+   "LS_Sharpe": -0.01,
+   "Alpha%mo": 0.25,
+   "Alpha_t": 0.81,
+   "Beta": -0.4
+  },
+  {
+   "Tier": "Mid",
+   "AvgNames": 69,
+   "IC": 0.0372,
+   "IC_t": 4.1,
+   "LS_Ann%": 4.3,
+   "LS_Sharpe": 0.32,
+   "Alpha%mo": 0.78,
+   "Alpha_t": 2.99,
+   "Beta": -0.31
+  },
+  {
+   "Tier": "Small",
+   "AvgNames": 132,
+   "IC": 0.0806,
+   "IC_t": 8.87,
+   "LS_Ann%": 12.2,
+   "LS_Sharpe": 0.68,
+   "Alpha%mo": 1.38,
+   "Alpha_t": 4.13,
+   "Beta": -0.35
+  },
+  {
+   "Tier": "Small (liq-screen)",
+   "AvgNames": 90,
+   "IC": NaN,
+   "IC_t": NaN,
+   "LS_Ann%": 18.4,
+   "LS_Sharpe": 0.85,
+   "Alpha%mo": 1.92,
+   "Alpha_t": 5.12,
+   "Beta": -0.39
+  }
+ ]
+}

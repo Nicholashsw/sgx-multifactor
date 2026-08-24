@@ -1,0 +1,8 @@
+Design,Ann%,Sharpe,MaxDD%,Alpha%mo,t,Beta,N,Note
+Equal-weight  [L/S],0.3,0.14,-77.7,0.53,1.93,-0.38,366,maxwt 5.2%
+Value-weight (uncapped)  [L/S],-7.2,-0.17,-91.4,-0.08,-0.27,-0.33,366,maxwt 27.1%
+Capped value-weight (10%)  [L/S],-3.6,-0.03,-83.2,0.25,0.88,-0.4,366,maxwt 10.1%
+Capped value-weight (5%)  [L/S],0.2,0.13,-78.0,0.52,1.9,-0.38,366,maxwt 5.4%
+Equal-weight  [Long],11.0,0.58,-65.4,0.36,1.68,0.96,366,maxwt 5.2%
+Value-weight (uncapped)  [Long],5.6,0.35,-70.9,-0.02,-0.1,0.92,366,maxwt 27.1%
+Capped value-weight (10%)  [Long],8.9,0.5,-66.0,0.22,1.06,0.92,366,maxwt 10.1%
