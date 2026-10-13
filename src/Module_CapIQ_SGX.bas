@@ -2,17 +2,17 @@ Attribute VB_Name = "Module_CapIQ_SGX"
 Option Explicit
 
 ' =============================================================================
-' SGX MULTI-FACTOR FYP — Capital IQ Excel Add-In Automation
+' SGX MULTI-FACTOR FYP - Capital IQ Excel Add-In Automation
 ' NTU EEE Final Year Project
 '
 ' CAPITAL IQ EXCEL ADD-IN MECHANICS (read before editing)
 ' ─────────────────────────────────────────────────────────
-' 1. CIQ()      — point-in-time single value per company per metric.
+' 1. CIQ()      - point-in-time single value per company per metric.
 '                 Syntax: =CIQ(company_id, metric_id, currency)
 '                 Example: =CIQ("IQ21835","IQ_PE_EXCL","")
 '                 Returns: LTM or most recent value. Updates on refresh.
 '
-' 2. CIQSERIES()— historical time series for one company + one metric.
+' 2. CIQSERIES()- historical time series for one company + one metric.
 '                 Syntax: =CIQSERIES(id,metric,currency,period_type,start,end,fiscal_yr,transpose)
 '                 Example: =CIQSERIES("IQ21835","IQ_TOTAL_REV","SGD","Annual","FY-4","FY0","",FALSE)
 '                 Returns: multi-cell spill (dates + values). Use with care re: spill overlap.
@@ -21,7 +21,7 @@ Option Explicit
 '                The add-in registers a COM object: "CapIQ.Application" or similar.
 '                VBA trigger: Application.Run "CIQRefreshAll" or
 '                             Application.Run "Capital IQ.RefreshAll"
-'                After triggering, YOU MUST WAIT — CapIQ pulls data asynchronously.
+'                After triggering, YOU MUST WAIT - CapIQ pulls data asynchronously.
 '                Wait strategy: poll a known CIQ cell until its value changes from
 '                "#Loading..." or until a fixed wait period passes.
 '
@@ -31,7 +31,7 @@ Option Explicit
 '    - If a field returns "#Error" it is not in your entitlement.
 '    - Currency conversion to SGD works for most fields via the currency parameter.
 '    - Historical time series via CIQSERIES require the "Excel Plug-in" license tier.
-'    - Direct Python API access (PyCIQ) requires a SEPARATE API entitlement —
+'    - Direct Python API access (PyCIQ) requires a SEPARATE API entitlement -
 '      Excel add-in entitlement does NOT grant Python API access.
 '
 ' 5. AUTOMATION LIMITS:
@@ -41,9 +41,9 @@ Option Explicit
 '    - Batch refreshes of large universes (100+ stocks) may take 2-5 minutes.
 '
 ' PUBLIC ENTRY POINTS:
-'    Run_CapIQ_Refresh()  — refreshes CapIQ data, waits, exports all CSVs
-'    ExportAllCSV()       — exports sheets to CSV without refreshing
-'    WriteCapIQFormulas() — writes CIQ formulas for all tickers in Tickers sheet
+'    Run_CapIQ_Refresh()  - refreshes CapIQ data, waits, exports all CSVs
+'    ExportAllCSV()       - exports sheets to CSV without refreshing
+'    WriteCapIQFormulas() - writes CIQ formulas for all tickers in Tickers sheet
 '
 ' HOW TO RUN:
 '    Alt+F8 → Run_CapIQ_Refresh → Run
@@ -84,7 +84,7 @@ Public Sub Run_CapIQ_Refresh()
     Application.ScreenUpdating = False
     Application.DisplayAlerts = False
 
-    StatusMsg "CapIQ SGX — triggering data refresh..."
+    StatusMsg "CapIQ SGX - triggering data refresh..."
     WriteLog "Run_CapIQ_Refresh", "START", "Triggering CapIQ refresh"
 
     ' Step 1: Force Excel recalc first (ensures CIQ formulas are in cells)
@@ -162,7 +162,7 @@ Public Sub WriteCapIQFormulas()
         If bbgID = "" Then GoTo NextTicker
         If incl <> "Y" Then GoTo NextTicker
         If ciqID = "" Then
-            ' No CapIQ ID — write static values from Tickers sheet but skip formulas
+            ' No CapIQ ID - write static values from Tickers sheet but skip formulas
             wsS.Cells(outRow, 1).Value = bbgID
             wsS.Cells(outRow, 2).Value = "[NO CIQ ID]"
             wsS.Cells(outRow, 3).Value = name
@@ -291,7 +291,7 @@ Private Function CapIQIsLoaded() As Boolean
     Application.Run "CIQRefreshAll"
     If Err.Number = 0 Or Err.Number = 1004 Then
         ' 1004 = "Cannot run the macro" usually means the function EXISTS but had an error
-        ' That's fine — it confirms CapIQ is loaded
+        ' That's fine - it confirms CapIQ is loaded
         CapIQIsLoaded = True
         Err.Clear
     End If
@@ -305,7 +305,7 @@ End Function
 
 Private Sub TriggerCapIQRefresh()
     ' CapIQ registers these macro names depending on add-in version.
-    ' Try each in order. Non-fatal if they error — Excel recalc covers it.
+    ' Try each in order. Non-fatal if they error - Excel recalc covers it.
 
     On Error Resume Next
 
@@ -352,7 +352,7 @@ Private Function WaitForCapIQResolution(maxSec As Long, pollSec As Long) As Bool
     Set ws = Worksheets(SNAPSHOT_SHEET)
     On Error GoTo 0
     If ws Is Nothing Then
-        WaitForCapIQResolution = True  ' No snapshot sheet — nothing to wait for
+        WaitForCapIQResolution = True  ' No snapshot sheet - nothing to wait for
         Exit Function
     End If
 
@@ -453,7 +453,7 @@ Public Sub TestCapIQFields()
     ' Run this once to confirm which fields your subscription covers.
     ' Output goes to a new sheet called "CIQ_FieldTest".
 
-    Dim testID As String: testID = "IQ21835"   ' DBS Group — well-covered SGX name
+    Dim testID As String: testID = "IQ21835"   ' DBS Group - well-covered SGX name
 
     Dim fieldIDs As Variant, fieldNames As Variant
     fieldIDs = Array( _

@@ -2,7 +2,7 @@ Attribute VB_Name = "Module1_SGX_Bloomberg"
 Option Explicit
 
 ' =============================================================================
-' SGX MULTI-FACTOR FYP — Bloomberg Excel Add-In Data Collection
+' SGX MULTI-FACTOR FYP - Bloomberg Excel Add-In Data Collection
 ' NTU EEE Final Year Project
 '
 ' ARCHITECTURE DECISIONS (read before editing)
@@ -90,19 +90,19 @@ Public Sub Run_All_Bloomberg_SGX()
     Application.Calculation = xlCalculationManual
 
     ' ── Step 1: Ensure all sheets exist ──────────────────────────────────────
-    StatusMsg "Step 1/9 — Creating sheets..."
+    StatusMsg "Step 1/9 - Creating sheets..."
     SetupSheets
     ClearDataSheets
     WriteLog "SetupSheets", "OK", "All sheets created/cleared"
 
     ' ── Step 2: Pull raw index members via BDS ───────────────────────────────
-    StatusMsg "Step 2/9 — Pulling universe (BDS)..."
+    StatusMsg "Step 2/9 - Pulling universe (BDS)..."
     WriteUniverseRaw
     BBRefresh 12
     WriteLog "WriteUniverseRaw", "OK", "BDS formulas placed; refresh waited 12s"
 
     ' ── Step 3: Normalize tickers → Universe sheet ───────────────────────────
-    StatusMsg "Step 3/9 — Normalizing tickers..."
+    StatusMsg "Step 3/9 - Normalizing tickers..."
     BuildCleanUniverse
     Dim nTickers As Long
     nTickers = LastRow(Worksheets("Universe"), 1) - 1
@@ -110,39 +110,39 @@ Public Sub Run_All_Bloomberg_SGX()
 
     If nTickers = 0 Then
         MsgBox "No tickers found after normalization." & vbCrLf & _
-               "Check RawUniverse sheet — BDS may not have refreshed yet." & vbCrLf & _
+               "Check RawUniverse sheet - BDS may not have refreshed yet." & vbCrLf & _
                "Wait 30 seconds and re-run.", vbExclamation
         GoTo CleanUp
     End If
 
     ' ── Step 4: Resolve risk-free ticker ─────────────────────────────────────
-    StatusMsg "Step 4/9 — Resolving risk-free ticker..."
+    StatusMsg "Step 4/9 - Resolving risk-free ticker..."
     ResolveRiskFreeTicker
     WriteLog "ResolveRiskFreeTicker", IIf(m_rfTicker = "", "WARN", "OK"), _
              IIf(m_rfTicker = "", "No candidate resolved", "Using: " & m_rfTicker)
 
-    ' ── Step 5: Classification (BDP — sector/industry) ───────────────────────
-    StatusMsg "Step 5/9 — Writing classification formulas (BDP)..."
+    ' ── Step 5: Classification (BDP - sector/industry) ───────────────────────
+    StatusMsg "Step 5/9 - Writing classification formulas (BDP)..."
     WriteClassificationFormulas
     WriteLog "Classification", "OK", nTickers & " BDP rows written"
 
     ' ── Step 6: Price + market data (BDH monthly) ────────────────────────────
-    StatusMsg "Step 6/9 — Writing price data formulas (BDH monthly)..."
+    StatusMsg "Step 6/9 - Writing price data formulas (BDH monthly)..."
     WritePriceDataFormulas
     WriteLog "PriceData", "OK", "6 metrics * " & nTickers & " tickers"
 
     ' ── Step 7: Fundamentals (BDH quarterly) ─────────────────────────────────
-    StatusMsg "Step 7/9 — Writing fundamentals formulas (BDH quarterly)..."
+    StatusMsg "Step 7/9 - Writing fundamentals formulas (BDH quarterly)..."
     WriteFundamentalsFormulas
     WriteLog "Fundamentals", "OK", "3 metrics * " & nTickers & " tickers"
 
     ' ── Step 8: Benchmark ────────────────────────────────────────────────────
-    StatusMsg "Step 8/9 — Writing benchmark formulas..."
+    StatusMsg "Step 8/9 - Writing benchmark formulas..."
     WriteBenchmarkFormulas
     WriteLog "Benchmark", "OK", "STI + SGMCNL"
 
     ' ── Step 9: Risk-free series ──────────────────────────────────────────────
-    StatusMsg "Step 9/9 — Writing risk-free series..."
+    StatusMsg "Step 9/9 - Writing risk-free series..."
     WriteRiskFreeFormulas
     WriteLog "RiskFree", IIf(m_rfTicker = "", "WARN", "OK"), m_rfTicker
 
@@ -161,7 +161,7 @@ CleanUp:
     Dim elapsed As Long: elapsed = CLng(Timer - t0)
     MsgBox "Run complete in " & elapsed & "s." & vbCrLf & vbCrLf & _
            "Tickers found:  " & nTickers & vbCrLf & _
-           "Risk-free used: " & IIf(m_rfTicker = "", "NOT RESOLVED — check RiskFree sheet", m_rfTicker) & vbCrLf & vbCrLf & _
+           "Risk-free used: " & IIf(m_rfTicker = "", "NOT RESOLVED - check RiskFree sheet", m_rfTicker) & vbCrLf & vbCrLf & _
            "Next steps:" & vbCrLf & _
            "  1. Wait for Bloomberg to finish pulling data (watch status bar)." & vbCrLf & _
            "  2. Check Log sheet for any WARN entries." & vbCrLf & _
@@ -248,7 +248,7 @@ End Sub
 
 Private Sub WriteUniverseRaw()
     ' BDS("STI Index","INDX_MEMBERS") returns a vertical list of short tickers
-    ' like "DBS SP", "OCBC SP", etc. — no " Equity" suffix.
+    ' like "DBS SP", "OCBC SP", etc. - no " Equity" suffix.
     ' We place each index in a separate column so their spill ranges never clash.
     '
     ' CRITICAL: BDS spills DOWNWARD from the formula cell. Column A and column C
@@ -387,12 +387,12 @@ Private Sub ResolveRiskFreeTicker()
     ' Uses the first ticker that returns a non-error, non-empty numeric value.
     '
     ' Candidate list (ordered by preference):
-    '   SGS3M Index  — MAS 3-month Singapore Government Securities yield
-    '   SIBOR3M Index— 3-month SGD SIBOR (legacy, may be discontinued post-2024)
-    '   SOR3M Index  — 3-month SGD Swap Offer Rate
-    '   MASB3M Index — MAS Bill 3-month
-    '   SGDOIS Index — SGD overnight indexed swap (alternative short rate)
-    '   MASG3M Index — alternative MAS 3-month field name
+    '   SGS3M Index  - MAS 3-month Singapore Government Securities yield
+    '   SIBOR3M Index- 3-month SGD SIBOR (legacy, may be discontinued post-2024)
+    '   SOR3M Index  - 3-month SGD Swap Offer Rate
+    '   MASB3M Index - MAS Bill 3-month
+    '   SGDOIS Index - SGD overnight indexed swap (alternative short rate)
+    '   MASG3M Index - alternative MAS 3-month field name
 
     Dim ws As Worksheet
     Set ws = Worksheets("RiskFree")
@@ -452,7 +452,7 @@ End Sub
 
 
 ' =============================================================================
-' STEP 5: Classification (BDP — one formula per cell, no spill risk)
+' STEP 5: Classification (BDP - one formula per cell, no spill risk)
 ' =============================================================================
 
 Private Sub WriteClassificationFormulas()
@@ -474,7 +474,7 @@ Private Sub WriteClassificationFormulas()
         wsC.Cells(i, 1).Value = t
         wsC.Cells(i, 2).Value = SafeText(wsU.Cells(i, 2))
 
-        ' BDP returns a single cell value — no spill, completely safe
+        ' BDP returns a single cell value - no spill, completely safe
         wsC.Cells(i, 3).Formula = "=BDP(""" & t & """,""GICS_SECTOR_NAME"")"
         wsC.Cells(i, 4).Formula = "=BDP(""" & t & """,""GICS_INDUSTRY_NAME"")"
 
@@ -569,7 +569,7 @@ Private Sub WritePriceDataFormulas()
             wsP.Cells(3, tickerCol).Font.Color = RGB(89, 89, 89)
             wsP.Cells(3, tickerCol + 1).Font.Color = RGB(89, 89, 89)
 
-            ' Row 4: BDH formula — spills downward safely
+            ' Row 4: BDH formula - spills downward safely
             ' Dir=V  → dates in LEFT column, values in RIGHT column (2-col spill)
             ' Per=CM → calendar month end
             ' Fill=P → carry forward last known value for missing months
@@ -643,7 +643,7 @@ End Sub
 
 
 ' =============================================================================
-' STEP 8: Benchmark (BDH monthly — two series with explicit spill gap)
+' STEP 8: Benchmark (BDH monthly - two series with explicit spill gap)
 ' =============================================================================
 
 Private Sub WriteBenchmarkFormulas()
@@ -660,20 +660,20 @@ Private Sub WriteBenchmarkFormulas()
     ' Row 1: labels
     ws.Range("A1").Value = "Date_STI"
     ws.Range("B1").Value = "STI_PX_LAST"
-    ws.Range("C1").Value = "← SPILL GUARD — DO NOT USE"
+    ws.Range("C1").Value = "← SPILL GUARD - DO NOT USE"
     ws.Range("D1").Value = "Date_SGMCNL"
     ws.Range("E1").Value = "SGMCNL_PX_LAST"
     ws.Range("A1:E1").Font.Bold = True
     ws.Range("C1").Font.Color = RGB(192, 0, 0)
     ws.Range("C1").Font.Italic = True
 
-    ' STI — A2 is formula anchor, spills to A:B
+    ' STI - A2 is formula anchor, spills to A:B
     ws.Range("A2").Formula = _
         "=BDH(""" & INDEX_STI & """,""PX_LAST""," & _
         """" & START_DATE & """,""" & END_DATE & """," & _
         """Dir=V"",""Per=CM"",""Fill=P"",""Dts=S"")"
 
-    ' SGMCNL — D2 is formula anchor, spills to D:E
+    ' SGMCNL - D2 is formula anchor, spills to D:E
     ' Column C is the gap. BDH for STI ends at col B. Col C empty. Safe.
     ws.Range("D2").Formula = _
         "=BDH(""" & INDEX_SGMC & """,""PX_LAST""," & _
@@ -791,9 +791,9 @@ End Sub
 Private Sub BBRefresh(ByVal waitSec As Long)
     ' Triggers Bloomberg refresh then waits.
     ' Bloomberg exposes these entry points depending on Add-In version:
-    '   "RefreshEntireWorkbook"   — refreshes all BBG formulas in workbook
-    '   "RefreshCurrentWorksheet" — refreshes active sheet only
-    '   "BloombergUI.RefreshWorkbook" — older API name
+    '   "RefreshEntireWorkbook"   - refreshes all BBG formulas in workbook
+    '   "RefreshCurrentWorksheet" - refreshes active sheet only
+    '   "BloombergUI.RefreshWorkbook" - older API name
     ' We try each in sequence; errors are non-fatal.
 
     On Error Resume Next
