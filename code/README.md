@@ -31,5 +31,6 @@ These headline numbers came from research notebooks that do not ship. Their resu
 - `pit_build.py`, `pit_engine.py`: functions for building the point-in-time STI panel from the Bloomberg workbook, and for running portfolios that take eligibility at formation but returns from the unfiltered panel (the double-filter fix, ledger B13). Neither has an entry point of its own.
 - `pit_panel_build.py`: builds the monthly point-in-time price panel and daily-high-based 52-week highs used in the price-signal work (REPORT_FINAL section 9.2).
 - `attribution.py`: attribution and leakage framework on the 30-name Bloomberg STI panel. The panel holds current members only, so spreads, borrow and delisting effects cannot be computed on it.
+- `make_figures.py`: redraws the cost waterfall, the 65-test grid and the Table I chart from `results/verified/`. Needs no licensed data.
 - `make_synthetic.py`: writes the labelled synthetic replicas used by the demo route.
 - `FactorDataPull.bas`: Bloomberg VBA pulls for the 30-name workbook.
