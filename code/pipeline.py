@@ -28,14 +28,11 @@ Design rules, non-negotiable:
 
 import datetime
 import sys
-import warnings
 from functools import reduce
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
-
-warnings.filterwarnings("ignore")
 
 DATA_DIR = Path(".")
 
@@ -48,22 +45,36 @@ def fail(msg: str) -> None:
     sys.exit(f"PIPELINE ERROR: {msg}")
 
 
+def is_date_cell(v) -> bool:
+    return isinstance(v, (datetime.datetime, datetime.date, pd.Timestamp))
+
+
+def date_block_start(first_col: pd.Series, name: str) -> int:
+    """Position of the first date row in an export whose header rows sit above
+    the data. Every row from there to the end must be a date; a non-date row
+    inside the block means the export is malformed, so the run stops."""
+    flags = first_col.map(is_date_cell).to_numpy()
+    if not flags.any():
+        fail(f"{name}: no date rows found")
+    start = int(flags.argmax())
+    bad = np.flatnonzero(~flags[start:])
+    if len(bad):
+        row = start + int(bad[0])
+        fail(f"{name}: {len(bad)} non-date row(s) inside the data block, "
+             f"first at row {row}: {first_col.iloc[row]!r}")
+    return start
+
+
 # Bloomberg daily market files
 
 def parse_bbg_daily(path: Path, col: str) -> pd.DataFrame:
-    df = pd.read_excel(path)
-    rows = []
-    for _, row in df.iterrows():
-        try:
-            d = pd.to_datetime(row.iloc[0])
-            v = pd.to_numeric(row.iloc[1], errors="coerce")
-            rows.append({"Date": d, col: v})
-        except Exception:
-            pass
-    if not rows:
-        fail(f"{path.name} parsed to zero rows")
-    out = pd.DataFrame(rows).dropna(subset=["Date"])
-    out["Date"] = pd.to_datetime(out["Date"])
+    """Bloomberg daily export: a few header rows (Security, Start Date, ...)
+    above a Date | Value block."""
+    df = pd.read_excel(path, header=None)
+    start = date_block_start(df.iloc[:, 0], path.name)
+    data = df.iloc[start:, :2]
+    out = pd.DataFrame({"Date": pd.to_datetime(data.iloc[:, 0]),
+                        col: pd.to_numeric(data.iloc[:, 1], errors="coerce")})
     return out.set_index("Date").sort_index()
 
 
@@ -105,20 +116,13 @@ def parse_ceic(path: Path):
     if not path.exists():
         fail(f"required CEIC file missing: {path.name}")
     df = pd.read_excel(path, sheet_name=0, header=None)
-    ds = None
-    for i in range(len(df)):
-        try:
-            pd.to_datetime(df.iloc[i, 0])
-            ds = i
-            break
-        except Exception:
-            pass
-    if ds is None:
-        fail(f"no date rows found in {path.name}")
+    # CEIC exports put a series-metadata block (Region, Frequency, Unit, ...)
+    # above the dated observations.
+    ds = date_block_start(df.iloc[:, 0], path.name)
     data = df.iloc[ds:].copy()
     data.columns = ["Date"] + list(range(1, len(data.columns)))
-    data["Date"] = pd.to_datetime(data["Date"], errors="coerce")
-    data = data.dropna(subset=["Date"]).set_index("Date").sort_index()
+    data["Date"] = pd.to_datetime(data["Date"])
+    data = data.set_index("Date").sort_index()
     for c in data.columns:
         data[c] = pd.to_numeric(data[c], errors="coerce")
     return data
@@ -145,7 +149,7 @@ def build_macro() -> pd.DataFrame:
         "US_CoreCPI_YoY", "US_CPI_YoY",
     ][:len(gl.columns)]
 
-    macro = pd.concat([sg, sg2, gl], axis=1)
+    macro = pd.concat([sg, sg2, gl], axis=1, sort=True)
     macro["SG_YieldSpread"] = macro["SG_SGS_10Y"] - macro["SG_SGS_2Y"]
     macro["SG_PMI_Change"] = macro["SG_PMI"].diff()
     macro["CN_PMI_Change"] = macro["CN_PMI"].diff()
@@ -195,16 +199,23 @@ def load_bloomberg_stock_panel() -> pd.DataFrame:
                 v = ws.cell(row=r, column=val_col).value
                 if d is None:
                     break
-                try:
-                    d = (pd.Timestamp(d)
-                         if isinstance(d, (datetime.datetime, datetime.date))
-                         else pd.to_datetime(d))
-                    v = (np.nan if (isinstance(v, str) and "#" in v)
-                         else (float(v) if v is not None else np.nan))
-                    dates.append(d)
-                    vals.append(v)
-                except Exception:
-                    break
+                where = f"{ws.title}!R{r}C{date_col} ({ticker}, {metric_name})"
+                if is_date_cell(d):
+                    d = pd.Timestamp(d)
+                else:
+                    try:
+                        d = pd.to_datetime(d)
+                    except (ValueError, TypeError):
+                        fail(f"unreadable date {d!r} at {where}")
+                if v is None or (isinstance(v, str) and "#" in v):
+                    v = np.nan      # empty cell or Bloomberg error code (#N/A ...)
+                else:
+                    try:
+                        v = float(v)
+                    except (ValueError, TypeError):
+                        fail(f"non-numeric value {v!r} at {where}")
+                dates.append(d)
+                vals.append(v)
             if dates:
                 frames.append(pd.DataFrame(
                     {"Date": dates, metric_name: vals, "Ticker": ticker}))
