@@ -49,8 +49,8 @@ RISK_FREE_ANN = 0.01412    # MASB3M
 RF_M = RISK_FREE_ANN / 12
 NW_LAGS = 6
 
-Z_FACTORS = ["Z_MOM_12_1", "Z_VALUE_BM", "Z_VALUE_DY", "Z_SIZE_SMALL",
-             "Z_LIQ_AMIHUD"]
+Z_FACTORS = ["Z_MOM_12_1", "Z_VALUE_BM", "Z_VALUE_DY", "Z_QUALITY_ROE",
+             "Z_SIZE_SMALL", "Z_LIQ_AMIHUD"]
 
 
 def sharpe(r: pd.Series) -> float:

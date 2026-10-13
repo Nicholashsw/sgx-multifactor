@@ -48,11 +48,14 @@ FACTOR_SPECS = {
 }
 
 # Equal weights across available factors. Hand-tuned weights are a searched
-# space; equal weighting is the pre-registered null. QUALITY_ROE is left out:
-# it subtracted about 50 bps/month on the top-100 10-name book
-# (REPORT_FINAL.md section 7). Add it back only when testing that result.
-COMPOSITE_FACTORS = ["MOM_12_1", "VALUE_BM", "VALUE_DY", "SIZE_SMALL",
-                     "LIQ_AMIHUD"]
+# space; equal weighting is the null. Quality stays in the main composite, as
+# originally specified. Composite_ExQuality drops it as a robustness check:
+# dropping ROE lifted the top-100 10-name book from 0.468 to 0.97%/month
+# (REPORT_FINAL.md section 7), but that was found after seeing the results,
+# so it is reported as a check, not as the main strategy.
+COMPOSITE_FACTORS = ["MOM_12_1", "VALUE_BM", "VALUE_DY", "QUALITY_ROE",
+                     "SIZE_SMALL", "LIQ_AMIHUD"]
+EX_QUALITY_FACTORS = [f for f in COMPOSITE_FACTORS if f != "QUALITY_ROE"]
 
 
 def cs_zscore(s: pd.Series) -> pd.Series:
@@ -102,6 +105,8 @@ def compute_factors(panel: pd.DataFrame) -> pd.DataFrame:
     if not z_cols:
         raise SystemExit("FACTOR ERROR: no usable factors, composite undefined")
     p["Composite"] = p[z_cols].mean(axis=1)
+    ex_cols = [f"Z_{f}" for f in EX_QUALITY_FACTORS if f"Z_{f}" in p.columns]
+    p["Composite_ExQuality"] = p[ex_cols].mean(axis=1)
     return p
 
 
@@ -172,7 +177,7 @@ def main():
 
     print("\n=== Information Coefficients (h=1, NW 6 lags) ===")
     z_cols = [f"Z_{f}" for f in FACTOR_SPECS if f"Z_{f}" in panel.columns]
-    z_cols.append("Composite")
+    z_cols += ["Composite", "Composite_ExQuality"]
     ic_df = compute_ic(panel, z_cols)
     print(ic_df.to_string())
 
