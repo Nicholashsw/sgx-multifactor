@@ -1,4 +1,4 @@
-# Systematic Multi-Factor Trading Strategy on the SGX Market
+# Cost-Adjusted Multi-Factor Stock Selection on the Singapore Exchange
 
 **NTU FYP A1083. Research report.**
 Supervisor: Prof. Patricia Wong, School of EEE, Nanyang Technological University.
@@ -7,9 +7,13 @@ This report brings together the empirical work of the project across all researc
 
 ---
 
-## 1. Thesis
+## 1. Introduction and thesis
 
-The Singapore market contains real, correctly signed, replicable cross-sectional return structure, and the frictions of the market remove it before it becomes tradeable at institutional scale. The project's contribution is a measurement of where that boundary lies, together with two methodological findings that generalise beyond Singapore: survivorship bias on SGX runs in the opposite direction to the textbook prediction, and the reference literature's factor premia do not reproduce under honest multiple-testing discipline.
+Factor-based stock selection chooses shares by measurable characteristics rather than by forecasting the prospects of individual companies. Fama and French showed that returns vary with firm size and book-to-market [1], and Jegadeesh and Titman found that buying recent winners and selling recent losers earned significant returns [2]. Both studies used US data, so it is less certain whether these patterns hold in smaller markets. Even where a factor looks profitable in historical data, its returns may not be genuine or capturable. Hundreds of factors have been tested, so some appear significant by chance, which is why Harvey et al. proposed a stricter threshold of t > 3.0 [3]. Trading costs reduce factor profits, and high-turnover strategies rarely survive them [4]. Backtests that omit delisted firms, or their final returns, also misstate performance [5].
+
+Singapore is a timely setting for this question. The Monetary Authority of Singapore has reported few new high-quality listings and low trading volumes in the local market [6], and local factor evidence is limited. Hameed et al. found no significant overall momentum from 2011 to 2022 except among large, high-priced stocks [7]. The closest local precedent, Cen [8], tested a multi-factor strategy on 25 index stocks from 2012 to 2022 and reported returns before trading costs. It remains unclear how a combined factor strategy performs on a broad universe that retains delisted firms, once realistic costs are taken off. This project evaluates the performance and implementability of such a strategy on SGX: whether including delisted firms changes measured returns, and how much performance remains after bid-ask spreads and stock-borrowing costs.
+
+The short answer: the Singapore market contains real, correctly signed, replicable cross-sectional return structure, and the frictions of the market remove it before it becomes tradeable at institutional scale. The project's contribution is a measurement of where that boundary lies, together with two methodological findings that generalise beyond Singapore: survivorship bias on SGX runs in the opposite direction to the textbook prediction, and the reference literature's factor premia do not reproduce under honest multiple-testing discipline.
 
 ## 2. Data and universes
 
@@ -144,3 +148,21 @@ The blue-chip survivorship alpha regressions (the t=4.60 to 1.19 pair of earlier
 ## 14. Reproducibility
 
 The repository ships executable code, schema documentation, and labelled synthetic replicas so the pipeline runs end to end for cloners; no licensed vendor data ships. Every licensed input is documented in DATA.md with fields, windows and entitlement route. No file from the old synthetic pipeline is in this repository; the only synthetic data is the labelled replica set in `data/synthetic/`. Clean runs write files with the same names as the old fabricated CSVs, so any copy found elsewhere should be checked by content, not by filename.
+
+## References
+
+[1] E. F. Fama and K. R. French, "Common risk factors in the returns on stocks and bonds," *Journal of Financial Economics*, vol. 33, no. 1, pp. 3-56, Feb. 1993, doi: 10.1016/0304-405X(93)90023-5.
+
+[2] N. Jegadeesh and S. Titman, "Returns to buying winners and selling losers: Implications for stock market efficiency," *The Journal of Finance*, vol. 48, no. 1, pp. 65-91, Mar. 1993, doi: 10.1111/j.1540-6261.1993.tb04702.x.
+
+[3] C. R. Harvey, Y. Liu, and H. Zhu, "... and the cross-section of expected returns," *The Review of Financial Studies*, vol. 29, no. 1, pp. 5-68, Jan. 2016, doi: 10.1093/rfs/hhv059.
+
+[4] R. Novy-Marx and M. Velikov, "A taxonomy of anomalies and their trading costs," *The Review of Financial Studies*, vol. 29, no. 1, pp. 104-147, Jan. 2016, doi: 10.1093/rfs/hhv063.
+
+[5] T. Shumway, "The delisting bias in CRSP data," *The Journal of Finance*, vol. 52, no. 1, pp. 327-340, Mar. 1997, doi: 10.1111/j.1540-6261.1997.tb03818.x.
+
+[6] Monetary Authority of Singapore, "Annex: Equities Market Review Group's first set of measures to strengthen the competitiveness of Singapore's equities market." [Online]. Available: https://www.mas.gov.sg/-/media/mas/news/media-releases/2025/annex-a---first-set-of-measures-by-the-review-group.pdf
+
+[7] A. Hameed, Z. Ni, and C. A. Tan, "Momentum and individual investor trades: Evidence from Singapore," *Pacific-Basin Finance Journal*, vol. 82, Dec. 2023, Art. no. 102186, doi: 10.1016/j.pacfin.2023.102186.
+
+[8] Y. Cen, "Systematic multi-factor trading strategy based on SGX market," Final Year Project report, School of Electrical and Electronic Engineering, Nanyang Technological University, Singapore, 2023. [Online]. Available: https://hdl.handle.net/10356/167306
