@@ -38,7 +38,7 @@ The answer: the Singapore market has real, correctly signed, replicable cross-se
 | [MODULE_MAP.md](MODULE_MAP.md), `modules/` | How the research branches fit into one core result plus seven modules |
 | [DATA.md](DATA.md) | Sources, licensing and reproduction routes; no licensed data ships |
 | `figures/` | 43 figures at 200 dpi, all from real-data runs, indexed in [figures/README.md](figures/README.md) |
-| `code/` | Pipeline, factor model, backtest, point-in-time engines, canonical re-runs and sensitivity scripts |
+| `code/` | Pipeline, factor model, backtest, point-in-time engines, canonical re-runs and sensitivity scripts; [code/README.md](code/README.md) maps each headline result to the script or result file behind it |
 | `src/` | VBA data layer: Bloomberg and CapIQ pulls, point-in-time index membership |
 | `results/verified/` | Result files behind the ledger |
 | `data/synthetic/` | Labelled synthetic replicas (tickers SYN01 to SYN30, seeded) so the code runs without data entitlements |
