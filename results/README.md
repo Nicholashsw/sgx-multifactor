@@ -7,7 +7,3 @@ Aggregated result files backing VERIFICATION_LEDGER.md, all from executed runs o
 `verified/attribution/` holds the STI-core attribution and leakage tables behind REPORT_FINAL §7/§10 and ledger rows E4/E8/E9/E11, with its own README. Note that `verified/attribution_loo.csv` (broad Compustat, N=366, full composite +0.526 t=1.93) and `verified/attribution/attrib_factor_loo.csv` (top-100 10-name book, full composite +0.468 t=1.67) are **different runs on different universes** and are not expected to agree.
 
 No raw vendor panels ship; these are strategy-level series and test statistics.
-
-## Top-level CSVs (superseded diagnostics, kept for the record)
-
-`ic_results.csv`, `ic_results_real.csv`, `backtest_results.csv`, `backtest_real.csv` are the 30-name survivor-universe diagnostic re-runs on the real Bloomberg workbook: real data, executed, but a survivorship-biased universe that carries no inferential weight (ledger C12). `survivorship_summary.csv` and `survivorship_comparison.csv` are the FIRST 71-name survivorship pass (Sharpe 0.975 to 0.607), superseded by `verified/survivorship_summary_final.csv` (1.002 to 0.447) because its book-to-market factor was backfilled from a contaminated file and its membership was yearly rather than quarterly. See EXCLUSIONS.md. Do not quote the superseded pair.

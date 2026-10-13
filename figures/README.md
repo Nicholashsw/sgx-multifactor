@@ -96,18 +96,3 @@ Provenance for all 43 files in this folder. Each file was matched byte-for-byte 
 | `diag30_overlay_sweep.png` | 30-name diagnostic | M1 | `SGX performance audit/fig6_overlay_sweep.png` |
 
 All 43 files matched an original by MD5 and are annotated from `FIGURES_MANIFEST.md`; none required an "origin not matched" fallback.
-
-## Superseded diagnostic-track figures
-
-The following 10 files live in `../figs/`, not `figures/`. They are kept for the record; catalogued in EXCLUSIONS.md; do not cite.
-
-- `fig1_cumulative.png`
-- `fig2_ic.png`
-- `fig3_annual.png`
-- `fig4_tercile.png`
-- `fig5_regime.png`
-- `fig6_rolling_sharpe.png`
-- `fig7_capm.png`
-- `fig8_distribution.png`
-- `fig9_weights.png`
-- `fig10_heatmap.png`
