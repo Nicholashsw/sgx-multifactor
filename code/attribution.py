@@ -4,7 +4,7 @@ Alpha attribution and leakage framework, on the rebuilt real Bloomberg STI panel
 PART 0 states the strategy as an exact rulebook (answering "how is the methodology
 executed") and implements it. Everything after is decomposition of THAT run.
 
-Scope honesty: this panel is 30 CURRENT STI members with no delisting returns and no
+Scope: this panel is 30 CURRENT STI members with no delisting returns and no
 daily high/low. Therefore per-name Corwin-Schultz spreads, borrow availability, market
 impact, and any leg-level survivorship decomposition are NOT computable here.
 """
@@ -217,7 +217,7 @@ if __name__ == "__main__":
           f"{panel.Date.min().date()}–{panel.Date.max().date()}")
 
     print("\n" + "=" * 100)
-    print("PART 1  BASE RUN — fully specified rules, gross of costs")
+    print("PART 1  BASE RUN: fully specified rules, gross of costs")
     print("=" * 100)
     res, contrib = run(panel, WEIGHTS, cost_bps=0.0)
     res = res.set_index("Date")

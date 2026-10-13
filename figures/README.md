@@ -1,6 +1,6 @@
 # Figure index
 
-Provenance for all 43 files in this folder. Each file was matched byte-for-byte (MD5) against the original PNG in its source branch folder under the project's working tree; every one of the 43 matched exactly one original with no ambiguity. Module and ledger reference come from `FIGURES_MANIFEST.md` (the consolidation record listing which figure backs which claim). Grouped by module in the manifest's order; see [VERIFICATION_LEDGER.md](../VERIFICATION_LEDGER.md) for what each ledger ID verifies.
+Provenance for all 43 files in this folder. Each file was matched byte-for-byte (MD5) against the original PNG in its source research folder; every one of the 43 matched exactly one original. Module and ledger references come from the figure manifest that records which figure backs which claim. Grouped by module in the manifest's order; see [VERIFICATION_LEDGER.md](../VERIFICATION_LEDGER.md) for what each ledger ID verifies.
 
 ## Survivorship module
 
@@ -94,5 +94,3 @@ Provenance for all 43 files in this folder. Each file was matched byte-for-byte 
 | `diag30_signal_ic.png` | 30-name diagnostic | M1 | `SGX performance audit/fig1_signal_ic.png` |
 | `diag30_cumulative.png` | 30-name diagnostic | M1 | `SGX performance audit/fig2_cumulative.png` |
 | `diag30_overlay_sweep.png` | 30-name diagnostic | M1 | `SGX performance audit/fig6_overlay_sweep.png` |
-
-All 43 files matched an original by MD5 and are annotated from `FIGURES_MANIFEST.md`; none required an "origin not matched" fallback.

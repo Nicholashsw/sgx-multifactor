@@ -1,10 +1,9 @@
 """
-PIT adapter — swaps the current-constituent panel for the survivorship-corrected one,
+PIT adapter. Swaps the current-constituent panel for the survivorship-corrected one,
 then re-runs the Part 0-6 attribution framework unchanged.
 
-STATUS: written against the SGX3_2.xlsm schema recovered from the SGX3 chat. NOT YET
-EXECUTED against the real workbook — no numbers from this file are verified until it
-has run on the actual data.
+STATUS: written against the SGX3_2.xlsm schema. Not yet run against the real
+workbook, so no numbers from this file are verified until it has run on the actual data.
 
 Expected schema (SGX3_2.xlsm):
   PriceData_PIT    : Date, Ticker, PX_LAST, TOT_RET_IDX, MKT_CAP_USDmn, PX_TO_BOOK, DIV_YIELD, PX_VOLUME
@@ -184,7 +183,7 @@ if __name__ == "__main__":
     wbp = sys.argv[1] if len(sys.argv) > 1 else "SGX3_2.xlsm"
     for conv in ("truncate", "minus100"):
         print("\n" + "=" * 90)
-        print(f"PIT RUN — delisting convention: {conv}")
+        print(f"PIT RUN: delisting convention: {conv}")
         print("=" * 90)
         pit, _ = build_pit_panel(wbp, embargo=4, delist=conv)
         res, contrib = run(pit, WEIGHTS, cost_bps=0.0)

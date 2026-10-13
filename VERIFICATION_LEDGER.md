@@ -1,8 +1,8 @@
-# Verification Ledger. FYP A1083 consolidation, Phase A
+# Verification ledger
 
-Built 2026-08-20 from a full read of all ten source folders: every notebook dump (code plus executed outputs), every memo, paper, script and result file, plus nine branch-level audit reports written during this pass (in `audit/`).
+Built 2026-08-20 from a full read of all ten source folders: every notebook dump (code plus executed outputs), every memo, paper, script and result file, plus nine branch-level audit reports (not shipped).
 
-Statuses, per the consolidation brief:
+Statuses:
 
 - **VERIFIED**: traces to executed output on real-source data. Evidence class in brackets: [cell] = executed notebook cell output quoted in the branch audit; [artifact] = result CSV/JSON present in the folder that matches the claim and whose inputs are real-lineage, but whose producing run's stdout is not in the archive; [recomputed] = this audit re-ran the number from the archived real data and matched it.
 - **UNSUPPORTED**: claimed in prose (memo, paper, markdown cell) with no executed evidence anywhere in the folders.
@@ -61,7 +61,7 @@ Universe authority order used to resolve conflicts: liquid100 / broad Compustat 
 | C4 | Weighting is load-bearing: EW L/S +0.53 t=1.93 → VW −0.08 t=−0.27; 10% cap 0.25 t=0.88; a 5% cap on ~100 names is EW in disguise (max weight 5.4% vs EW 5.2%) | weighting_comparison.csv matching weighting_scheme_test.md | top-100 PIT Compustat panel | VERIFIED [artifact] | KEEP |
 | C5 | Leave-one-out: dropping MOM12 collapses the broad L/S to +0.157 t=0.68; dropping size raises it to +0.677 t=2.84 | attribution_loo.csv | same | VERIFIED [artifact] | KEEP |
 | C6 | Sector contributions: Real Estate largest net (+0.134); Financials gross large, nets +0.055; CommSvcs −0.096 | attribution_sector.csv | same | VERIFIED [artifact] | KEEP |
-| C7 | Sector-neutral ranking kills the broad L/S: +0.526 t=1.93 → +0.169 t=0.69; Brinson-Fachler alloc +0.51 / sel +1.28 / inter +2.98 (sum +4.78 vs actual +5.12); vol-target 12% alpha +0.663 t=3.08; cost sensitivity break-even 86bp | FINAL_STATUS_pending_closed.md prose; finish.py implements all four, stdout not captured | sg_broad_quarterly.csv | UNSUPPORTED (pending recompute via finish.py on staged panel) | EXCLUDE unless recomputed this pass |
+| C7 | Sector-neutral ranking kills the broad L/S: +0.526 t=1.93 → +0.169 t=0.69; Brinson-Fachler alloc +0.51 / sel +1.28 / inter +2.98 (sum +4.78 vs actual +5.12); vol-target 12% alpha +0.663 t=3.08; cost sensitivity break-even 86bp | FINAL_STATUS_pending_closed.md prose; finish.py implements all four, stdout not captured | sg_broad_quarterly.csv | UNSUPPORTED (pending recompute via finish.py on staged panel) | EXCLUDE unless recomputed |
 | C8 | IC alignment diagnostics on the broad panel (contemporaneous ≈ 0 vs forward 0.0448 t=6.45; U-shaped deciles D1 +1.030 / D10 +1.573) | ic_alignment_diagnostic.md prose; run on the UNFILTERED panel, author-flagged "re-run on PIT before use" | unfiltered panel | UNSUPPORTED | EXCLUDE (superseded by the PIT alignment work, F7/I6) |
 | C9 | IBES layer lifts broad composite 1.321 t3.82 → 1.523 t4.73 | layer2_layer4_results.md prose, no execution; 75/25 blend not pre-specified; contradicted in spirit by the executed IBES orthogonality null (E10) |: | UNSUPPORTED | EXCLUDE; the executed IBES result is the null (E10) |
 | C10 | REALIS property-beta IC −0.0148 t=−2.36 on broad universe; composite survives property-neutralisation | layer2_layer4_results.md prose, no execution; author holds "loosely"; sector sanity check fails |: | UNSUPPORTED | EXCLUDE |
@@ -77,7 +77,7 @@ Universe authority order used to resolve conflicts: liquid100 / broad Compustat 
 | D3 | Binding-name capacity ≈ SGD 4,000/month at 5% ADV (7k at 10%); every month < SGD 1m | DEFINITIVE memo prose; no artifact, no code |: | UNSUPPORTED | EXCLUDE; D8 carries the capacity conclusion for that book |
 | D4 | Corwin-Schultz recipe inverts liquidity ordering on illiquid names (naive 20/46/60 bps illiquid→liquid); traded-days correction restores it (83/71/62) | SGX_Effective_Spreads_and_Costs CELLs 5/8, executed | Compustat daily H/L | VERIFIED [cell] | KEEP (also corrections log) |
 | D5 | Markit fee/availability by cap quintile: median fee 6.00 / 5.00 / 3.50 / 0.75 / 0.54 %/yr smallest→largest; bottom two quintiles effectively zero lendable inventory | SGX_Borrow_Markit.ipynb executed table | panel_markit.csv | VERIFIED [cell] | KEEP |
-| D6 | Real fees alone destroy the naive short book (−0.021%/mo t=−0.11, avg 46 bps/mo); the availability screen rescues it by forcing large caps (S$10m AUM: +0.578 t=3.47; S$50m: +0.447 t=3.27; significant to S$500m) | SGX_Borrow_Markit.ipynb executed scenario table | same | VERIFIED [cell] | KEEP |
+| D6 | Real fees alone destroy the naive short book (−0.021%/mo t=−0.11, avg 46 bps/mo); the availability screen restores it by forcing large caps (S$10m AUM: +0.578 t=3.47; S$50m: +0.447 t=3.27; significant to S$500m) | SGX_Borrow_Markit.ipynb executed scenario table | same | VERIFIED [cell] | KEEP |
 | D7 | Implementable L/S at S$50m with real borrow: long +0.392 t=1.40, short +0.372 t=2.72, combined +0.764 t=2.23; short leg stays more reliable than long | SGX_Borrow_Markit.ipynb executed | same | VERIFIED [cell] | KEEP |
 | D8 | Borrow waterfall on the price-signal composite book: L/S 1.661 t=4.94 → borrow-feasible (inventory + DCBS<5) 0.712 t=2.53 Sharpe 0.56, a 57% reduction; long-only top-30% +0.713%/mo t=4.19 Sharpe 0.85 with no borrow required → long-only dominates | SGX_Borrow_Execution_ThirdSleeve CELLs 4/6, executed; borrow_waterfall.csv matches | markit_monthly + cs_signals | VERIFIED [cell] | KEEP |
 | D9 | Availability stats behind D8: 60.7% of short-leg name-months have active available inventory; 37.9% general collateral; median fee 0.048%/yr (p90 0.110) | Borrow notebook CELL 4 executed | same | VERIFIED [cell] | KEEP; REPLACES the unexecuted "22.6% zero lendable / 0.024%/yr mean fee / 53% of alpha lost (0.636→0.299)" recollection |
@@ -85,7 +85,7 @@ Universe authority order used to resolve conflicts: liquid100 / broad Compustat 
 | D11 | Execution lag negligible: L/S 1.451→1.419 (t 3.74→3.59) trading at t+1 first close; long-only unchanged | Borrow notebook CELL 9 executed; execution_lag.csv | Compustat daily | VERIFIED [cell] | KEEP |
 | D12 | STI-core capacity ~S$50M at 10% participation (5% of months infeasible), feasibility-bound not cost-bound; net alpha +0.35→+0.28%/mo from S$1M to S$1bn | capacity_analysis.csv artifact matches memo; Risk_Module_Memo Step 1; the S$100M@20% variant is memo-only | STI panel + spreads + riskvol | VERIFIED [artifact] (S$50M line); the 20%-participation doubling is UNSUPPORTED | KEEP S$50M; drop the "~S$100M at 20%" claim |
 | D13 | TSMOM/fundamental-sleeve binding-name capacity degenerate (median ~SGD 0.01–0.1m) without a liquidity constraint at construction | TSMOM SGX_Attribution_And_Leakage executed capacity cells | liquid100 panel | VERIFIED [cell] | KEEP in TSMOM module |
-| D14 | Corwin-Schultz cross-vendor levels: Compustat naive median 49bp vs Bloomberg prior ~44bp; cs_spreads_monthly 143,978 name-months, median half-spread 23.5bp | Compustat side executed; Bloomberg side a hard-coded dict; 143,978/23.5bp memo prose (file present but unverified this pass) | cs files | VERIFIED [cell] Compustat side; Bloomberg comparator and 23.5bp figure UNSUPPORTED pending file check | KEEP Compustat numbers; drop the rest unless checked |
+| D14 | Corwin-Schultz cross-vendor levels: Compustat naive median 49bp vs Bloomberg prior ~44bp; cs_spreads_monthly 143,978 name-months, median half-spread 23.5bp | Compustat side executed; Bloomberg side a hard-coded dict; 143,978/23.5bp memo prose (later verified, see Q) | cs files | VERIFIED [cell] Compustat side; Bloomberg comparator and 23.5bp figure UNSUPPORTED pending file check | KEEP Compustat numbers; drop the rest unless checked |
 
 ## E. STI-core pipeline and risk characterisation (SGX3 track)
 
@@ -160,7 +160,7 @@ Universe authority order used to resolve conflicts: liquid100 / broad Compustat 
 | I5 | Net of spreads: liquid-third PH +1.05 t=2.66 (gross 1.45 t=3.74, break-even 302bp); full universe dies +0.21 t=0.54; every net momentum cell t≤1.1; mid-cap claim withdrawn (net t=1.85) | SGX_Effective_Spreads CELLs 12/14 executed | + spreads_traded-days | VERIFIED [cell] | KEEP |
 | I6 | Alignment self-audit: 52WH contemporaneous IC 0.376 (t=35) vs t+1 0.0528 (t=4.84); REV_1M contemporaneous IC −1.0000 (the tell); effective breadth 16–42 vs nominal thousands | SGX_IC_Alignment_Diagnostic executed | same | VERIFIED [cell] | KEEP |
 | I7 | Jump momentum in low turnover (+0.39 t=2.33 at K=60) is K-fragile (t 1.01 at K=120) | K=60 executed; K=30/120 printed from a hard-coded FileNotFound fallback (jumps_K.py absent) |: | K=60 VERIFIED [cell]; K-sensitivity UNSUPPORTED | KEEP the conservative downgrade (do not claim the signal), noting the sensitivity evidence gap |
-| I8 | Jumps: 1.00% of days, 18.7% of variance; decomposition rescues nothing (cont-MOM|PH +0.01 t=0.02) | SGX_Turnover_and_Jumps CELLs 13–15 executed | Compustat daily | VERIFIED [cell] | KEEP |
+| I8 | Jumps: 1.00% of days, 18.7% of variance; decomposition recovers nothing (cont-MOM|PH +0.01 t=0.02) | SGX_Turnover_and_Jumps CELLs 13–15 executed | Compustat daily | VERIFIED [cell] | KEEP |
 
 ## J. Calendar seasonality
 
@@ -215,15 +215,15 @@ Universe authority order used to resolve conflicts: liquid100 / broad Compustat 
 | N12 | Absolute-cap weighting bug on small books (15%/6-name infeasible; engine fix cap=max_wt/n) | executed (F6/F7) | VERIFIED (new entry) |
 | N13 | STI churn misquote 51/51 → executed 30/30 | executed (A8) | VERIFIED (new entry) |
 
-## O. External-track / live-site numbers (Phase B relevance)
+## O. Numbers previously on the project site
 
 | ID | Claim | Evidence | Status | Disposition |
 |---|---|---|---|---|
-| O1 | "Survivorship cuts Sharpe 0.98→0.61 (long-only), 0.64→0.25 (L/S)" (live site, REPORT.md §11) | NOW TRACED: backtest_survivorship.ipynb CELL 6 executed (survivor 0.975 → PIT 0.607; L/S 0.635 → 0.249). BUT that run backfilled PX_TO_BOOK for survivors from panel_stock.csv (contamination risk if the resident copy was the fabricated blob) and is superseded by the canonical quarterly+BVPS run (1.002→0.447; L/S 0.586→0.313) | EXECUTED but SUSPECT and SUPERSEDED | REPLACE on site in Phase B with B9's canonical numbers |
+| O1 | "Survivorship cuts Sharpe 0.98→0.61 (long-only), 0.64→0.25 (L/S)" (live site, REPORT.md §11) | NOW TRACED: backtest_survivorship.ipynb CELL 6 executed (survivor 0.975 → PIT 0.607; L/S 0.635 → 0.249). BUT that run backfilled PX_TO_BOOK for survivors from panel_stock.csv (contamination risk if the resident copy was the fabricated blob) and is superseded by the canonical quarterly+BVPS run (1.002→0.447; L/S 0.586→0.313) | EXECUTED but SUSPECT and SUPERSEDED | REPLACE on site with B9's canonical numbers |
 | O2 | "Composite factor IC 0.075 (t=5.05)" (live site, REPORT.md §11) | NOW TRACED: STI SGX2 factor_model.ipynb CELL 4 executed on the real 30-survivor workbook panel (0.0752, t=5.049) | VERIFIED [cell] but survivor-biased universe, superseded by C11 (71-name PIT: 0.0697, t=5.90) | REPLACE on site with C11 |
-| O3 | "Value carries the signal; momentum and quality do not" (site) | Consistent with C11/E2/E11 verified results in direction; exact site phrasing bundles universes | PARTIALLY SUPPORTED | REWRITE precisely in Phase B |
+| O3 | "Value carries the signal; momentum and quality do not" (site) | Consistent with C11/E2/E11 verified results in direction; exact site phrasing bundles universes | PARTIALLY SUPPORTED | REWRITE precisely |
 
-## P. Addenda from the final verification pass
+## P. Addenda from the final check
 
 | ID | Claim | Evidence | Status | Disposition |
 |---|---|---|---|---|
@@ -236,11 +236,11 @@ Universe authority order used to resolve conflicts: liquid100 / broad Compustat 
 | E22 | Memo-only book-size sweep (3-name t 1.06 to 25-name t 4.80) and weighting row (cap +0.068 t 0.22), both on the top-100 10-name book, mislabelled STI-core in earlier drafts | Risk_Module_Memo prose; no artifact | UNSUPPORTED | EXCLUDE; breadth statement carried by E4, weighting by C4/F6 |
 | H8 | Cached-inputs caveat: TSMOM combination results (H4), waterfall/concentration (H5), Amihud quantification (H6) and the 14-cell IC/alpha ratio grid (F8) execute from in-branch cached inputs (canon.py / attrib_base.py / pickled panels) whose construction is upstream in the same branch; lineage real, re-execution requires those caches | TSMOM branch audit | VERIFIED [cell, cached inputs] | KEEP with this disclosure |
 
-## Q. Rescued by re-execution (2026-08-20, this consolidation pass)
+## Q. Re-run on 2026-08-20
 
 | ID | Claim | Evidence | Status | Disposition |
 |---|---|---|---|---|
-| B7r | Forcing −100% terminal returns on the 37 triaged wipeouts moves the bias −0.89 → −0.60 pp/yr | rescue_survivorship_sensitivity.py executed on sgp_panel_monthly.csv (baseline replicated exactly: 8.85 / 7.96 / −0.89); output logged | VERIFIED [recomputed] | KEEP as sensitivity (upgrades B7 from UNSUPPORTED) |
+| B7r | Forcing −100% terminal returns on the 37 triaged wipeouts moves the bias −0.89 → −0.60 pp/yr | survivorship_sensitivity.py executed on sgp_panel_monthly.csv (baseline replicated exactly: 8.85 / 7.96 / −0.89); output logged | VERIFIED [recomputed] | KEEP as sensitivity (upgrades B7 from UNSUPPORTED) |
 | B6a | Executed magnitude bracket: −0.89 (as-recorded prices) to −0.40 (37 wipeouts + 25 ambiguous forced −100%); all-53-residual variant −0.44. Sign robust under every assumption | same script, three scenarios | VERIFIED [recomputed] | KEEP; replaces the unverifiable [−1.12, −0.07] bracket |
-| C7r | finish.py re-executed on sg_broad_quarterly.csv reproduces the FINAL_STATUS memo exactly: sector-neutral L/S +0.526 t1.93 → +0.169 t0.69 (long +0.360 t1.68 → +0.191 t0.96); Brinson-Fachler +0.51/+1.28/+2.98, sum +4.78 vs actual +5.12; 12% vol target +0.663 t3.08 (post-hoc); cost ladder t 2.66@0bp → 1.92@40 → 1.17@80, break-even 86 bp one-way at 25% monthly turnover | rescue_finish_output.txt | VERIFIED [recomputed] | KEEP (upgrades C7 from UNSUPPORTED). Cost-base caveat from the branch audit stands: the L/S sensitivity charges the long book's turnover on both legs |
+| C7r | finish.py re-executed on sg_broad_quarterly.csv reproduces the FINAL_STATUS memo exactly: sector-neutral L/S +0.526 t1.93 → +0.169 t0.69 (long +0.360 t1.68 → +0.191 t0.96); Brinson-Fachler +0.51/+1.28/+2.98, sum +4.78 vs actual +5.12; 12% vol target +0.663 t3.08 (post-hoc); cost ladder t 2.66@0bp → 1.92@40 → 1.17@80, break-even 86 bp one-way at 25% monthly turnover | finish_output.txt | VERIFIED [recomputed] | KEEP (upgrades C7 from UNSUPPORTED). Cost-base caveat from the branch audit stands: the L/S sensitivity charges the long book's turnover on both legs |
 | D14r | cs_spreads_monthly.csv verified: 143,978 name-months, median half-spread 23.5 bp (p25 9.3 / p75 43.6 / p95 135.8), 100% populated | recomputed directly from the staged file | VERIFIED [recomputed] | KEEP (upgrades the 23.5bp element of D14/W4) |

@@ -4,7 +4,7 @@ Run after pipeline.py: python factor_model.py
 
 Cross-sectional factor construction, IC analysis, quintile diagnostics.
 
-Conventions locked project-wide:
+Conventions used throughout the project:
   Spearman rank IC at h=1 (next month), never contemporaneous. Contemporaneous
   IC is structurally wrong-signed for any price-denominated ratio because
   price sits in the denominator of the signal and the numerator of the return.

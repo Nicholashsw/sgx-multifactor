@@ -1,5 +1,5 @@
 """
-CANONICAL RE-RUN — broad-universe paper. Single source of truth.
+Canonical re-run for the broad-universe paper. Single source of truth.
 Requires: sg_broad_quarterly.csv (P-Q panel), World_Index_Constituents.csv, Monthly_World_Indices.csv
 Produces every number in Tables 1-3 from ONE panel (P-Q, quarterly/TTM, 4-month lag).
 Run:  python3 canonical_rerun.py

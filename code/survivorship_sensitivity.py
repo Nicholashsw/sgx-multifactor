@@ -1,4 +1,4 @@
-# Executed 2026-08-20 (consolidation pass). Terminal-return sensitivity of the SGX
+# Run on 2026-08-20. Terminal-return sensitivity of the SGX
 # delisting-survivorship bias, on the real Compustat Global SGP monthly panel.
 # Replicates SGX_Survivorship_Decomposition.ipynb CELL 5 exactly, then forces
 # -100% final-month returns on adjudication subsets from the code-10 worksheets.
