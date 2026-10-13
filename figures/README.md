@@ -1,6 +1,6 @@
 # Figure index
 
-Provenance for all 43 files in this folder. Each file was matched byte-for-byte (MD5) against the original PNG in its source research folder; every one of the 43 matched exactly one original. Module and ledger references come from the figure manifest that records which figure backs which claim. Grouped by module in the manifest's order; see [VERIFICATION_LEDGER.md](../VERIFICATION_LEDGER.md) for what each ledger ID verifies.
+Provenance for the figures in this folder. Each of the first 43 was matched byte-for-byte (MD5) against the original PNG in its source research folder; every one of the 43 matched exactly one original. Module and ledger references come from the figure manifest that records which figure backs which claim. Grouped by module in the manifest's order; see [VERIFICATION_LEDGER.md](../VERIFICATION_LEDGER.md) for what each ledger ID verifies.
 
 ## Survivorship module
 
@@ -94,3 +94,13 @@ Provenance for all 43 files in this folder. Each file was matched byte-for-byte 
 | `diag30_signal_ic.png` | 30-name diagnostic | M1 | `SGX performance audit/fig1_signal_ic.png` |
 | `diag30_cumulative.png` | 30-name diagnostic | M1 | `SGX performance audit/fig2_cumulative.png` |
 | `diag30_overlay_sweep.png` | 30-name diagnostic | M1 | `SGX performance audit/fig6_overlay_sweep.png` |
+
+## Drawn from shipped result files
+
+These three are drawn by [`code/make_figures.py`](../code/make_figures.py), which reads only `results/verified/`, so anyone can rebuild them without licensed data.
+
+| File | Module | Ledger ref | Source file |
+|---|---|---|---|
+| `cost_waterfall_definitive.png` | Cost/capacity/borrow | D1 | `results/verified/waterfall_definitive.csv` |
+| `spec_grid_65_tests.png` | Multiple testing | G1 | `results/verified/spec_results_N65.csv` |
+| `table1_fama_macbeth.png` | Reference Table I | E2 | `results/verified/rederived_table1_fm.csv` |

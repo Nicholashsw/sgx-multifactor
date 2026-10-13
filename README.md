@@ -21,6 +21,8 @@ The answer: the Singapore market has real, correctly signed, replicable cross-se
 | Risk is jump-dominated | 57.9% jump variance; Gaussian understates 99% ES by 1.60pp (34%) | STI-core daily |
 | TSMOM combination with fundamentals | reverses under borrow constraints (combo 0.460 < TSMOM 0.543) | liquid100 |
 
+![Cost waterfall: gross alpha to fully costed](figures/cost_waterfall_definitive.png)
+
 ![Survivorship bias is negative in both universes](figures/surv_bias_both_universes.png)
 
 ![Leakage funnel](figures/core_leakage_funnel.png)
@@ -37,7 +39,7 @@ The answer: the Singapore market has real, correctly signed, replicable cross-se
 | [EXCLUSIONS.md](EXCLUSIONS.md) | Everything cut from the report, and why |
 | [MODULE_MAP.md](MODULE_MAP.md), `modules/` | How the research branches fit into one core result plus seven modules |
 | [DATA.md](DATA.md) | Sources, licensing and reproduction routes; no licensed data ships |
-| `figures/` | 43 figures at 200 dpi, all from real-data runs, indexed in [figures/README.md](figures/README.md) |
+| `figures/` | 46 figures at 200 dpi, all from real-data runs, indexed in [figures/README.md](figures/README.md); three are redrawn from shipped results by `code/make_figures.py` |
 | `code/` | Pipeline, factor model, backtest, point-in-time engines, canonical re-runs and sensitivity scripts; [code/README.md](code/README.md) maps each headline result to the script or result file behind it |
 | `src/` | VBA data layer: Bloomberg and CapIQ pulls, point-in-time index membership |
 | `results/verified/` | Result files behind the ledger |
