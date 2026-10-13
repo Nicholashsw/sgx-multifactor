@@ -15,7 +15,7 @@ The answer: the Singapore market has real, correctly signed, replicable cross-se
 | Dominant cost | Corwin-Schultz spreads, 0.906%/mo (median half-spread 23.5 bp) | same |
 | Implementable long-short with real borrow (Markit) | +0.764%/mo (t=2.23) at S$50m AUM | top-100 |
 | STI-core strategy | +0.396%/mo, NW-t 2.26; reproduces independently on Compustat at +0.36 (t=2.26) | PIT STI top-6 |
-| Multiple-testing discipline | 65 pre-registered tests: 24 clear t=1.96, one clears t=3.0, zero survive BHY | dev window 1995–2019 |
+| Multiple-testing discipline | 65-test specification grid: 24 clear t=1.96, one clears t=3.0, zero survive BHY | dev window 1995–2019 |
 | Reference paper's Table I | does not reproduce: 0 of 9 factors survive Bonferroni (best 2.767 vs 2.77) | PIT STI |
 | Overlays (Barra, HMM, GBM, jump models, GARCH, Markov, IBES, jump sizing) | 8 tested, 8 failed to add risk-adjusted return | STI-core |
 | Risk is jump-dominated | 57.9% jump variance; Gaussian understates 99% ES by 1.60pp (34%) | STI-core daily |
