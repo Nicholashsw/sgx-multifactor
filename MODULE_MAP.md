@@ -1,4 +1,4 @@
-# Module map. FYP A1083 consolidated structure
+# Module map
 
 How the ten source folders fold into one core narrative plus seven standalone modules. Conflicts resolved by the supersession map where it speaks, otherwise by executed evidence on the more authoritative universe (liquid100 / broad Compustat > PIT roster > 30-name STI).
 

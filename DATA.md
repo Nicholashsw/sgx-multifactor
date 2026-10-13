@@ -45,7 +45,7 @@ Singapore macro (IPI, PMI, CPI, NODX, USDSGD, GDP, SORA, NEER, SGS yields, M2) p
 
 ### Capital IQ, REALIS, Factiva
 
-CapIQ: designed integration, not used in any locked result. REALIS: 698,581 residential transactions, 1995 to 2025; the export lacks a developer field, so the ownership crosswalk is open work. Factiva: news extracts used to adjudicate delisting outcomes; extracts do not ship.
+CapIQ: designed integration, not used in any reported result. REALIS: 698,581 residential transactions, 1995 to 2025; the export lacks a developer field, so the ownership crosswalk is open work. Factiva: news extracts used to adjudicate delisting outcomes; extracts do not ship.
 
 ## File map
 

@@ -3,7 +3,7 @@
 The bug this fixes: if the point-in-time membership filter is applied to the whole panel,
 a name ejected from the index at t+1 has no row at t+1, so its holding-month return is
 silently dropped. In reality you form the portfolio from members at t and then hold
-through the month, taking whatever the stock does — including the month it leaves the
+through the month, taking whatever the stock does, including the month it leaves the
 index or delists. Filtering both eligibility and returns reintroduces exactly the
 survivorship the PIT universe was built to remove.
 
