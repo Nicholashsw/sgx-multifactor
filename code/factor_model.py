@@ -48,9 +48,9 @@ FACTOR_SPECS = {
 }
 
 # Equal weights across available factors. Hand-tuned weights are a searched
-# space; equal weighting is the pre-registered null. Note the locked project
-# finding that QUALITY_ROE subtracts roughly 50 bps/month on the broad
-# universe; keep it in the composite only when testing that claim.
+# space; equal weighting is the pre-registered null. QUALITY_ROE is left out:
+# it subtracted about 50 bps/month on the top-100 10-name book
+# (REPORT_FINAL.md section 7). Add it back only when testing that result.
 COMPOSITE_FACTORS = ["MOM_12_1", "VALUE_BM", "VALUE_DY", "SIZE_SMALL",
                      "LIQ_AMIHUD"]
 
