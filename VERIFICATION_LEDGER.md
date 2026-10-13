@@ -131,9 +131,9 @@ Universe authority order used to resolve conflicts: liquid100 / broad Compustat 
 
 | ID | Claim | Evidence | Inputs | Status | Disposition |
 |---|---|---|---|---|---|
-| G1 | Pre-registered grid: 65 tests (62 + 3 IBES extension) on dev window 1995-01–2019-12; 24 clear |NW t|>1.96; exactly 1 clears |t|>3.0; 0 survive BHY (min p 0.074) | spec_results_N65.csv / spec_results_full.csv; BHY independently recomputed to 1e-14; counts recounted | dev-window Compustat panel | VERIFIED [artifact+recomputed] | KEEP |
+| G1 | Specification grid: 65 tests (62 + 3 IBES extension) on dev window 1995-01–2019-12; 24 clear |NW t|>1.96; exactly 1 clears |t|>3.0; 0 survive BHY (min p 0.074) | spec_results_N65.csv / spec_results_full.csv; BHY independently recomputed to 1e-14; counts recounted | dev-window Compustat panel | VERIFIED [artifact+recomputed] | KEEP |
 | G2 | "…1 clears |t|>3.0 by 0.02" | The clearing spec is B/index/raw/EW/LS at t=3.674 (clears by 0.67); it also uniquely passes the bootstrap reality check but fails BHY (p=0.074) and has DSR prob 0.836 | same | VERIFIED numbers, WRONG margin phrasing | CORRECT the wording |
-| G3 | Amendment discipline: pre-registration lock date and panel hash blank; §8 amendment log empty despite 62→65 extension; both BHY corrections (m=62, m=65) supplied and conclusion invariant | PRE_REGISTRATION.md + both CSVs |: | VERIFIED [artifact] as a disclosed weakness | KEEP as a stated limitation |
+| G3 | Amendment discipline: grid lock date and panel hash blank; §8 amendment log empty despite 62→65 extension; both BHY corrections (m=62, m=65) supplied and conclusion invariant | PRE_REGISTRATION.md + both CSVs |: | VERIFIED [artifact] as a disclosed weakness | KEEP as a stated limitation |
 | G4 | Price-signal family multiple testing (M=55): gross Bonferroni 15/55, BHY 19/55, bootstrap (crit 3.57) 12/55; NET 0/22 clear bootstrap; DSR fails PH-liquid gross (p=0.019) and net (p=0.001) | SGX_Remaining_Items CELLs 4–6 executed; multiple_testing.csv row-for-row | 55-series family | VERIFIED [cell] | KEEP |
 | G5 | Data-snooping bootstrap on STI-core (P(max|t|≥2.82) ≈ 0.3% at ρ=0.9 across 40 specs) | mc outputs + memo (see E18) | strategy series | VERIFIED [artifact] | KEEP |
 

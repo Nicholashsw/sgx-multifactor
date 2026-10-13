@@ -8,7 +8,7 @@ The single question: does a multi-factor cross-sectional model earn a robust pre
 
 | Track | Source folders | Latest surviving spec | Headline (verified) |
 |---|---|---|---|
-| Broad Compustat universe (canonical for inference) | STI SGX2 (broad), FYP SGX multifactor and momentum, Sector-specific valuation, SGX multi-factor trading strategy development | canonical_rerun.py tables; 65-test pre-registered grid; PIT eligibility with unfiltered returns | Composite IC 0.049 t=5.93; survivor L/S t=1.01 vs PIT t=3.82; size-tier monotonicity; 0 of 65 grid tests survive BHY |
+| Broad Compustat universe (canonical for inference) | STI SGX2 (broad), FYP SGX multifactor and momentum, Sector-specific valuation, SGX multi-factor trading strategy development | canonical_rerun.py tables; 65-test specification grid; PIT eligibility with unfiltered returns | Composite IC 0.049 t=5.93; survivor L/S t=1.01 vs PIT t=3.82; size-tier monotonicity; 0 of 65 grid tests survive BHY |
 | Blue-chip 71-name PIT (SGX2 skeptical track) | STI SGX2 | backtest_survivorship_final.ipynb (quarterly PIT + BVPS) | IC 0.0697 t=5.90; naive Sharpe 1.002 → corrected 0.447 |
 | STI-core top-6 (SGX3 track) | SGX3 | CANONICAL_METHODOLOGY spec, corrected benchmark and deciles | +0.396%/mo NW-t 2.26; Compustat reproduction +0.36 t=2.26; risk characterisation suite |
 | 30-name diagnostic | SGX performance audit, SGX multi-factor FYP | SGX_Strategy_Audit.ipynb (price-only, field-gated) | No signal |t|>1.96 on clean fields; L/S diversifier hypothesis |
