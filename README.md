@@ -1,8 +1,8 @@
 # SGX Multi-Factor Trading Strategy (NTU FYP A1083)
 
-Does a multi-factor cross-sectional model earn a robust systematic premium on the Singapore Exchange, a smaller and less-arbitraged market than the US venues where factor premia decay fast? This repository is the consolidated, verified body of that project: every headline number below traces to an executed notebook cell or result artifact on real vendor data, catalogued row by row in [VERIFICATION_LEDGER.md](VERIFICATION_LEDGER.md). Numbers from earlier drafts that could not be traced, or that traced to fabricated data, were removed and are documented in [EXCLUSIONS.md](EXCLUSIONS.md).
+Does a multi-factor cross-sectional model earn a robust premium on the Singapore Exchange, a smaller and less-arbitraged market than the US venues where factor premia decay fast? Every headline number below traces to an executed notebook cell or result file on real vendor data, listed row by row in [VERIFICATION_LEDGER.md](VERIFICATION_LEDGER.md). Numbers from earlier drafts that could not be traced to executed evidence were removed and are listed in [EXCLUSIONS.md](EXCLUSIONS.md).
 
-The answer: the Singapore market contains real, correctly signed, replicable cross-sectional return structure, and the frictions of the market remove it before it becomes tradeable at institutional scale. Two methodological findings generalise beyond Singapore: survivorship bias on SGX runs in the opposite direction to the textbook prediction, and the reference literature's factor premia do not reproduce under honest multiple-testing discipline.
+The answer: the Singapore market has real, correctly signed, replicable cross-sectional return structure, and its trading frictions remove it before it becomes tradeable at institutional scale. Two findings generalise beyond Singapore: survivorship bias on SGX runs in the opposite direction to the textbook prediction, and the reference literature's factor premia do not reproduce under proper multiple-testing control.
 
 ## Headline results
 
@@ -31,22 +31,18 @@ The answer: the Singapore market contains real, correctly signed, replicable cro
 
 | Path | Content |
 |---|---|
-| [REPORT_FINAL.md](REPORT_FINAL.md) | The consolidated research report; every number provenance-tagged |
-| [paper/SGX_Multifactor_Research_Report.pdf](paper/SGX_Multifactor_Research_Report.pdf) | The same report rendered to PDF (10 pages) for reading offline; REPORT_FINAL.md remains the document of record |
+| [REPORT_FINAL.md](REPORT_FINAL.md) | The research report; every number is tagged to a ledger row |
+| [paper/SGX_Multifactor_Research_Report.pdf](paper/SGX_Multifactor_Research_Report.pdf) | The same report as a PDF |
 | [VERIFICATION_LEDGER.md](VERIFICATION_LEDGER.md) | Claim-by-claim trace to executed evidence (VERIFIED / UNSUPPORTED / CONTAMINATED) |
-| [EXCLUSIONS.md](EXCLUSIONS.md) | Everything cut, and why, including the fabricated-data quarantine |
-| [MODULE_MAP.md](MODULE_MAP.md), `modules/` | How ten research branches fold into one core narrative plus seven modules |
-| [DATA.md](DATA.md) | Sources, licensing, reproduction routes; no licensed data ships |
-| `figures/` | 43 figures at 200 dpi, all from verified real-data runs — indexed in [figures/README.md](figures/README.md) |
-| `code/` | Consolidated clean code: pipeline, factor model, backtest, PIT engines, canonical reruns, sensitivity scripts |
-| `src/` | VBA data layer (Bloomberg and CapIQ pull machinery, point-in-time membership) |
-| `results/verified/` | Aggregated result files backing the ledger |
-| `data/synthetic/` | Labelled synthetic replicas (SYN01–SYN30, seeded) so the pipeline runs for cloners |
-| `notebooks/` | Survivorship backtests, including the canonical quarterly-PIT run. **Source only — these ship without stored cell outputs**, because executing them requires licensed Bloomberg/Compustat panels and saved outputs would embed vendor rows. The executed evidence for every survivorship number is in `results/verified/` (`survivorship_summary_final.csv`) and traced in VERIFICATION_LEDGER.md (B1, B9, B11). `backtest_survivorship_final.ipynb` is the canonical quarterly-PIT spec. |
-
-## The corrections are part of the contribution
-
-The project caught and fixed, in the open: a silent synthetic-data fallback (all downstream results rejected and rebuilt; the generator was reproduced exactly to prove contamination), a forward-return alignment bug that manufactured a fake U-shaped payoff, a GARCH look-ahead that inflated Sharpe 0.73 to 1.05, a Markov smoothed-probability illusion worth +0.525 Sharpe, a benchmark built from t+1 members that inflated the passive alternative by 0.395%/mo, a cost-base error producing a spurious 1,400%/month turnover figure, and the Corwin-Schultz liquidity-ordering inversion. Full log in REPORT_FINAL.md section 12.
+| [EXCLUSIONS.md](EXCLUSIONS.md) | Everything cut from the report, and why |
+| [MODULE_MAP.md](MODULE_MAP.md), `modules/` | How the research branches fit into one core result plus seven modules |
+| [DATA.md](DATA.md) | Sources, licensing and reproduction routes; no licensed data ships |
+| `figures/` | 43 figures at 200 dpi, all from real-data runs, indexed in [figures/README.md](figures/README.md) |
+| `code/` | Pipeline, factor model, backtest, point-in-time engines, canonical re-runs and sensitivity scripts |
+| `src/` | VBA data layer: Bloomberg and CapIQ pulls, point-in-time index membership |
+| `results/verified/` | Result files behind the ledger |
+| `data/synthetic/` | Labelled synthetic replicas (tickers SYN01 to SYN30, seeded) so the code runs without data entitlements |
+| `notebooks/` | Survivorship backtest; `backtest_survivorship_final.ipynb` is the canonical quarterly point-in-time run. It ships without cell outputs, because running it needs licensed Bloomberg/Compustat panels and saved outputs would contain vendor rows. Its numbers are in `results/verified/survivorship_summary_final.csv` (ledger B1, B9, B11). |
 
 ## Reproduce
 
@@ -60,8 +56,12 @@ python factor_model.py
 python backtest.py
 ```
 
-With real vendor exports in place, run `python pipeline.py` first instead of the copy step; it fails loudly if any export is missing (there is no synthetic fallback in the pipeline). Verified end to end on the synthetic route at commit time.
+With real vendor exports in place, run `python pipeline.py` first instead of the copy step. It stops with an error if any export is missing; there is no synthetic fallback in the pipeline. The synthetic route above is tested end to end. Numbers from the synthetic files mean nothing.
 
-Real-data reproduction requires NTU-equivalent entitlements (Bloomberg, WRDS Compustat/IBES/Markit/SDC, CEIC, JKP); routes are in DATA.md.
+Real-data reproduction needs NTU-equivalent entitlements (Bloomberg, WRDS Compustat/IBES/Markit/SDC, CEIC, JKP); routes are in DATA.md.
+
+## Corrections
+
+An early version of the pipeline fell back silently to a seeded random generator when a Bloomberg export was missing, so its outputs were fabricated. That was caught, every result downstream of it was thrown out and rebuilt on real data, and the generator was reproduced exactly to confirm the contamination. Other errors found and fixed along the way: a forward-return alignment bug that produced a false U-shaped payoff, a GARCH look-ahead that inflated Sharpe from 0.73 to 1.05, Markov smoothed probabilities worth a spurious +0.525 Sharpe, a benchmark built from t+1 index members that overstated the passive alternative by 0.395%/mo, a cost-base error behind a spurious 1,400%/month turnover figure, the Corwin-Schultz liquidity-ordering inversion, and a one-month target leak in the walk-forward of `code/backtest.py`. The research corrections are logged in REPORT_FINAL.md section 12.
 
 Nicholas Hong, NTU EEE, supervised by Prof. Patricia Wong. Educational and research use.
