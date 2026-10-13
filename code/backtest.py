@@ -5,21 +5,28 @@ Run after factor_model.py: python backtest.py
 Monthly rebalanced long-only and long-short backtest with transaction costs,
 regime breakdown, and walk-forward validation with actual per-window training.
 
-Honesty notes baked into the design:
+Design notes:
   1. The earlier walk-forward in this project was degenerate: it re-ran the
      same fixed-weight strategy on date slices, so OOS equalled IS by
      construction. Here the composite weights are re-estimated on each
      training window from trailing ICs, so the walk-forward tests something.
-  2. Flat 10 bp costs understate SGX reality. The locked project finding is
-     that per-name Corwin-Schultz spreads average 0.906%/mo of drag on the
-     broad-universe composite. TC_BPS here is a floor; report both.
-  3. No borrow modelling on the short leg in this file. The locked finding
-     is that availability, not fee, is binding (22.6% of short-leg names
-     with zero lendable inventory). Long-short numbers from this file are
-     upper bounds and are labelled as such.
+  2. Flat 10 bp costs understate SGX costs. Per-name Corwin-Schultz spreads
+     cost the broad-universe composite 0.906%/mo (REPORT_FINAL.md section 6).
+     TC_BPS here is a floor; report both.
+  3. No borrow model on the short leg in this file. On the broad universe the
+     Markit availability screen and borrow fees take the long-short from
+     0.755 to 0.282%/mo after spreads (REPORT_FINAL.md section 6). Long-short
+     numbers from this file are upper bounds and are labelled as such.
   4. On a 6-name book, absolute position caps are infeasible (a 15% cap
      silently reverts to equal weighting). Equal weighting is used and
      stated, not disguised as an optimised book.
+  5. Fwd_Return_1M on formation date t is earned over the next panel month.
+     Training windows therefore keep only rows whose forward return is
+     realised by the end of the window; otherwise the last training row's
+     label would be the first test month's return.
+  6. The full-period run takes its weights from pre-2011 data, so its
+     2006-2010 returns are in-sample. Results are split at IS_END and the
+     2011+ period is reported as the forward result.
 """
 
 import warnings
@@ -34,6 +41,7 @@ DATA_DIR = "."
 
 BACKTEST_START = "2006-01-01"
 BACKTEST_END = "2026-01-31"
+IS_END = "2010-12-31"      # last return month used to fit the full-period weights
 N_LONG = 6
 N_SHORT = 6
 TC_BPS = 10                # one-way, a floor; see header note 2
@@ -87,6 +95,16 @@ def perf_summary(r: pd.Series, label: str) -> dict:
         "NW_t_mean": round(nw_tstat(r), 2),
         "N_Months": len(r),
     }
+
+
+def training_window(panel: pd.DataFrame, start, end) -> pd.DataFrame:
+    """Rows formed on or after `start` whose forward return is realised by
+    `end`. Fwd_Return_1M on date t belongs to the next panel date, so the
+    last formation date before `end` is dropped. See header note 5."""
+    dates = np.sort(panel["Date"].unique())
+    target = panel["Date"].map(dict(zip(dates[:-1], dates[1:])))
+    keep = (panel["Date"] >= pd.Timestamp(start)) & (target <= pd.Timestamp(end))
+    return panel[keep]
 
 
 def estimate_weights(train: pd.DataFrame) -> dict:
@@ -168,8 +186,7 @@ def walk_forward(panel: pd.DataFrame, train_months=60, test_months=12):
     out = []
     i = train_months
     while i + test_months <= len(dates):
-        tr = panel[(panel["Date"] >= dates[i - train_months])
-                   & (panel["Date"] <= dates[i - 1])]
+        tr = training_window(panel, dates[i - train_months], dates[i - 1])
         w = estimate_weights(tr)
         te_start = str(pd.Timestamp(dates[i]).date())
         te_end = str(pd.Timestamp(dates[min(i + test_months - 1,
@@ -204,30 +221,40 @@ def main():
     panel = panel[panel["Date"] >= BACKTEST_START].copy()
     print(f"  Panel: {len(panel):,} rows | {panel['Ticker'].nunique()} tickers")
 
-    is_train = panel[panel["Date"] < "2011-01-01"]
+    is_train = training_window(panel, BACKTEST_START, IS_END)
     weights = estimate_weights(is_train)
-    print("  Full-period weights (estimated on pre-2011 only):")
+    print(f"  Full-period weights (returns realised by {IS_END} only):")
     for f, w in weights.items():
         print(f"    {f:16s}: {w:.1%}")
 
     res = run_backtest(panel, weights, BACKTEST_START, BACKTEST_END, "Full")
+    res["Sample"] = np.where(res["Date"] <= IS_END, "in-sample", "forward")
     res.to_csv(f"{DATA_DIR}/backtest_results.csv", index=False)
 
-    print("\n=== Performance Summary ===")
+    fwd = res[res["Sample"] == "forward"]
+    print(f"\n=== Performance Summary, forward period (after {IS_END}) ===")
     perf = pd.DataFrame([
-        perf_summary(res["LongReturn_Net"].dropna(),
+        perf_summary(fwd["LongReturn_Net"].dropna(),
                      f"Long-Only Top {N_LONG}, net {TC_BPS}bp"),
-        perf_summary(res["LSReturn_Net"].dropna(),
+        perf_summary(fwd["LSReturn_Net"].dropna(),
                      "Long-Short, net, NO BORROW MODELLED (upper bound)"),
-        perf_summary(res["BenchmarkReturn"].dropna(),
+        perf_summary(fwd["BenchmarkReturn"].dropna(),
                      "Equal-Weight Universe"),
     ])
     print(perf.to_string(index=False))
 
-    print("\n=== Regime Breakdown (Long-Only) ===")
-    print(regime_breakdown(res).to_string(index=False))
+    ins = res[res["Sample"] == "in-sample"]
+    if len(ins) > 1:
+        print(f"\n  In-sample period ({BACKTEST_START[:4]} to {IS_END[:4]}), "
+              "same weights, for reference only:")
+        print(pd.DataFrame([
+            perf_summary(ins["LongReturn_Net"].dropna(), "Long-Only (in-sample)"),
+        ]).to_string(index=False))
 
-    print(f"\n  Avg monthly long turnover: {res['LongTurnover'].mean():.1%}")
+    print("\n=== Regime Breakdown (Long-Only, forward period) ===")
+    print(regime_breakdown(fwd).to_string(index=False))
+
+    print(f"\n  Avg monthly long turnover: {fwd['LongTurnover'].mean():.1%}")
 
     print("\n  Walk-forward (60M train, 12M test, weights re-estimated "
           "per window)...")
@@ -242,7 +269,7 @@ def main():
         oos.to_csv(f"{DATA_DIR}/backtest_oos.csv", index=False)
 
     print("\nSaved backtest_results.csv and backtest_oos.csv")
-    print("Costs here are a floor. See REPORT.md section 6 for the full "
+    print("Costs here are a floor. See REPORT_FINAL.md section 6 for the full "
           "Corwin-Schultz plus Markit waterfall on the broad universe.")
 
 
