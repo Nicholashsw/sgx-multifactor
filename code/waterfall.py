@@ -12,6 +12,8 @@ Decile long-short on the point-in-time universe, formed monthly from 2003. Stage
   3. shorts limited to names Markit showed as lendable the month before
   4. Markit indicative fee on the shorts
 Alpha is the Newey-West (6 lags) intercept on the WRDS Singapore market return.
+The long-only rows hold the top decile alone, gross and after its spreads; their alpha
+on the market return is the index-hedged version.
 
 Run: python waterfall.py
 Writes waterfall_definitive.csv (preset weights) and waterfall_schemes.csv (all schemes).
@@ -136,8 +138,8 @@ def nwa(r, label):
             "Alpha%mo": round(m.params["const"] * 100, 3), "t": round(m.tvalues["const"], 2), "N": len(r)}
 
 
-def bt(score, use_cs=False, screen=False, fee=False):
-    """Monthly decile long-short; returns the return series and average one-way turnover."""
+def bt(score, use_cs=False, screen=False, fee=False, long_only=False):
+    """Monthly decile book; returns the return series and average one-way turnover."""
     rows, turn, prev = [], [], None
     for i, d in enumerate(dts[:-1]):
         if d < START:
@@ -153,8 +155,16 @@ def bt(score, use_cs=False, screen=False, fee=False):
         lo, sh = c.head(k), c.tail(k)
         held = (set(lo["SecID"]), set(sh["SecID"]))
         if prev is not None:
-            turn.append(np.mean([len(held[j] - prev[j]) / k for j in (0, 1)]))
+            legs = (0,) if long_only else (0, 1)
+            turn.append(np.mean([len(held[j] - prev[j]) / k for j in legs]))
         prev = held
+        if long_only:
+            cost = lo["cs_half_bp_l"].fillna(lo["cs_half_bp_l"].median()).mean() / 1e4 if use_cs else 0.0
+            nr = q[q["Date"] == dts[i + 1]].drop_duplicates("SecID").set_index("SecID")["Ret"]
+            rl = nr.reindex(lo["SecID"]).mean()
+            if not np.isnan(rl):
+                rows.append({"Date": dts[i + 1], "R": rl - cost})
+            continue
         fee_cost = 0.0
         if screen:
             sh = sh[sh["avail_l"].fillna(0) > 0]
@@ -172,22 +182,26 @@ def bt(score, use_cs=False, screen=False, fee=False):
         rl, rs = nr.reindex(lo["SecID"]).mean(), nr.reindex(sh["SecID"]).mean()
         if np.isnan(rl) or np.isnan(rs):
             continue
-        rows.append({"Date": dts[i + 1], "LS": rl - rs - cost - fee_cost})
-    return pd.DataFrame(rows).set_index("Date")["LS"], np.mean(turn)
+        rows.append({"Date": dts[i + 1], "R": rl - rs - cost - fee_cost})
+    return pd.DataFrame(rows).set_index("Date")["R"], np.mean(turn)
 
 
 STAGES = [("1. Gross signal", {}),
           ("2. + Corwin-Schultz per-name spreads", {"use_cs": True}),
           ("3. + Markit borrow availability screen", {"use_cs": True, "screen": True}),
           ("4. + Markit borrow fee", {"use_cs": True, "screen": True, "fee": True})]
+LONG_ONLY = [("Long-only gross", {"long_only": True}),
+             ("Long-only + Corwin-Schultz spreads", {"long_only": True, "use_cs": True})]
 out = []
 for score in ["Composite", "Composite_ExQuality", "Composite_Equal", "Composite_WF"]:
-    for label, kw in STAGES:
-        r, turnover = bt(score, **kw)
-        out.append({"Score": score, **nwa(r, label), "Turnover": round(turnover, 3)})
+    for book, stages in [("Long-short", STAGES), ("Long-only", LONG_ONLY)]:
+        for label, kw in stages:
+            r, turnover = bt(score, **kw)
+            out.append({"Score": score, "Book": book, **nwa(r, label), "Turnover": round(turnover, 3)})
 res = pd.DataFrame(out)
 print(res.to_string(index=False))
 
-res[res["Score"] == "Composite"].drop(columns=["Score", "Turnover"]).to_csv("waterfall_definitive.csv", index=False)
+main = (res["Score"] == "Composite") & (res["Book"] == "Long-short")
+res[main].drop(columns=["Score", "Book", "Turnover"]).to_csv("waterfall_definitive.csv", index=False)
 res.to_csv("waterfall_schemes.csv", index=False)
 print("\nSaved waterfall_definitive.csv and waterfall_schemes.csv")
