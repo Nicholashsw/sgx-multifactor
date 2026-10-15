@@ -10,56 +10,56 @@
  "table1": [
   {
    "Factor": "Z_DIV_YIELD",
-   "Mean_IC": 0.0768,
-   "t": 12.32,
+   "Mean_IC": 0.0769,
+   "t_NW6": 14.22,
    "n": 234
   },
   {
    "Factor": "Z_ROE",
    "Mean_IC": 0.0674,
-   "t": 10.28,
+   "t_NW6": 9.19,
    "n": 270
   },
   {
    "Factor": "Z_EY",
-   "Mean_IC": 0.0624,
-   "t": 9.96,
+   "Mean_IC": 0.0622,
+   "t_NW6": 7.5,
    "n": 277
   },
   {
    "Factor": "Z_MOM_12_1",
-   "Mean_IC": 0.0595,
-   "t": 6.93,
+   "Mean_IC": 0.0599,
+   "t_NW6": 6.08,
    "n": 426
   },
   {
    "Factor": "Composite",
-   "Mean_IC": 0.0485,
-   "t": 5.93,
+   "Mean_IC": 0.0488,
+   "t_NW6": 5.15,
    "n": 367
   },
   {
    "Factor": "Z_MOM_6_1",
-   "Mean_IC": 0.05,
-   "t": 5.89,
+   "Mean_IC": 0.0503,
+   "t_NW6": 5.09,
    "n": 426
   },
   {
    "Factor": "Z_BM_Ratio",
-   "Mean_IC": 0.0041,
-   "t": 0.63,
+   "Mean_IC": 0.0038,
+   "t_NW6": 0.47,
    "n": 306
   },
   {
    "Factor": "Z_Amihud",
-   "Mean_IC": -0.0052,
-   "t": -0.88,
+   "Mean_IC": -0.0054,
+   "t_NW6": -0.91,
    "n": 360
   },
   {
    "Factor": "Z_LogMktCap",
-   "Mean_IC": -0.0495,
-   "t": -6.56,
+   "Mean_IC": -0.0496,
+   "t_NW6": -6.45,
    "n": 426
   }
  ],
@@ -109,8 +109,8 @@
   {
    "Tier": "Large",
    "AvgNames": 30,
-   "IC": 0.0144,
-   "IC_t": 1.06,
+   "IC": 0.015,
+   "IC_t_NW6": 1.14,
    "LS_Ann%": -3.7,
    "LS_Sharpe": -0.01,
    "Alpha%mo": 0.25,
@@ -120,8 +120,8 @@
   {
    "Tier": "Mid",
    "AvgNames": 69,
-   "IC": 0.0372,
-   "IC_t": 4.1,
+   "IC": 0.0381,
+   "IC_t_NW6": 3.77,
    "LS_Ann%": 4.3,
    "LS_Sharpe": 0.32,
    "Alpha%mo": 0.78,
@@ -131,8 +131,8 @@
   {
    "Tier": "Small",
    "AvgNames": 132,
-   "IC": 0.0806,
-   "IC_t": 8.87,
+   "IC": 0.0803,
+   "IC_t_NW6": 7.91,
    "LS_Ann%": 12.2,
    "LS_Sharpe": 0.68,
    "Alpha%mo": 1.38,
@@ -143,12 +143,46 @@
    "Tier": "Small (liq-screen)",
    "AvgNames": 90,
    "IC": NaN,
-   "IC_t": NaN,
+   "IC_t_NW6": NaN,
    "LS_Ann%": 18.4,
    "LS_Sharpe": 0.85,
    "Alpha%mo": 1.92,
    "Alpha_t": 5.12,
    "Beta": -0.39
+  }
+ ],
+ "table4": [
+  {
+   "Score": "Composite",
+   "Mean_IC": 0.0488,
+   "t_NW6": 5.15,
+   "n": 367,
+   "LS_Alpha%mo": 1.32,
+   "LS_Alpha_t": 3.82
+  },
+  {
+   "Score": "Composite_ExQuality",
+   "Mean_IC": 0.0473,
+   "t_NW6": 4.88,
+   "n": 367,
+   "LS_Alpha%mo": 1.29,
+   "LS_Alpha_t": 3.65
+  },
+  {
+   "Score": "Composite_Equal",
+   "Mean_IC": 0.027,
+   "t_NW6": 3.09,
+   "n": 367,
+   "LS_Alpha%mo": 1.01,
+   "LS_Alpha_t": 3.08
+  },
+  {
+   "Score": "Composite_WF",
+   "Mean_IC": 0.0689,
+   "t_NW6": 7.11,
+   "n": 367,
+   "LS_Alpha%mo": 1.72,
+   "LS_Alpha_t": 4.58
   }
  ]
 }
