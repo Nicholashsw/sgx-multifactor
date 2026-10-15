@@ -60,4 +60,4 @@ Thirteen verified corrections (ledger section N), spanning the synthetic fallbac
 | SGX multi-factor trading strategy development | Modules 2, 6; PIT validation, placebo, multiple testing M=55 |
 | SGX multi-factor FYP | Module 7; contamination map; superseded papers |
 | FYP SGX multifactor and momentum | Module 1; 65-test grid; panel rebuild integrity |
-| Consolidation audit | REPORT/DATA baseline, synthetic replicas, shipped code |
+| Consolidation audit | REPORT/DATA baseline, shipped code |

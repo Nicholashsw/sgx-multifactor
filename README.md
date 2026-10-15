@@ -44,24 +44,23 @@ The answer: the Singapore market has real, correctly signed, replicable cross-se
 | `code/` | Pipeline, factor model, backtest, point-in-time engines, canonical re-runs and sensitivity scripts; [code/README.md](code/README.md) maps each headline result to the script or result file behind it |
 | `src/` | VBA data layer: Bloomberg and CapIQ pulls, point-in-time index membership |
 | `results/verified/` | Result files behind the ledger |
-| `data/synthetic/` | Labelled synthetic replicas (tickers SYN01 to SYN30, seeded) so the code runs without data entitlements |
 | `notebooks/` | Survivorship backtest; `backtest_survivorship_final.ipynb` is the canonical quarterly point-in-time run. It ships without cell outputs, because running it needs licensed Bloomberg/Compustat panels and saved outputs would contain vendor rows. Its numbers are in `results/verified/survivorship_summary_final.csv` (ledger B1, B9, B11). |
 
 ## Reproduce
 
+Every script runs on the licensed exports named at the top of the file, which need NTU-equivalent entitlements (Bloomberg, WRDS Compustat/IBES/Markit/SDC, CEIC, JKP); DATA.md lists the routes. With them in place:
+
 ```bash
 pip install -r requirements.txt
 cd code
-python make_synthetic.py                       # labelled synthetic replicas (no entitlements needed)
-cp synthetic_panel_stock.csv panel_stock.csv   # feed the replicas to the model under the expected names
-cp synthetic_macro_monthly.csv macro_monthly.csv
+python canonical_rerun.py   # broad-universe Tables 1 to 4
+python pipeline.py          # 30-name Bloomberg panel, then
 python factor_model.py
 python backtest.py
+python make_figures.py      # redraws three figures from results/verified/; needs no licensed data
 ```
 
-With real vendor exports in place, run `python pipeline.py` first instead of the copy step. It stops with an error if any export is missing; there is no synthetic fallback in the pipeline. The synthetic route above is tested end to end. Numbers from the synthetic files mean nothing.
-
-Real-data reproduction needs NTU-equivalent entitlements (Bloomberg, WRDS Compustat/IBES/Markit/SDC, CEIC, JKP); routes are in DATA.md.
+Each script stops with an error if an input is missing. No script generates or falls back to made-up data. Without the licensed exports, the result files in `results/verified/` and the ledger are the evidence.
 
 ## Corrections
 
