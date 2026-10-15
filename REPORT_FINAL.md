@@ -151,7 +151,7 @@ The blue-chip survivorship alpha regressions (the t=4.60 to 1.19 pair of earlier
 
 ## 14. Reproducibility
 
-The repository ships executable code, schema documentation, and labelled synthetic replicas so the pipeline runs end to end for cloners; no licensed vendor data ships. Every licensed input is documented in DATA.md with fields, windows and entitlement route. No file from the old synthetic pipeline is in this repository; the only synthetic data is the labelled replica set in `data/synthetic/`. Clean runs write files with the same names as the old fabricated CSVs, so any copy found elsewhere should be checked by content, not by filename.
+The repository ships executable code, schema documentation and the aggregated result files behind every number. No licensed vendor data ships, and no synthetic or generated data ships either. Every licensed input is documented in DATA.md with fields, windows and entitlement route, and every script stops with an error if an input is missing. No file from the old synthetic pipeline is in this repository. Clean runs write files with the same names as the old fabricated CSVs, so any copy found elsewhere should be checked by content, not by filename.
 
 ## References
 

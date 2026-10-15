@@ -10,7 +10,7 @@ The scripts here come from different stages of the project, so they do not form 
 | Sector-neutral test, Brinson-Fachler, 12% vol target, cost break-even | C7r | `finish.py` | `results/verified/finish_output.txt` |
 | Survivorship bias of −0.89 pp/yr and its bracket down to −0.40 | B1, B6a, B7r | `survivorship_sensitivity.py` (replicates the baseline first) | `results/verified/survivorship_sensitivity_output.txt` |
 | Blue-chip survivorship pair, Sharpe 1.002 to 0.447 | B9 | `../notebooks/backtest_survivorship_final.ipynb` | `results/verified/survivorship_summary_final.csv` |
-| 30-name diagnostic track and the synthetic demo route | REPORT_FINAL section 11 | `pipeline.py`, then `factor_model.py`, then `backtest.py` | written to the working folder, not shipped |
+| 30-name diagnostic track | REPORT_FINAL section 11 | `pipeline.py`, then `factor_model.py`, then `backtest.py` | written to the working folder, not shipped |
 
 ## Results whose notebooks are not in this repository
 
@@ -32,5 +32,4 @@ These headline numbers came from research notebooks that do not ship. Their resu
 - `pit_panel_build.py`: builds the monthly point-in-time price panel and daily-high-based 52-week highs used in the price-signal work (REPORT_FINAL section 9.2).
 - `attribution.py`: attribution and leakage framework on the 30-name Bloomberg STI panel. The panel holds current members only, so spreads, borrow and delisting effects cannot be computed on it.
 - `make_figures.py`: redraws the cost waterfall, the 65-test grid and the Table I chart from `results/verified/`. Needs no licensed data.
-- `make_synthetic.py`: writes the labelled synthetic replicas used by the demo route.
 - `FactorDataPull.bas`: Bloomberg VBA pulls for the 30-name workbook.
