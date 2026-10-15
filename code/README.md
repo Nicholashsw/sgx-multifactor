@@ -6,7 +6,7 @@ The scripts here come from different stages of the project, so they do not form 
 
 | Result | Ledger | Script | Output |
 |---|---|---|---|
-| Broad-universe ICs, survivorship reversal of the long-short, size tiers | C1, B11, C3 | `canonical_rerun.py` | `results/verified/canonical_table1.csv`, `canonical_table2.csv`, `canonical_table3.csv`, `canonical_results.json` |
+| Broad-universe ICs, survivorship reversal of the long-short, size tiers, composite weighting check | C1, B11, C3, C13 | `canonical_rerun.py` | `results/verified/canonical_table1.csv` to `canonical_table4.csv`, `canonical_results.json` |
 | Sector-neutral test, Brinson-Fachler, 12% vol target, cost break-even | C7r | `finish.py` | `results/verified/finish_output.txt` |
 | Survivorship bias of −0.89 pp/yr and its bracket down to −0.40 | B1, B6a, B7r | `survivorship_sensitivity.py` (replicates the baseline first) | `results/verified/survivorship_sensitivity_output.txt` |
 | Blue-chip survivorship pair, Sharpe 1.002 to 0.447 | B9 | `../notebooks/backtest_survivorship_final.ipynb` | `results/verified/survivorship_summary_final.csv` |

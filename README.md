@@ -10,6 +10,7 @@ The answer: the Singapore market has real, correctly signed, replicable cross-se
 |---|---|---|
 | Delisting survivorship bias is NEGATIVE (dead names raise returns; 59% of exits are takeouts) | −0.89 pp/yr (bracket −0.89 to −0.40 under harsh terminal-return assumptions) | 694-firm survivorship-free Compustat SGP |
 | Survivorship correction reverses the broad long-short | survivor t=1.01 vs point-in-time t=3.82 | Broad Compustat, 1991–2026 |
+| Result does not hinge on the factor weights | preset 1.32%/mo (t=3.82), equal 1.01 (t=3.08), walk-forward 1.72 (t=4.58) | Broad Compustat, 1991–2026 |
 | Blue-chip naive backtest vs corrected | Sharpe 1.002 → 0.447 | 71-name PIT roster |
 | Cost waterfall on the winning composite | gross 1.661%/mo (t=5.13) → 0.282%/mo (t=0.85) fully costed | Broad Compustat, 2003–2026 |
 | Dominant cost | Corwin-Schultz spreads, 0.906%/mo (median half-spread 23.5 bp) | same |
