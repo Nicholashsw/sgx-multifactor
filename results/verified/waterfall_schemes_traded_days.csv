@@ -1,0 +1,41 @@
+Score,Book,Costing,Stage,Ann%,Sharpe,MaxDD%,Alpha%mo,t,N,Turnover
+Composite,Long-short,Every month,1. Gross signal,15.73,0.84,-61.3,1.661,5.13,282,0.309
+Composite,Long-short,Every month,2. + Corwin-Schultz per-name spreads,0.51,0.13,-75.7,0.498,1.49,282,0.309
+Composite,Long-short,Every month,3. + Markit borrow availability screen,-2.1,0.03,-81.7,0.305,0.91,282,0.309
+Composite,Long-short,Every month,4. + Markit borrow fee,-4.92,-0.11,-86.9,0.06,0.18,282,0.309
+Composite,Long-short,Traded,2. + spreads on traded names,5.85,0.39,-71.6,0.92,2.74,282,0.309
+Composite,Long-short,Traded,3. + Markit borrow availability screen,1.72,0.2,-77.7,0.611,1.81,282,0.309
+Composite,Long-short,Traded,4. + Markit borrow fee,-1.2,0.07,-80.5,0.366,1.08,282,0.309
+Composite,Long-only,Every month,Long-only gross,14.87,0.73,-68.5,0.404,1.64,282,0.274
+Composite,Long-only,Every month,Long-only + Corwin-Schultz spreads,8.26,0.47,-72.2,-0.088,-0.35,282,0.274
+Composite,Long-only,Traded,Long-only + spreads on traded names,10.64,0.56,-71.1,0.091,0.36,282,0.274
+Composite_ExQuality,Long-short,Every month,1. Gross signal,14.83,0.78,-63.8,1.612,4.86,282,0.32
+Composite_ExQuality,Long-short,Every month,2. + Corwin-Schultz per-name spreads,-0.13,0.11,-78.2,0.455,1.34,282,0.32
+Composite_ExQuality,Long-short,Every month,3. + Markit borrow availability screen,-2.51,0.02,-83.7,0.281,0.82,282,0.32
+Composite_ExQuality,Long-short,Every month,4. + Markit borrow fee,-5.46,-0.12,-88.5,0.023,0.07,282,0.32
+Composite_ExQuality,Long-short,Traded,2. + spreads on traded names,4.59,0.33,-75.4,0.84,2.43,282,0.32
+Composite_ExQuality,Long-short,Traded,3. + Markit borrow availability screen,0.98,0.18,-82.0,0.565,1.63,282,0.32
+Composite_ExQuality,Long-short,Traded,4. + Markit borrow fee,-2.06,0.04,-83.5,0.307,0.88,282,0.32
+Composite_ExQuality,Long-only,Every month,Long-only gross,15.19,0.73,-70.0,0.416,1.65,282,0.277
+Composite_ExQuality,Long-only,Every month,Long-only + Corwin-Schultz spreads,8.44,0.47,-74.8,-0.086,-0.34,282,0.277
+Composite_ExQuality,Long-only,Traded,Long-only + spreads on traded names,10.9,0.57,-73.6,0.099,0.39,282,0.277
+Composite_Equal,Long-short,Every month,1. Gross signal,14.37,0.84,-39.6,1.435,5.17,282,0.304
+Composite_Equal,Long-short,Every month,2. + Corwin-Schultz per-name spreads,1.47,0.18,-62.3,0.446,1.57,282,0.304
+Composite_Equal,Long-short,Every month,3. + Markit borrow availability screen,-0.29,0.08,-65.5,0.234,0.87,282,0.304
+Composite_Equal,Long-short,Every month,4. + Markit borrow fee,-2.12,-0.03,-73.0,0.079,0.29,282,0.304
+Composite_Equal,Long-short,Traded,2. + spreads on traded names,5.19,0.37,-51.2,0.746,2.65,282,0.304
+Composite_Equal,Long-short,Traded,3. + Markit borrow availability screen,3.33,0.28,-49.5,0.532,1.99,282,0.304
+Composite_Equal,Long-short,Traded,4. + Markit borrow fee,1.44,0.17,-55.6,0.376,1.4,282,0.304
+Composite_Equal,Long-only,Every month,Long-only gross,17.25,0.82,-63.9,0.57,2.48,282,0.313
+Composite_Equal,Long-only,Every month,Long-only + Corwin-Schultz spreads,10.02,0.54,-69.1,0.04,0.17,282,0.313
+Composite_Equal,Long-only,Traded,Long-only + spreads on traded names,12.21,0.63,-67.2,0.208,0.9,282,0.313
+Composite_WF,Long-short,Every month,1. Gross signal,20.57,0.94,-71.3,2.282,6.36,282,0.296
+Composite_WF,Long-short,Every month,2. + Corwin-Schultz per-name spreads,2.21,0.24,-79.5,0.92,2.47,282,0.296
+Composite_WF,Long-short,Every month,3. + Markit borrow availability screen,-1.64,0.17,-91.5,0.796,2.02,274,0.296
+Composite_WF,Long-short,Every month,4. + Markit borrow fee,-5.65,0.02,-92.7,0.451,1.14,274,0.296
+Composite_WF,Long-short,Traded,2. + spreads on traded names,9.58,0.53,-76.3,1.487,3.92,282,0.296
+Composite_WF,Long-short,Traded,3. + Markit borrow availability screen,2.87,0.32,-90.2,1.154,2.89,274,0.296
+Composite_WF,Long-short,Traded,4. + Markit borrow fee,-1.29,0.17,-90.8,0.809,2.03,274,0.296
+Composite_WF,Long-only,Every month,Long-only gross,16.6,0.82,-67.4,0.554,2.48,282,0.29
+Composite_WF,Long-only,Every month,Long-only + Corwin-Schultz spreads,10.0,0.55,-72.3,0.07,0.31,282,0.29
+Composite_WF,Long-only,Traded,Long-only + spreads on traded names,12.29,0.65,-71.0,0.243,1.07,282,0.29

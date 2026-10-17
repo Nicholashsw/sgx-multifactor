@@ -1,0 +1,29 @@
+=== A. SECTOR-NEUTRAL vs plain ranking (PIT top-100, EW quintile) ===
+                Design  Ann%  Sharpe  MaxDD%  Alpha%mo    t  Beta   N
+ Plain composite [L/S]   0.3    0.14   -77.7     0.526 1.93 -0.38 366
+  Sector-neutral [L/S]  -2.4   -0.03   -76.8     0.169 0.69 -0.28 366
+Plain composite [Long]  11.0    0.58   -65.4     0.360 1.68  0.96 366
+ Sector-neutral [Long]   9.0    0.50   -62.8     0.191 0.96  0.98 366
+  monthly long turnover: plain 25.5% | sector-neutral 27.6%
+
+=== B. BRINSON-FACHLER, long book vs cap-weighted universe ===
+  Allocation  : +0.51 %/yr
+  Selection   : +1.28 %/yr
+  Interaction : +2.98 %/yr
+  Sum         : +4.78 %/yr
+  Actual active return (check): +5.12 %/yr
+
+=== C. Overlays on PIT universe (closes the 'unfiltered' caveat) ===
+                        Design  Ann%  Sharpe  MaxDD%  Alpha%mo    t  Beta   N
+               1. Baseline L/S   0.3    0.14   -77.7     0.526 1.93 -0.38 366
+           2. + vol target 12%   5.1    0.40   -43.5     0.663 3.08 -0.20 366
+3. sector-neutral + vol target   1.8    0.20   -45.1     0.370 1.69 -0.16 366
+
+=== D. Cost sensitivity, long-short (turnover 25%/mo both legs) ===
+    0bp one-way: Sharpe +0.25  alpha +0.726%/mo  t +2.66
+   10bp one-way: Sharpe +0.22  alpha +0.675%/mo  t +2.48
+   20bp one-way: Sharpe +0.19  alpha +0.624%/mo  t +2.29
+   40bp one-way: Sharpe +0.13  alpha +0.522%/mo  t +1.92
+   60bp one-way: Sharpe +0.08  alpha +0.421%/mo  t +1.54
+   80bp one-way: Sharpe +0.02  alpha +0.319%/mo  t +1.17
+  break-even one-way cost = gross mean / (2*turnover) = 86 bp

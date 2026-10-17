@@ -1,8 +1,7 @@
-numpy
-pandas
-scipy
-statsmodels
-hmmlearn
-xgboost
-matplotlib
-openpyxl
+# Tested on Python 3.13
+numpy==2.5.4
+pandas==3.0.6
+scipy==1.18.1
+statsmodels==0.14.2
+openpyxl==3.1.5
+matplotlib==3.11.2

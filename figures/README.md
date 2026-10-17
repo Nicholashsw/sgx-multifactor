@@ -1,6 +1,6 @@
 # Figure index
 
-Provenance for all 43 files in this folder. Each file was matched byte-for-byte (MD5) against the original PNG in its source branch folder under the project's working tree; every one of the 43 matched exactly one original with no ambiguity. Module and ledger reference come from `FIGURES_MANIFEST.md` (the consolidation record listing which figure backs which claim). Grouped by module in the manifest's order; see [VERIFICATION_LEDGER.md](../VERIFICATION_LEDGER.md) for what each ledger ID verifies.
+Provenance for the figures in this folder. Each of the first 43 was matched byte-for-byte (MD5) against the original PNG in its source research folder; every one of the 43 matched exactly one original. Module and ledger references come from the figure manifest that records which figure backs which claim. Grouped by module in the manifest's order; see [VERIFICATION_LEDGER.md](../VERIFICATION_LEDGER.md) for what each ledger ID verifies.
 
 ## Survivorship module
 
@@ -95,19 +95,12 @@ Provenance for all 43 files in this folder. Each file was matched byte-for-byte 
 | `diag30_cumulative.png` | 30-name diagnostic | M1 | `SGX performance audit/fig2_cumulative.png` |
 | `diag30_overlay_sweep.png` | 30-name diagnostic | M1 | `SGX performance audit/fig6_overlay_sweep.png` |
 
-All 43 files matched an original by MD5 and are annotated from `FIGURES_MANIFEST.md`; none required an "origin not matched" fallback.
+## Drawn from shipped result files
 
-## Superseded diagnostic-track figures
+These three are drawn by [`code/make_figures.py`](../code/make_figures.py), which reads only `results/verified/`, so anyone can rebuild them without licensed data.
 
-The following 10 files live in `../figs/`, not `figures/`. They are kept for the record; catalogued in EXCLUSIONS.md; do not cite.
-
-- `fig1_cumulative.png`
-- `fig2_ic.png`
-- `fig3_annual.png`
-- `fig4_tercile.png`
-- `fig5_regime.png`
-- `fig6_rolling_sharpe.png`
-- `fig7_capm.png`
-- `fig8_distribution.png`
-- `fig9_weights.png`
-- `fig10_heatmap.png`
+| File | Module | Ledger ref | Source file |
+|---|---|---|---|
+| `cost_waterfall_definitive.png` | Cost/capacity/borrow | D1c | `results/verified/waterfall_schemes_traded_days.csv`, drawn by `code/make_figures.py` |
+| `spec_grid_65_tests.png` | Multiple testing | G1 | `results/verified/spec_results_N65.csv` |
+| `table1_fama_macbeth.png` | Reference Table I | E2 | `results/verified/rederived_table1_fm.csv` |

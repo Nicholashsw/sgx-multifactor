@@ -17,7 +17,7 @@ Attribute VB_Name = "PIT_Survivorship_v2"
 '    2643373D, recycled/alt lines, long-privatized names) return no
 '    BDH history under that string no matter how long you wait. Those
 '    are listed as "NO DATA" in Diagnostics and need manual ISIN
-'    resolution (see note at bottom of the chat).
+'    resolution.
 '
 '  ONE-CLICK:  Alt+F8 -> Run_PIT_All   (~8-20 min with retries)
 '=====================================================================

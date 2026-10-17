@@ -6,4 +6,4 @@ Magnitude is an upper bound: Compustat freezes suspension prints. An executed te
 
 Strategy level: the naive blue-chip survivor backtest (Sharpe 1.002) corrects to 0.447 under quarterly point-in-time membership with real book values; the broad-universe long-short REVERSES (survivor t=1.01 vs point-in-time t=3.82); on the 54-name PIT roster the correction is near-symmetric across legs (long -5.43, short +5.26 pp/yr), so long-only investors are hurt and long-short investors roughly insulated.
 
-Evidence: REPORT_FINAL.md section 4; ledger rows B1-B14, B6a, B7r. Figures: surv_exit_mix, surv_bias_both_universes, surv_leg_symmetry_pit, surv_total_return_correction. Results: results/verified/survivorship_summary_final.csv, canonical_table2.csv, spec grid files, rescue_survivorship_output.txt.
+Evidence: REPORT_FINAL.md section 4; ledger rows B1-B14, B6a, B7r. Figures: surv_exit_mix, surv_bias_both_universes, surv_leg_symmetry_pit, surv_total_return_correction. Results: results/verified/survivorship_summary_final.csv, canonical_table2.csv, spec grid files, survivorship_sensitivity_output.txt.

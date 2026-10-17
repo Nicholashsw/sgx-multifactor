@@ -1,4 +1,4 @@
-# Module map. FYP A1083 consolidated structure
+# Module map
 
 How the ten source folders fold into one core narrative plus seven standalone modules. Conflicts resolved by the supersession map where it speaks, otherwise by executed evidence on the more authoritative universe (liquid100 / broad Compustat > PIT roster > 30-name STI).
 
@@ -8,7 +8,7 @@ The single question: does a multi-factor cross-sectional model earn a robust pre
 
 | Track | Source folders | Latest surviving spec | Headline (verified) |
 |---|---|---|---|
-| Broad Compustat universe (canonical for inference) | STI SGX2 (broad), FYP SGX multifactor and momentum, Sector-specific valuation, SGX multi-factor trading strategy development | canonical_rerun.py tables; 65-test pre-registered grid; PIT eligibility with unfiltered returns | Composite IC 0.049 t=5.93; survivor L/S t=1.01 vs PIT t=3.82; size-tier monotonicity; 0 of 65 grid tests survive BHY |
+| Broad Compustat universe (canonical for inference) | STI SGX2 (broad), FYP SGX multifactor and momentum, Sector-specific valuation, SGX multi-factor trading strategy development | canonical_rerun.py tables; 65-test specification grid; PIT eligibility with unfiltered returns | Composite IC 0.049 t=5.15 (Newey-West); survivor L/S t=1.01 vs PIT t=3.82; size-tier monotonicity; 0 of 65 grid tests survive BHY |
 | Blue-chip 71-name PIT (SGX2 skeptical track) | STI SGX2 | backtest_survivorship_final.ipynb (quarterly PIT + BVPS) | IC 0.0697 t=5.90; naive Sharpe 1.002 → corrected 0.447 |
 | STI-core top-6 (SGX3 track) | SGX3 | CANONICAL_METHODOLOGY spec, corrected benchmark and deciles | +0.396%/mo NW-t 2.26; Compustat reproduction +0.36 t=2.26; risk characterisation suite |
 | 30-name diagnostic | SGX performance audit, SGX multi-factor FYP | SGX_Strategy_Audit.ipynb (price-only, field-gated) | No signal |t|>1.96 on clean fields; L/S diversifier hypothesis |
@@ -21,7 +21,7 @@ Folders: FYP SGX multifactor and momentum (decomposition, adjudication), STI SGX
 
 ## Module 2. Cost and capacity waterfall
 
-Folders: STI SGX2 (definitive waterfall), SGX multi-factor trading strategy development (spreads, borrow, execution lag), SGX3 (Markit borrow, capacity). Finding: gross 1.661%/mo t=5.13 → 0.282 t=0.85 fully costed; Corwin-Schultz spreads dominate (0.906%/mo); availability, not fees, binds the short side; long-only 0.713%/mo Sharpe 0.85 is the dominant implementable form on the price-signal book; STI-core capacity ~S$50M feasibility-bound.
+Folders: STI SGX2 (definitive waterfall), SGX multi-factor trading strategy development (spreads, borrow, execution lag), SGX3 (Markit borrow, capacity). Finding: gross 1.661%/mo t=5.13 → 0.366 t=1.08 fully costed (traded-days spreads on traded names; 0.06 to 0.54 across cost conventions); Corwin-Schultz spreads dominate (0.741%/mo); long-only cannot pay its spreads (0.09%/mo); availability, not fees, binds the short side; long-only 0.713%/mo Sharpe 0.85 is the dominant implementable form on the price-signal book; STI-core capacity ~S$50M feasibility-bound.
 
 ## Module 3. TSMOM
 
@@ -60,4 +60,4 @@ Thirteen verified corrections (ledger section N), spanning the synthetic fallbac
 | SGX multi-factor trading strategy development | Modules 2, 6; PIT validation, placebo, multiple testing M=55 |
 | SGX multi-factor FYP | Module 7; contamination map; superseded papers |
 | FYP SGX multifactor and momentum | Module 1; 65-test grid; panel rebuild integrity |
-| Consolidation audit | REPORT/DATA baseline, synthetic replicas, shipped code |
+| Consolidation audit | REPORT/DATA baseline, shipped code |

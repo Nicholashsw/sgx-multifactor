@@ -1,0 +1,4 @@
+baseline -0.89
+37 wipeouts forced -100% -0.6
+37+25 ambiguous forced -0.4
+53 residual no-deal forced -0.44
