@@ -8,6 +8,7 @@ The scripts here come from different stages of the project, so they do not form 
 |---|---|---|---|
 | Broad-universe ICs, survivorship reversal of the long-short, size tiers, composite weighting check | C1, B11, C3, C13 | `canonical_rerun.py` | `results/verified/canonical_table1.csv` to `canonical_table4.csv`, `canonical_results.json` |
 | Sector-neutral test, Brinson-Fachler, 12% vol target, cost break-even | C7r | `finish.py` | `results/verified/finish_output.txt` |
+| Cost waterfall, 1.661 to 0.282%/mo, and the same waterfall for each weighting scheme | D1, C13 | `waterfall.py` | `results/verified/waterfall_definitive.csv`, `waterfall_schemes.csv` |
 | Survivorship bias of −0.89 pp/yr and its bracket down to −0.40 | B1, B6a, B7r | `survivorship_sensitivity.py` (replicates the baseline first) | `results/verified/survivorship_sensitivity_output.txt` |
 | Blue-chip survivorship pair, Sharpe 1.002 to 0.447 | B9 | `../notebooks/backtest_survivorship_final.ipynb` | `results/verified/survivorship_summary_final.csv` |
 | 30-name diagnostic track | REPORT_FINAL section 11 | `pipeline.py`, then `factor_model.py`, then `backtest.py` | written to the working folder, not shipped |
@@ -18,7 +19,6 @@ These headline numbers came from research notebooks that do not ship. Their resu
 
 | Result | Ledger | Result file |
 |---|---|---|
-| Cost waterfall, 1.661 to 0.282%/mo | D1 | `waterfall_definitive.csv` |
 | Markit long-short, +0.764%/mo at S$50m | D7 | `ls_markit.csv`, `borrow_markit.csv` |
 | STI-core strategy, +0.396%/mo, and the Compustat reproduction | E1, E3 | `sti_core_returns.csv`, `compustat_backtest_quarterly.csv` |
 | Reference Table I re-derivation | E2 | `rederived_table1_fm.csv`, `rederived_table1_fm_multivariate.csv` |
