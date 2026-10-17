@@ -37,6 +37,7 @@ The answer: the Singapore market has real, correctly signed, replicable cross-se
 |---|---|
 | [REPORT_FINAL.md](REPORT_FINAL.md) | The research report; every number is tagged to a ledger row |
 | [paper/SGX_Multifactor_Research_Report.pdf](paper/SGX_Multifactor_Research_Report.pdf) | The same report as a PDF |
+| [STRATEGY_FREEZE.md](STRATEGY_FREEZE.md) | The locked strategy, the numbers at the freeze, and what counts as robustness |
 | [VERIFICATION_LEDGER.md](VERIFICATION_LEDGER.md) | Claim-by-claim trace to executed evidence (VERIFIED / UNSUPPORTED / CONTAMINATED) |
 | [EXCLUSIONS.md](EXCLUSIONS.md) | Everything cut from the report, and why |
 | [MODULE_MAP.md](MODULE_MAP.md), `modules/` | How the research branches fit into one core result plus seven modules |
