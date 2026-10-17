@@ -8,7 +8,7 @@ The scripts here come from different stages of the project, so they do not form 
 |---|---|---|---|
 | Broad-universe ICs, survivorship reversal of the long-short, size tiers, composite weighting check | C1, B11, C3, C13 | `canonical_rerun.py` | `results/verified/canonical_table1.csv` to `canonical_table4.csv`, `canonical_results.json` |
 | Sector-neutral test, Brinson-Fachler, 12% vol target, cost break-even | C7r | `finish.py` | `results/verified/finish_output.txt` |
-| Cost waterfall, 1.661 to 0.282%/mo, and the same waterfall for each weighting scheme | D1, C13 | `waterfall.py` | `results/verified/waterfall_definitive.csv`, `waterfall_schemes.csv` |
+| Cost waterfall, 1.661 to 0.366%/mo, the published 0.282 version, each weighting scheme and the long-only book | D1, D1c, C13 | `cs_spreads.py` (spread files from Compustat daily), then `waterfall.py` | `results/verified/waterfall_definitive.csv`, `waterfall_schemes.csv`, `waterfall_schemes_traded_days.csv` |
 | Survivorship bias of −0.89 pp/yr and its bracket down to −0.40 | B1, B6a, B7r | `survivorship_sensitivity.py` (replicates the baseline first) | `results/verified/survivorship_sensitivity_output.txt` |
 | Blue-chip survivorship pair, Sharpe 1.002 to 0.447 | B9 | `../notebooks/backtest_survivorship_final.ipynb` | `results/verified/survivorship_summary_final.csv` |
 | 30-name diagnostic track | REPORT_FINAL section 11 | `pipeline.py`, then `factor_model.py`, then `backtest.py` | written to the working folder, not shipped |

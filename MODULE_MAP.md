@@ -21,7 +21,7 @@ Folders: FYP SGX multifactor and momentum (decomposition, adjudication), STI SGX
 
 ## Module 2. Cost and capacity waterfall
 
-Folders: STI SGX2 (definitive waterfall), SGX multi-factor trading strategy development (spreads, borrow, execution lag), SGX3 (Markit borrow, capacity). Finding: gross 1.661%/mo t=5.13 → 0.282 t=0.85 fully costed; Corwin-Schultz spreads dominate (0.906%/mo); availability, not fees, binds the short side; long-only 0.713%/mo Sharpe 0.85 is the dominant implementable form on the price-signal book; STI-core capacity ~S$50M feasibility-bound.
+Folders: STI SGX2 (definitive waterfall), SGX multi-factor trading strategy development (spreads, borrow, execution lag), SGX3 (Markit borrow, capacity). Finding: gross 1.661%/mo t=5.13 → 0.366 t=1.08 fully costed (traded-days spreads on traded names; 0.06 to 0.54 across cost conventions); Corwin-Schultz spreads dominate (0.741%/mo); long-only cannot pay its spreads (0.09%/mo); availability, not fees, binds the short side; long-only 0.713%/mo Sharpe 0.85 is the dominant implementable form on the price-signal book; STI-core capacity ~S$50M feasibility-bound.
 
 ## Module 3. TSMOM
 

@@ -44,8 +44,11 @@ def save(fig, name):
 
 
 def cost_waterfall():
-    """Ledger D1: gross alpha to fully costed alpha on the broad composite."""
-    w = pd.read_csv(RESULTS / "waterfall_definitive.csv")
+    """Ledger D1c: gross alpha to fully costed alpha on the broad composite,
+    traded-days spreads charged on the names traded each month."""
+    w = pd.read_csv(RESULTS / "waterfall_schemes_traded_days.csv")
+    w = w[(w["Score"] == "Composite") & (w["Book"] == "Long-short")]
+    w = pd.concat([w[w["Costing"] == "Every month"].head(1), w[w["Costing"] == "Traded"]])
     labels = ["Gross signal", "+ bid-ask\nspreads", "+ borrow\navailability", "+ borrow\nfees"]
     alpha = w["Alpha%mo"].to_numpy()
     tstat = w["t"].to_numpy()
