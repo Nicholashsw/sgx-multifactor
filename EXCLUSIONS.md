@@ -48,7 +48,7 @@ Note: the fabricated CSVs were never committed to this repository. The clean pip
 | 30-name survivor diagnostics as headline results: composite IC 0.0752 t=5.05; long-only 18.84%/yr Sharpe 1.007; Bloomberg-track paper families (IC 0.068/0.058) | 71-name PIT IC table (0.0697 t=5.90); PIT/broad-universe results; the corrected price-only diagnostic (M1). The 30-name numbers remain in the ledger as diagnostics; the Bloomberg-track scripts additionally embed full-sample IC weights and ex-dividend returns (M3), so their families are also methodologically compromised | C12, M3 |
 | First and second 71-name survivorship runs (PTB-backfill; yearly-PIT BVPS) | backtest_survivorship_final.ipynb (quarterly PIT + BVPS): survivor 17.37/1.002/−44.2 → PIT-quarterly 7.91/0.447/−62.7; L/S 10.35/0.586 → 5.03/0.313 | B9, O1 |
 | Stale size-tier Sharpes (0.15/0.54/0.78) and the risk_and_overlays memo line splicing them with canonical t-stats | canonical_table3.csv (−0.01/0.32/0.68; alpha t 0.81/2.99/4.13) | C3 |
-| Flat-cost waterfall (endpoint t=1.57) | Definitive CS + identifier-Markit waterfall (endpoint 0.282%/mo t=0.85) | D1, D2 |
+| Flat-cost waterfall (endpoint t=1.57) | Definitive CS + identifier-Markit waterfall (endpoint 0.282%/mo t=0.85), itself superseded by the corrected waterfall (0.366%/mo t=1.08) | D1, D1c, D2 |
 | TSMOM 30-name Bloomberg Sharpe 0.876 as the module headline | liquid100 k=3 Sharpe 0.974 t=4.65 (survivorship-clean) and PIT top-30 0.565; plus the lag disclosure (0.727→0.510 wide-universe) | H1, H2, H5 |
 | TSMOM NB1 "second-half Sharpe 0.50 t=1.47" prose | NB2 executed 0.53 / t=1.84 | H2 |
 | Mechanism framings for the 52WH conditioning: breadth, then liquidity | Share turnover (third, final framing); ADV was a correlated proxy | I2 |

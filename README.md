@@ -12,8 +12,9 @@ The answer: the Singapore market has real, correctly signed, replicable cross-se
 | Survivorship correction reverses the broad long-short | survivor t=1.01 vs point-in-time t=3.82 | Broad Compustat, 1991–2026 |
 | Result does not hinge on the factor weights | preset 1.32%/mo (t=3.82), equal 1.01 (t=3.08), walk-forward 1.72 (t=4.58) | Broad Compustat, 1991–2026 |
 | Blue-chip naive backtest vs corrected | Sharpe 1.002 → 0.447 | 71-name PIT roster |
-| Cost waterfall on the winning composite | gross 1.661%/mo (t=5.13) → 0.282%/mo (t=0.85) fully costed | Broad Compustat, 2003–2026 |
-| Dominant cost | Corwin-Schultz spreads, 0.906%/mo (median half-spread 23.5 bp) | same |
+| Cost waterfall on the winning composite | gross 1.661%/mo (t=5.13) → 0.366%/mo (t=1.08) fully costed; 0.06 to 0.54 across cost conventions, never significant | Broad Compustat, 2003–2026 |
+| Dominant cost | Corwin-Schultz spreads, 0.741%/mo (traded-days median half-spread 36.4 bp) | same |
+| Long-only top decile after spreads | 0.09%/mo (t=0.36): the signal lives in the short leg, where borrow binds | same |
 | Implementable long-short with real borrow (Markit) | +0.764%/mo (t=2.23) at S$50m AUM | top-100 |
 | STI-core strategy | +0.396%/mo, NW-t 2.26; reproduces independently on Compustat at +0.36 (t=2.26) | PIT STI top-6 |
 | Multiple-testing discipline | 65-test specification grid: 24 clear t=1.96, one clears t=3.0, zero survive BHY | dev window 1995–2019 |

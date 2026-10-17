@@ -101,6 +101,6 @@ These three are drawn by [`code/make_figures.py`](../code/make_figures.py), whic
 
 | File | Module | Ledger ref | Source file |
 |---|---|---|---|
-| `cost_waterfall_definitive.png` | Cost/capacity/borrow | D1 | `results/verified/waterfall_definitive.csv` |
+| `cost_waterfall_definitive.png` | Cost/capacity/borrow | D1c | `results/verified/waterfall_schemes_traded_days.csv`, drawn by `code/make_figures.py` |
 | `spec_grid_65_tests.png` | Multiple testing | G1 | `results/verified/spec_results_N65.csv` |
 | `table1_fama_macbeth.png` | Reference Table I | E2 | `results/verified/rederived_table1_fm.csv` |
