@@ -15,10 +15,19 @@ Alpha is the Newey-West (6 lags) intercept on the WRDS Singapore market return.
 The long-only rows hold the top decile alone, gross and after its spreads; their alpha
 on the market return is the index-hedged version.
 
+Two ways to charge spreads. "Every month" (the published waterfall) charges one
+half-spread on every held name each month, which is what a book costs if half of it
+turns over monthly. "Traded" charges a half-spread only on the names actually bought
+and sold that month, so it follows each scheme's real turnover.
+
 Run: python waterfall.py
-Writes waterfall_definitive.csv (preset weights) and waterfall_schemes.csv (all schemes).
+     python waterfall.py --spreads cs_spreads_traded.csv --out waterfall_schemes_traded_days.csv
+The default run uses the spreads the published waterfall used and also writes
+waterfall_definitive.csv (preset weights); --spreads swaps in another spread file
+built by cs_spreads.py.
 """
 
+import argparse
 import os
 
 import numpy as np
@@ -26,9 +35,14 @@ import pandas as pd
 import statsmodels.api as sm
 from scipy import stats
 
+ap = argparse.ArgumentParser()
+ap.add_argument("--spreads", default="cs_spreads_monthly.csv")
+ap.add_argument("--out", default="waterfall_schemes.csv")
+args = ap.parse_args()
+
 MARKIT = "newz/npfsiwyafic9oihc.csv"
 FILES = ["sg_broad_quarterly.csv", "World_Index_Constituents.csv", "more/Monthly_World_Indices.csv",
-         "crosswalk_secid_isin_sedol.csv", "cs_spreads_monthly.csv", MARKIT]
+         "crosswalk_secid_isin_sedol.csv", args.spreads, MARKIT]
 START = pd.Timestamp("2003-01-01")
 
 for f in FILES:
@@ -38,7 +52,7 @@ for f in FILES:
 q = pd.read_csv("sg_broad_quarterly.csv", parse_dates=["Date"]).sort_values(["SecID", "Date"])
 q["Ret"] = q["Return_1M"]
 xw = pd.read_csv("crosswalk_secid_isin_sedol.csv")
-cs = pd.read_csv("cs_spreads_monthly.csv", parse_dates=["Date"])
+cs = pd.read_csv(args.spreads, parse_dates=["Date"])
 
 wc = pd.read_csv("World_Index_Constituents.csv", parse_dates=["JuneDate"])
 wc["SecID"] = wc["gvkey"].astype(str) + "_" + wc["iid"].astype(str)
@@ -138,9 +152,20 @@ def nwa(r, label):
             "Alpha%mo": round(m.params["const"] * 100, 3), "t": round(m.tvalues["const"], 2), "N": len(r)}
 
 
-def bt(score, use_cs=False, screen=False, fee=False, long_only=False):
+def traded_cost(new, old, hs, fill):
+    """Half-spread on the names bought and sold this month, as a fraction of the leg."""
+    def spread(s):
+        v = hs.get(s, np.nan)
+        return fill if pd.isna(v) else v
+    c = sum(spread(s) for s in new - old) / len(new)
+    if old:
+        c += sum(spread(s) for s in old - new) / len(old)
+    return c / 1e4
+
+
+def bt(score, use_cs=False, screen=False, fee=False, long_only=False, traded=False):
     """Monthly decile book; returns the return series and average one-way turnover."""
-    rows, turn, prev = [], [], None
+    rows, turn, prev, book = [], [], None, None
     for i, d in enumerate(dts[:-1]):
         if d < START:
             continue
@@ -160,6 +185,11 @@ def bt(score, use_cs=False, screen=False, fee=False, long_only=False):
         prev = held
         if long_only:
             cost = lo["cs_half_bp_l"].fillna(lo["cs_half_bp_l"].median()).mean() / 1e4 if use_cs else 0.0
+            if use_cs and traded:
+                hs = q[q["Date"] == d].drop_duplicates("SecID").set_index("SecID")["cs_half_bp_l"]
+                new = set(lo["SecID"])
+                cost = traded_cost(new, book or set(), hs, lo["cs_half_bp_l"].median())
+                book = new
             nr = q[q["Date"] == dts[i + 1]].drop_duplicates("SecID").set_index("SecID")["Ret"]
             rl = nr.reindex(lo["SecID"]).mean()
             if not np.isnan(rl):
@@ -178,6 +208,13 @@ def bt(score, use_cs=False, screen=False, fee=False, long_only=False):
             cost = (cl.mean() + cx.mean()) / 1e4
         else:
             cost = 0.0
+        if use_cs and traded:
+            hs = q[q["Date"] == d].drop_duplicates("SecID").set_index("SecID")["cs_half_bp_l"]
+            new = (set(lo["SecID"]), set(sh["SecID"]))
+            old = book or (set(), set())
+            cost = (traded_cost(new[0], old[0], hs, lo["cs_half_bp_l"].median())
+                    + traded_cost(new[1], old[1], hs, sh["cs_half_bp_l"].median()))
+            book = new
         nr = q[q["Date"] == dts[i + 1]].drop_duplicates("SecID").set_index("SecID")["Ret"]
         rl, rs = nr.reindex(lo["SecID"]).mean(), nr.reindex(sh["SecID"]).mean()
         if np.isnan(rl) or np.isnan(rs):
@@ -192,16 +229,25 @@ STAGES = [("1. Gross signal", {}),
           ("4. + Markit borrow fee", {"use_cs": True, "screen": True, "fee": True})]
 LONG_ONLY = [("Long-only gross", {"long_only": True}),
              ("Long-only + Corwin-Schultz spreads", {"long_only": True, "use_cs": True})]
+TRADED = [("2. + spreads on traded names", {"use_cs": True, "traded": True}),
+          ("3. + Markit borrow availability screen", {"use_cs": True, "traded": True, "screen": True}),
+          ("4. + Markit borrow fee", {"use_cs": True, "traded": True, "screen": True, "fee": True})]
+LONG_ONLY_TRADED = [("Long-only + spreads on traded names", {"long_only": True, "use_cs": True, "traded": True})]
+RUNS = [("Long-short", "Every month", STAGES), ("Long-short", "Traded", TRADED),
+        ("Long-only", "Every month", LONG_ONLY), ("Long-only", "Traded", LONG_ONLY_TRADED)]
 out = []
 for score in ["Composite", "Composite_ExQuality", "Composite_Equal", "Composite_WF"]:
-    for book, stages in [("Long-short", STAGES), ("Long-only", LONG_ONLY)]:
+    for book_name, costing, stages in RUNS:
         for label, kw in stages:
             r, turnover = bt(score, **kw)
-            out.append({"Score": score, "Book": book, **nwa(r, label), "Turnover": round(turnover, 3)})
+            out.append({"Score": score, "Book": book_name, "Costing": costing, **nwa(r, label),
+                        "Turnover": round(turnover, 3)})
 res = pd.DataFrame(out)
 print(res.to_string(index=False))
 
-main = (res["Score"] == "Composite") & (res["Book"] == "Long-short")
-res[main].drop(columns=["Score", "Book", "Turnover"]).to_csv("waterfall_definitive.csv", index=False)
-res.to_csv("waterfall_schemes.csv", index=False)
-print("\nSaved waterfall_definitive.csv and waterfall_schemes.csv")
+if args.spreads == "cs_spreads_monthly.csv":
+    main = (res["Score"] == "Composite") & (res["Book"] == "Long-short") & (res["Costing"] == "Every month")
+    res[main].drop(columns=["Score", "Book", "Costing", "Turnover"]).to_csv("waterfall_definitive.csv", index=False)
+    print("\nSaved waterfall_definitive.csv")
+res.to_csv(args.out, index=False)
+print(f"Saved {args.out}")
