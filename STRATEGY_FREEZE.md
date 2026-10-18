@@ -39,4 +39,4 @@ The 65-test grid, the four weightings in Table 4, four cost conventions, and the
 
 ## Log of tests after the freeze
 
-None yet.
+- 19 October 2026. Kalman dynamic hedge ratios on daily data, a labelled extension outside the strategy (results/kalman/PREREG.md, 295 daily tests, Bonferroni |t| > 3.76). H1 (Kalman beats a 252-day rolling beta) not supported; H2 (daily Kalman pairs net OOS t > 2) not supported.
