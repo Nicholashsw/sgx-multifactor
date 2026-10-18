@@ -83,9 +83,10 @@ def main():
         lines.append(f"{tag}: {k} hedge DM tests ({len(runs[tag][0])} targets x {len(DM_COLS)})")
         n += k
     pairs, port = runs["daily_25_proxy"][1], runs["daily_25_proxy"][2]
-    k = int(pairs.query("period == 'oos'")["t_nw"].notna().sum())
+    oos = pairs.query("period == 'oos'")
+    k, combos = int(oos["t_nw"].notna().sum()), len(oos)
     lines.append(f"daily_25_proxy: {k} pair x method x entry OOS tests "
-                 f"({pairs['pair'].nunique()} pairs x {pairs['method'].nunique()} methods x {pairs['entry'].nunique()} entries)")
+                 f"({combos} combinations, {combos - k} never traded)")
     n += k
     k = int(port.query("period == 'oos'")["t_nw"].notna().sum())
     lines.append(f"daily_25_proxy: {k} pairs portfolio OOS tests (method x entry)")
