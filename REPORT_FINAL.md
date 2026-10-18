@@ -129,6 +129,27 @@ The original three-notebook pipeline contained a silent synthetic fallback: on a
 
 The survivorship figures previously shown on the project site came from a superseded first-pass survivorship run, whose book-to-market factor was backfilled from a contaminated file, and from the survivor-30 IC re-run. The verified replacements are the canonical blue-chip pair (Sharpe 1.002 to 0.447; long-short 0.586 to 0.313) and the 71-name PIT IC table (0.0697, t=5.90) [O1, O2].
 
+### 11.1 Kalman dynamic hedge ratios (extension)
+
+A labelled extension after the strategy freeze, pre-registered in `results/kalman/PREREG.md`; it changes nothing in the main strategy. On the monthly Bloomberg panel a Kalman beta did not hedge better than a 36-month rolling beta (out-of-sample hedge effectiveness 30.7% against 31.5%, 0 of 27 Diebold-Mariano tests significant) and the best pairs portfolio had an out-of-sample t of 1.74, but 74 holdout months gave that test little power. The rerun uses Compustat daily total returns for the 25 STI names that match Bloomberg (month-end correlation above 0.99), a 25-name cap-weighted leave-one-out proxy as the hedge instrument, and a holdout from December 2019 touched once. Two intermediate monthly runs, Bloomberg on the 25 names and Compustat on the proxy, separate the universe and proxy effects from the frequency effect.
+
+| Run | Static OLS | Rolling | EWMA | Kalman |
+|---|---|---|---|---|
+| Monthly, 30 names, STI | 28.4% | 31.5% | 31.1% | 30.7% |
+| Monthly, 25 names, STI | 32.1% | 33.8% | 33.6% | 33.3% |
+| Monthly, 25 names, proxy | 28.0% | 29.2% | 29.3% | 28.7% |
+| Daily, 25 names, proxy | 30.0% | 32.4% | 33.4% | 33.1% |
+
+Mean out-of-sample hedge effectiveness across single names. The 295 daily tests (150 hedge Diebold-Mariano tests over the daily and weekly-rebalanced runs, 133 pair tests and 12 pairs-portfolio tests) set a Bonferroni bar of |t| > 3.76.
+
+**H1, that the daily Kalman beta hedges better than a 252-day rolling beta: not supported.** It is slightly better on average (+0.8 percentage points of hedge effectiveness, better for 19 of 24 names), against a monthly gap that went the other way (-0.4 points on the same names and proxy), so daily data favours the Kalman beta a little. But no Diebold-Mariano test clears the bar: the strongest is t = -3.04, and 7 of 24 names pass only the unadjusted 5% level. Weekly rebalancing gives the same picture. A plain EWMA beta does slightly better than the Kalman (33.4% against 33.1%), so the gain comes from faster adaptation, not the state-space model.
+
+**H2, that daily Kalman pairs earn a net out-of-sample t above 2 at 30 bp a leg: not supported.** No Kalman pair reaches t = 2; the best is 1.80 (CLAR/FLT). The MLE-fitted Kalman pairs portfolio loses money significantly after costs (t = -7.45 at entry 1.0), because a filter that adapts every day trades about 83 times per pair over the holdout. Only the static Engle-Granger spread ends the holdout positive, and not significantly.
+
+Deviation from the pre-registration: it named 10 pairs, but FLT clears the daily 756-day training minimum while failing the monthly 60-month one, so the daily run has 13 pairs. All 13 were kept and counted, which makes the Bonferroni bar stricter, not looser.
+
+Limitations: a 25-name universe of current STI constituents, which excludes the five foreign-incorporated names and two of the three drifting-beta names of the monthly study (Thai Beverage, Yangzijiang); a cap-weighted proxy of those names rather than STI futures; no financing cost or dividend basis on the hedge; and Compustat's current vintage of prices.
+
 ## 12. Corrections log
 
 Every material error found and fixed, in the open, because the corrections are part of the contribution. Each entry is traced in the ledger [N1-N13].

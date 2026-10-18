@@ -1,0 +1,8 @@
+Tests counted over the daily runs only (PREREG.md):
+daily_25_proxy: 75 hedge DM tests (25 targets x 3)
+daily_25_proxy_weekly: 75 hedge DM tests (25 targets x 3)
+daily_25_proxy: 133 pair x method x entry OOS tests (156 combinations, 23 never traded)
+daily_25_proxy: 12 pairs portfolio OOS tests (method x entry)
+total: 295
+Bonferroni: p < 0.05 / 295 = 0.000169, two-sided |t| > 3.76
+market series: 25-name cap-weighted LOO proxy, not the STI
