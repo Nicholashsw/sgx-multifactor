@@ -2,8 +2,7 @@ Attribute VB_Name = "Module_CapIQ_SGX"
 Option Explicit
 
 ' =============================================================================
-' SGX MULTI-FACTOR FYP - Capital IQ Excel Add-In Automation
-' NTU EEE Final Year Project
+' SGX MULTI-FACTOR - Capital IQ Excel Add-In Automation
 '
 ' CAPITAL IQ EXCEL ADD-IN MECHANICS (read before editing)
 ' ─────────────────────────────────────────────────────────

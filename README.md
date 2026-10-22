@@ -1,4 +1,4 @@
-# Cost-Adjusted Multi-Factor Stock Selection on the Singapore Exchange (NTU FYP A1083)
+# Cost-Adjusted Multi-Factor Stock Selection on the Singapore Exchange
 
 Does a multi-factor cross-sectional model earn a robust premium on the Singapore Exchange, a smaller and less-arbitraged market than the US venues where factor premia decay fast? Every headline number below traces to an executed notebook cell or result file on real vendor data, listed row by row in [VERIFICATION_LEDGER.md](VERIFICATION_LEDGER.md). Numbers from earlier drafts that could not be traced to executed evidence were removed and are listed in [EXCLUSIONS.md](EXCLUSIONS.md).
 

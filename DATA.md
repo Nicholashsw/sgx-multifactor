@@ -1,6 +1,6 @@
 # DATA.md
 
-Data provenance, licensing, and reproduction guide for FYP A1083.
+Data provenance, licensing, and reproduction guide.
 
 ## Policy
 

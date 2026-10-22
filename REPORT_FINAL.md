@@ -1,8 +1,5 @@
 # Cost-Adjusted Multi-Factor Stock Selection on the Singapore Exchange
 
-**NTU FYP A1083. Research report.**
-Supervisor: Prof. Patricia Wong, School of EEE, Nanyang Technological University.
-
 This report brings together the empirical work of the project across all research tracks. Every number in it is VERIFIED in the accompanying verification ledger: it traces to an executed notebook cell output, or to a result file in the archive whose inputs are real-source and whose producing script is identified, on real data only. Bracketed tags cite ledger rows (VERIFICATION_LEDGER.md), which in turn cite the exact notebook, cell and input dataset. Claims from earlier drafts that could not be traced, or that traced to fabricated data, are not in this document; they are listed with reasons in EXCLUSIONS.md. Null results are reported as findings.
 
 ---

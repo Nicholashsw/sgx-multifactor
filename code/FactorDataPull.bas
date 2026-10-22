@@ -2,7 +2,6 @@ Attribute VB_Name = "FactorDataPull"
 '==================================================================================
 ' FactorDataPull.bas
 ' SGX systematic multi-factor data puller (Bloomberg Excel API)
-' NTU FYP A1083
 '
 ' WHAT IT DOES
 '   Reads tickers from the Universe sheet, writes one BDH array formula per

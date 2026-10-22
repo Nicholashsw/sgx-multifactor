@@ -8,16 +8,16 @@ The single question: does a multi-factor cross-sectional model earn a robust pre
 
 | Track | Source folders | Latest surviving spec | Headline (verified) |
 |---|---|---|---|
-| Broad Compustat universe (canonical for inference) | STI SGX2 (broad), FYP SGX multifactor and momentum, Sector-specific valuation, SGX multi-factor trading strategy development | canonical_rerun.py tables; 65-test specification grid; PIT eligibility with unfiltered returns | Composite IC 0.049 t=5.15 (Newey-West); survivor L/S t=1.01 vs PIT t=3.82; size-tier monotonicity; 0 of 65 grid tests survive BHY |
+| Broad Compustat universe (canonical for inference) | STI SGX2 (broad), SGX multifactor and momentum, Sector-specific valuation, SGX multi-factor trading strategy development | canonical_rerun.py tables; 65-test specification grid; PIT eligibility with unfiltered returns | Composite IC 0.049 t=5.15 (Newey-West); survivor L/S t=1.01 vs PIT t=3.82; size-tier monotonicity; 0 of 65 grid tests survive BHY |
 | Blue-chip 71-name PIT (SGX2 skeptical track) | STI SGX2 | backtest_survivorship_final.ipynb (quarterly PIT + BVPS) | IC 0.0697 t=5.90; naive Sharpe 1.002 → corrected 0.447 |
 | STI-core top-6 (SGX3 track) | SGX3 | CANONICAL_METHODOLOGY spec, corrected benchmark and deciles | +0.396%/mo NW-t 2.26; Compustat reproduction +0.36 t=2.26; risk characterisation suite |
-| 30-name diagnostic | SGX performance audit, SGX multi-factor FYP | SGX_Strategy_Audit.ipynb (price-only, field-gated) | No signal |t|>1.96 on clean fields; L/S diversifier hypothesis |
+| 30-name diagnostic | SGX performance audit, SGX multi-factor | SGX_Strategy_Audit.ipynb (price-only, field-gated) | No signal |t|>1.96 on clean fields; L/S diversifier hypothesis |
 
 Merge rules applied: benchmark = investable cohort at t (Bench B) everywhere; forward returns by explicit PIT lookup; 4-month embargo stated as convention; equal weight default with the cap bug disclosed; multiple-testing verdicts quoted per test.
 
 ## Module 1. Survivorship methodology study
 
-Folders: FYP SGX multifactor and momentum (decomposition, adjudication), STI SGX2 (strategy-level), Sector-specific valuation (leg symmetry). Finding: the bias runs backwards (−0.89 pp/yr, exit mix 59% takeouts), direction identified, magnitude an upper bound pending terminal-return adjudication; strategy-level effect is large on survivor-defined books (Sharpe 1.002→0.447) and near-symmetric across L/S legs on the PIT roster (−5.43/+5.26 pp/yr).
+Folders: SGX multifactor and momentum (decomposition, adjudication), STI SGX2 (strategy-level), Sector-specific valuation (leg symmetry). Finding: the bias runs backwards (−0.89 pp/yr, exit mix 59% takeouts), direction identified, magnitude an upper bound pending terminal-return adjudication; strategy-level effect is large on survivor-defined books (Sharpe 1.002→0.447) and near-symmetric across L/S legs on the PIT roster (−5.43/+5.26 pp/yr).
 
 ## Module 2. Cost and capacity waterfall
 
@@ -41,7 +41,7 @@ Folder: SGX multi-factor trading strategy development. 52-week high vs momentum 
 
 ## Module 7. VBA / data tooling
 
-Folders: STI SGX2, SGX multi-factor FYP, consolidation audit. Bloomberg pull machinery (membership history via INDX_MWEIGHT_HIST with END_DATE_OVERRIDE, price panels, publication pulls), CapIQ module, daily OHLCV, diagnostic probes. Ships as code; no results of its own.
+Folders: STI SGX2, SGX multi-factor, consolidation audit. Bloomberg pull machinery (membership history via INDX_MWEIGHT_HIST with END_DATE_OVERRIDE, price panels, publication pulls), CapIQ module, daily OHLCV, diagnostic probes. Ships as code; no results of its own.
 
 ## Cross-cutting: corrections log
 
@@ -58,6 +58,6 @@ Thirteen verified corrections (ledger section N), spanning the synthetic fallbac
 | SGX performance audit | Core (30-name diagnostic) |
 | Sector-specific valuation factors | Core (factor anatomy, alignment), Module 1 (leg symmetry), corrections (cap bug, double-filter) |
 | SGX multi-factor trading strategy development | Modules 2, 6; PIT validation, placebo, multiple testing M=55 |
-| SGX multi-factor FYP | Module 7; contamination map; superseded papers |
-| FYP SGX multifactor and momentum | Module 1; 65-test grid; panel rebuild integrity |
+| SGX multi-factor | Module 7; contamination map; superseded papers |
+| SGX multifactor and momentum | Module 1; 65-test grid; panel rebuild integrity |
 | Consolidation audit | REPORT/DATA baseline, shipped code |

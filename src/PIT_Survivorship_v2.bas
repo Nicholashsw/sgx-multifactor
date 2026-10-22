@@ -1,7 +1,7 @@
 Attribute VB_Name = "PIT_Survivorship_v2"
 '=====================================================================
 '  POINT-IN-TIME (SURVIVORSHIP-FREE) UNIVERSE + DATA PULLER  -- v2
-'  SGX Multi-Factor FYP
+'  SGX Multi-Factor
 '
 '  CHANGES VS v1:
 '    - MAX_WAIT 60 -> 120s  (BDH often hadn't finished loading at 60s,

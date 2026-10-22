@@ -1,5 +1,5 @@
 """
-SGX Multi-Factor FYP A1083. pipeline.py
+SGX multi-factor. pipeline.py
 
 Builds the monthly macro panel and the 30-name Bloomberg stock panel.
 Run: python pipeline.py

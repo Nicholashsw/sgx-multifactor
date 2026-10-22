@@ -1,6 +1,6 @@
 Attribute VB_Name = "PullHistoricalMembership"
 '==============================================================================
-' Point-in-time index membership puller  (SGX Multi-Factor FYP)
+' Point-in-time index membership puller  (SGX Multi-Factor)
 '
 ' WHAT IT DOES
 '   For each as-of date, asks Bloomberg who was ACTUALLY in the index then

@@ -1,5 +1,5 @@
 """
-SGX Multi-Factor FYP A1083. factor_model.py
+SGX multi-factor. factor_model.py
 Run after pipeline.py: python factor_model.py
 
 Cross-sectional factor construction, IC analysis, quintile diagnostics.

@@ -1,5 +1,5 @@
 """
-SGX Multi-Factor FYP A1083. backtest.py
+SGX multi-factor. backtest.py
 Run after factor_model.py: python backtest.py
 
 Monthly rebalanced long-only and long-short backtest with transaction costs,
