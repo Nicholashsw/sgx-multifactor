@@ -1,0 +1,241 @@
+market,pair,cluster,method,entry,period,mean,t_nw,sharpe,trades
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Static EG,1.0,train,0.0028180157790925896,2.602316922846059,0.5100782414882385,12
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Static EG,1.0,oos,-0.002872693280256891,-1.7010277690911204,-0.6131145276589867,0
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Static EG,1.5,train,0.001352625905406294,1.5606081533585041,0.3120085524813772,4
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Static EG,1.5,oos,-0.002872693280256891,-1.7010277690911204,-0.6131145276589867,0
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Static EG,2.0,train,0.0008414949208048734,1.2322312059104865,0.30714674498741246,2
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Static EG,2.0,oos,-0.002872693280256891,-1.7010277690911204,-0.6131145276589867,0
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Rolling,1.0,train,-0.0006179911271836352,-0.9238119686956163,-0.159933163303093,15
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Rolling,1.0,oos,-0.0015075794385350598,-1.2570015991365737,-0.4156010044352458,10
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Rolling,1.5,train,-0.0006558913810800206,-0.9881751235907139,-0.172587486820346,11
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Rolling,1.5,oos,-0.00044936067522635323,-0.3959881357115801,-0.14003541884220444,10
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Rolling,2.0,train,-0.000672602506524251,-1.0904172237891605,-0.19509725294384117,8
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Rolling,2.0,oos,-0.00015670487052406526,-0.15611575346724774,-0.053548774186134844,7
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Kalman MLE,1.0,train,0.0011437643076977167,1.255070726493044,0.24554595325157624,80
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Kalman MLE,1.0,oos,-0.0006383435265762435,-0.772354360722935,-0.27269788140040185,20
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Kalman MLE,1.5,train,0.000677775418539304,1.0101113930077303,0.20026800679018436,50
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Kalman MLE,1.5,oos,-0.00032276159224316463,-0.4456697704759167,-0.2353619149113509,8
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Kalman MLE,2.0,train,0.0008767595586694309,1.4655427040725277,0.29129175259363954,28
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Kalman MLE,2.0,oos,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Kalman fixed delta,1.0,train,0.0008794439877470593,1.6831952444545517,0.2802194642451307,6
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Kalman fixed delta,1.0,oos,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Kalman fixed delta,1.5,train,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Kalman fixed delta,1.5,oos,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Kalman fixed delta,2.0,train,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",DBS/OCBC,Banks,Kalman fixed delta,2.0,oos,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Static EG,1.0,train,0.0019036057600698767,2.0529491722333875,0.3668198129963261,10
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Static EG,1.0,oos,-0.0040556527159751,-2.6919013941736303,-0.8312188769105029,0
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Static EG,1.5,train,0.0012165536758087926,1.5556887960515264,0.2636122014111839,4
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Static EG,1.5,oos,-0.0040556527159751,-2.6919013941736303,-0.8312188769105029,0
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Static EG,2.0,train,0.0014917416790881364,1.7447182765520464,0.35105041709432466,3
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Static EG,2.0,oos,-0.0035927389553215366,-2.368333765923661,-0.7558888850309436,1
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Rolling,1.0,train,0.0011218890013458473,1.362987160159435,0.26003321273990243,25
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Rolling,1.0,oos,-0.0008780450156002699,-0.5737756188399142,-0.20047555727254093,12
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Rolling,1.5,train,0.0013246070501530384,2.072222930078405,0.4087577917912396,17
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Rolling,1.5,oos,-0.0004911592305745467,-0.35092717080187974,-0.1181194011148919,10
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Rolling,2.0,train,0.001030547679634092,1.835133372878516,0.3918906355979998,10
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Rolling,2.0,oos,-0.0004397955530296262,-0.305768509826221,-0.10668794917181766,9
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Kalman MLE,1.0,train,-8.688963177104259e-05,-0.13955654450436517,-0.025882764154236623,88
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Kalman MLE,1.0,oos,0.0002827692952357177,0.21959286510329015,0.09978469588735299,24
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Kalman MLE,1.5,train,5.209739842273448e-05,0.09416599405375783,0.020006005022054726,40
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Kalman MLE,1.5,oos,0.00012656729010040286,0.14085876715283105,0.058918281650159804,8
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Kalman MLE,2.0,train,-0.00031921280474254623,-0.6290675109523498,-0.13325122850191046,24
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Kalman MLE,2.0,oos,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Kalman fixed delta,1.0,train,-0.00010645654795978197,-0.20689201928398906,-0.04099213261235378,6
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Kalman fixed delta,1.0,oos,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Kalman fixed delta,1.5,train,0.00038776866290125356,1.0433328276290477,0.29747571762868946,2
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Kalman fixed delta,1.5,oos,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Kalman fixed delta,2.0,train,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",DBS/UOB,Banks,Kalman fixed delta,2.0,oos,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Static EG,1.0,train,0.001746502856361173,2.063829460733193,0.35518349506153585,15
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Static EG,1.0,oos,0.000582842969948008,0.3897532557994072,0.12783855149292048,2
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Static EG,1.5,train,0.0021589130729899285,2.7447162443948225,0.48533599821306717,13
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Static EG,1.5,oos,0.0007036033673751335,0.4745622829291317,0.1570142340552379,2
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Static EG,2.0,train,0.0017808442137590141,2.409386483566932,0.4856023444285497,8
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Static EG,2.0,oos,0.0011427647835246546,0.9769062845453028,0.27588932282961587,3
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Rolling,1.0,train,4.864822045116668e-05,0.07695281215700327,0.014516800800212799,17
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Rolling,1.0,oos,0.0009811960646694943,0.755106156908089,0.2898212062374956,14
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Rolling,1.5,train,0.00041853345292281537,0.7094194898185245,0.14093360658530724,15
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Rolling,1.5,oos,0.0008182312326677016,0.6992778390942384,0.26227766083562937,10
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Rolling,2.0,train,0.00022981197076621181,0.42945882191952284,0.08220691555389772,10
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Rolling,2.0,oos,0.00039667232809464166,0.48818538439642417,0.18533465650550837,5
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Kalman MLE,1.0,train,-0.0009678700680729976,-1.2792609297672297,-0.2451770620061005,74
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Kalman MLE,1.0,oos,-0.0015326776729232665,-1.238613179316081,-0.6982722407157137,19
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Kalman MLE,1.5,train,-0.00020047145189611615,-0.40983281190019355,-0.0703070280368314,34
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Kalman MLE,1.5,oos,-0.0010328311737924718,-0.8339507310397268,-0.5024181151945691,7
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Kalman MLE,2.0,train,0.0002529363720339846,0.8354237895405405,0.10270411728361988,22
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Kalman MLE,2.0,oos,-0.0013906793913941108,-1.2500170849843995,-0.951951185937401,3
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Kalman fixed delta,1.0,train,0.0007024197431362221,2.0386218410518318,0.3026764992896982,12
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Kalman fixed delta,1.0,oos,-0.0010255123719987251,-1.2552496876126715,-0.8248564129735085,1
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Kalman fixed delta,1.5,train,0.0005117767535767363,1.3433829184940793,0.34660196431889123,4
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Kalman fixed delta,1.5,oos,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Kalman fixed delta,2.0,train,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",OCBC/UOB,Banks,Kalman fixed delta,2.0,oos,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Static EG,1.0,train,0.003592506016724701,3.734602858935222,0.9319064048647429,22
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Static EG,1.0,oos,0.0013896974931602115,1.5604599671702275,0.36373413500790447,9
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Static EG,1.5,train,0.0025095760861697366,3.127631179575292,0.825195744632875,12
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Static EG,1.5,oos,0.0013116491759777487,1.5446178301734261,0.3646016127653386,7
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Static EG,2.0,train,0.0017996945855145734,2.3269109074575827,0.8149347107501685,8
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Static EG,2.0,oos,0.00040090820836699033,0.5490230959996389,0.1255511304393678,3
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Rolling,1.0,train,-5.77555937355437e-05,-0.1738079893278946,-0.03631182804858354,7
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Rolling,1.0,oos,0.002098076594309617,1.513542526996146,0.4453871436128692,15
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Rolling,1.5,train,3.0940459625629764e-05,0.12081175685989667,0.022868678913624874,5
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Rolling,1.5,oos,0.001461031416438185,1.3081756388910222,0.3429218631829538,11
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Rolling,2.0,train,0.00022779272802879113,1.063328562684624,0.1878178376844874,5
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Rolling,2.0,oos,0.0020334762945289817,1.6397940506786544,0.5477964367207133,9
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Kalman MLE,1.0,train,0.002141489564974228,2.3713620540931646,0.7004739093543617,35
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Kalman MLE,1.0,oos,-7.358060931832054e-05,-0.0788391332055533,-0.02388783264745196,19
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Kalman MLE,1.5,train,0.0013437481202249232,1.7569573361040487,0.5477835642326636,14
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Kalman MLE,1.5,oos,-0.0003051167480282841,-0.5944602650184425,-0.1301810093948848,10
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Kalman MLE,2.0,train,0.001227843049575347,1.6199813786176984,0.5394090790890004,10
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Kalman MLE,2.0,oos,9.310293457924093e-05,0.16049178241119055,0.053216208809249106,4
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Kalman fixed delta,1.0,train,0.0013286577521644492,1.3586273557943678,0.388698096615387,18
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Kalman fixed delta,1.0,oos,-0.00022884070070909165,-0.4559889045115366,-0.09632716513888674,6
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Kalman fixed delta,1.5,train,0.001454528420923107,1.8041196487635862,0.6083868846547854,6
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Kalman fixed delta,1.5,oos,0.00021384403266233904,0.32739617546865846,0.11695820596481508,4
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Kalman fixed delta,2.0,train,0.0007037076452539653,1.0564439444017029,0.40615002526494876,2
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MINT,Industrial REITs,Kalman fixed delta,2.0,oos,0.0005432672086087052,1.054857519852448,0.407876548333896,2
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Static EG,1.0,train,0.003954927294707005,3.035008084136216,0.5513559576042163,14
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Static EG,1.0,oos,0.0009114033253164991,0.7915930480563242,0.20878821361942865,3
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Static EG,1.5,train,0.002565000956329359,2.092930609752378,0.4055603779937667,6
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Static EG,1.5,oos,0.0014764935959740134,1.2940744168668825,0.41352349300760344,3
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Static EG,2.0,train,0.0020980503040928106,1.7352240618748358,0.3464802217309105,4
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Static EG,2.0,oos,0.0006847801545499992,1.286377553941498,0.37646514752629834,1
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Rolling,1.0,train,0.0008441707251757307,1.205031425999657,0.2816114034676634,17
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Rolling,1.0,oos,0.0010185399412789829,0.5627420776726372,0.1809101736536403,12
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Rolling,1.5,train,0.0005036946066141171,1.0373547446628324,0.21764433402204494,8
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Rolling,1.5,oos,0.002409083336731422,1.3937061581752002,0.49178656106701335,9
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Rolling,2.0,train,0.0004960378753468041,1.2353254899411676,0.23494492050524152,6
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Rolling,2.0,oos,0.003305633014356384,2.0894841721193584,0.8135904560947702,10
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Kalman MLE,1.0,train,0.0034888964168144844,2.825546240651334,0.4898281314414182,40
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Kalman MLE,1.0,oos,0.0006532508396359311,0.7940970737632159,0.2539112925314926,8
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Kalman MLE,1.5,train,0.0033791336184999733,2.852793771084114,0.6019923989929207,26
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Kalman MLE,1.5,oos,0.0011490559067198318,1.4815299150972088,0.5199357054579741,8
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Kalman MLE,2.0,train,0.00222281402116774,2.4892839410015153,0.4991177747872869,14
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Kalman MLE,2.0,oos,0.0005905777349521319,1.1259653139033419,0.4634334935063806,2
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Kalman fixed delta,1.0,train,0.0018497228711902266,1.9622402455976038,0.3549240865672497,12
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Kalman fixed delta,1.0,oos,0.0013447440531437378,1.9558203377077714,0.6066488208013221,6
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Kalman fixed delta,1.5,train,0.0009365594717332065,1.2337699683598766,0.24757037953308597,4
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Kalman fixed delta,1.5,oos,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Kalman fixed delta,2.0,train,0.0007099663193744043,0.9804578684517319,0.2146787178256766,2
+"25-name cap-weighted LOO proxy, not the STI",CLAR/MLT,Industrial REITs,Kalman fixed delta,2.0,oos,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Static EG,1.0,train,0.0017088902030757546,1.556032999787991,0.4373164873614784,6
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Static EG,1.0,oos,0.0019267244698185876,1.1396206173115904,0.36979324456834123,5
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Static EG,1.5,train,0.001483310369972101,1.5877578003185093,0.44246107794975886,4
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Static EG,1.5,oos,0.0009559899587843199,0.6826434425715581,0.2233423979304088,2
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Static EG,2.0,train,0.0009047513150629762,1.5767723058587595,0.4786062380197599,2
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Static EG,2.0,oos,0.001470970250542989,0.9851932212285235,0.3629453280423626,2
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Rolling,1.0,train,0.00024594926604534393,0.3987908757649115,0.15276787950675627,2
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Rolling,1.0,oos,0.002297984928713169,1.3861197712527042,0.45309326644183,14
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Rolling,1.5,train,0.0003164917717049945,0.49893605751916703,0.19846759781740628,2
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Rolling,1.5,oos,0.0009162659384789766,0.6423780495965646,0.22392578160269366,8
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Rolling,2.0,train,0.00011255024212279649,0.22209591576331827,0.08778364291580368,2
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Rolling,2.0,oos,5.462223581503244e-05,0.05054795830163725,0.01838088262786806,2
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Kalman MLE,1.0,train,-0.0011605752418971124,-1.7768030963259431,-0.4956309319153274,34
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Kalman MLE,1.0,oos,0.0008228558243548836,0.7867353995894738,0.27474144183064436,28
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Kalman MLE,1.5,train,-0.00027219606603733277,-0.5014775473980542,-0.15112347834402495,20
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Kalman MLE,1.5,oos,0.0008899008080246899,0.9420155026952036,0.3320809764345922,18
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Kalman MLE,2.0,train,-6.779686365745575e-05,-0.21292713093414284,-0.06065752728333667,12
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Kalman MLE,2.0,oos,-0.00016403599655611685,-0.42619508267904477,-0.08238440195865915,8
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Kalman fixed delta,1.0,train,0.0003920989961664804,0.6200179268893308,0.15326848839871132,4
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Kalman fixed delta,1.0,oos,0.0001952083129833461,0.29608902820097577,0.07942969807882444,2
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Kalman fixed delta,1.5,train,-4.4833238967259205e-05,-0.09487298789468168,-0.025266920004279093,2
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Kalman fixed delta,1.5,oos,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Kalman fixed delta,2.0,train,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",MINT/MLT,Industrial REITs,Kalman fixed delta,2.0,oos,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Static EG,1.0,train,0.002270245882865912,1.4438379348954904,0.3037799107130182,7
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Static EG,1.0,oos,0.0007413967147604682,0.33040140822627884,0.12164582881259663,4
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Static EG,1.5,train,0.0018705692749258554,1.4019233730482712,0.3193103670504783,4
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Static EG,1.5,oos,-0.001447055766328157,-1.4936332546219708,-0.6153069346343089,1
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Static EG,2.0,train,0.0011885429587663004,1.0830915318945746,0.2906527041865971,2
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Static EG,2.0,oos,-0.0008762009043122,-1.456424779862784,-0.4409473043416201,1
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Rolling,1.0,train,0.0008143329765328934,1.0913761162270486,0.23937221520771737,15
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Rolling,1.0,oos,0.0008835687956862632,0.625910021358301,0.1958861522667707,11
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Rolling,1.5,train,0.0013613643288947293,1.9037293555480463,0.5353451998943695,13
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Rolling,1.5,oos,0.0010704768377015578,0.8606302446534717,0.25127924973131893,7
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Rolling,2.0,train,0.0007675879064329352,1.3726364429528024,0.3395218380547692,8
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Rolling,2.0,oos,0.0010059708027393415,0.93612029449819,0.316423843056259,3
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Kalman MLE,1.0,train,0.0020823864287721227,1.9294735122191542,0.40406352531662754,48
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Kalman MLE,1.0,oos,0.0009004938064950823,0.6462996364996529,0.19778527915188884,22
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Kalman MLE,1.5,train,0.0014467857765293741,1.5733848820222673,0.3477410808143706,28
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Kalman MLE,1.5,oos,0.0012437613611310377,1.396819983085127,0.3888606371271155,14
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Kalman MLE,2.0,train,0.0005081118401327471,1.0481530674436523,0.16683778501956145,12
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Kalman MLE,2.0,oos,0.0009580912545630431,1.682706895788399,0.5443714050727322,6
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Kalman fixed delta,1.0,train,-0.00016370868924354913,-0.18131713055340243,-0.0350535237571911,4
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Kalman fixed delta,1.0,oos,0.0011226634355237862,1.3266270668661722,0.4060173134525208,2
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Kalman fixed delta,1.5,train,-0.00019886202950848697,-0.2792555292804827,-0.05243817278632562,2
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Kalman fixed delta,1.5,oos,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Kalman fixed delta,2.0,train,0.000272924885972914,0.44744880904801365,0.08086075866038064,2
+"25-name cap-weighted LOO proxy, not the STI",CICT/FCT,Retail/Div REITs,Kalman fixed delta,2.0,oos,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Static EG,1.0,train,0.0023160412014648015,2.037343496178548,0.5594156042240808,8
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Static EG,1.0,oos,-0.0002874506074751204,-0.13361053888075317,-0.05688098075315542,5
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Static EG,1.5,train,0.002320060157824632,2.3366093860974937,0.6876830981019904,6
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Static EG,1.5,oos,0.00010991651594141586,0.054745923580071396,0.022398297768719783,5
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Static EG,2.0,train,0.0019839252020779847,2.3772263988065743,0.7351481044790849,4
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Static EG,2.0,oos,0.00032910553585794726,0.15573418171274653,0.06753143276846302,5
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Rolling,1.0,train,0.00011323796936873243,0.12475323403679164,0.038757799150476266,5
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Rolling,1.0,oos,-0.0023568709567675264,-0.9730291699446677,-0.37166220096990815,6
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Rolling,1.5,train,-0.00019055087573494804,-0.26866811959967546,-0.071468625881141,5
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Rolling,1.5,oos,-0.0020907833920257397,-0.8810607326231548,-0.33126311487786797,6
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Rolling,2.0,train,-0.00045978905240393525,-1.076663604338578,-0.5319328751121122,1
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Rolling,2.0,oos,-0.0024307623990479847,-1.252269138485745,-0.4223726499491757,4
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Kalman MLE,1.0,train,0.002697899684581046,3.0907140731896847,0.7327254015274922,39
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Kalman MLE,1.0,oos,-0.0025184731786300945,-1.8807232767130484,-0.5779573393347901,23
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Kalman MLE,1.5,train,0.0019882682167869786,2.74927041590504,0.677673407082858,20
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Kalman MLE,1.5,oos,-0.00019497697550250904,-0.20965926355730177,-0.07686879173263236,14
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Kalman MLE,2.0,train,0.0012549340200519422,2.3130939982840197,0.649559622976923,10
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Kalman MLE,2.0,oos,0.00017432420485323827,0.23040230832845893,0.09263269984162359,10
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Kalman fixed delta,1.0,train,0.0013404173289311302,2.1836842681210875,0.5855898044448178,8
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Kalman fixed delta,1.0,oos,-0.0011006000386190324,-0.7131566071468723,-0.21436965490894716,10
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Kalman fixed delta,1.5,train,0.000784323845533826,1.4816495063239727,0.412640240944571,4
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Kalman fixed delta,1.5,oos,0.0010796820677933358,1.2241060369800776,0.3510635862029276,6
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Kalman fixed delta,2.0,train,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",CICT/MPACT,Retail/Div REITs,Kalman fixed delta,2.0,oos,0.001064901974503624,1.4757957707041158,0.40943939573239324,2
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Static EG,1.0,train,0.00300504029118168,3.5317806127983853,0.9338438301336945,20
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Static EG,1.0,oos,0.002129834040537451,0.8418086613029441,0.34311528297672544,15
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Static EG,1.5,train,0.0022277597918702206,2.5361071827643182,0.80829690455548,10
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Static EG,1.5,oos,0.002197601584746859,0.904196869669541,0.36346972757605955,13
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Static EG,2.0,train,0.0006768023170390008,1.2311846088006093,0.3893907979488517,2
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Static EG,2.0,oos,0.0010043104540942347,0.4565617717273482,0.17612439575155306,7
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Rolling,1.0,train,8.884503886192363e-05,0.3869656922703896,0.0786814997430762,5
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Rolling,1.0,oos,0.0034385930934256667,1.273273234992678,0.5060701628300381,21
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Rolling,1.5,train,-0.00010331650917634154,-0.4153162661936965,-0.10679042772905122,2
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Rolling,1.5,oos,0.0027538476618486508,1.116903733281929,0.4441342356925727,14
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Rolling,2.0,train,3.829943501129285e-05,0.23016168464977166,0.04384757799158068,2
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Rolling,2.0,oos,0.0033383940112239967,1.4807635161077648,0.5750596885867661,14
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Kalman MLE,1.0,train,0.0016806387922404487,1.4832846559169313,0.4691474071855474,38
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Kalman MLE,1.0,oos,0.002759543961851861,1.7250531979921082,0.5928987457286738,42
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Kalman MLE,1.5,train,0.0005231902325026816,0.6485316186418738,0.1985423488642791,20
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Kalman MLE,1.5,oos,0.0025520474041424305,1.7146000517289721,0.5713664885262353,28
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Kalman MLE,2.0,train,0.0007667599705467275,1.3418026718189153,0.4073829336656013,6
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Kalman MLE,2.0,oos,0.0023113084527336407,1.3875988170734426,0.545175372170028,20
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Kalman fixed delta,1.0,train,0.0012160218159433123,1.566297708395963,0.5115235756973809,16
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Kalman fixed delta,1.0,oos,0.0027984660692994636,1.5536398020683706,0.5672773268875722,23
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Kalman fixed delta,1.5,train,0.0006976359634762563,1.4963761555476327,0.5508784133975464,4
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Kalman fixed delta,1.5,oos,0.002365320391832332,1.5802618497914547,0.5932713112727366,13
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Kalman fixed delta,2.0,train,0.00045766596808063383,1.0668352455325982,0.4512542781847447,2
+"25-name cap-weighted LOO proxy, not the STI",FCT/MPACT,Retail/Div REITs,Kalman fixed delta,2.0,oos,0.0011895762453219456,1.3047464416334393,0.4184870532797345,6
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Static EG,1.0,train,0.0075990334340055804,2.646336622180434,0.6841607644438961,16
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Static EG,1.0,oos,-0.0008857291247177691,-0.24266873954440366,-0.07788690640121147,0
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Static EG,1.5,train,0.004217821632589264,1.9665788652403238,0.5338861794899786,8
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Static EG,1.5,oos,0.0011360824203166836,0.3307461998350386,0.11027098863558245,1
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Static EG,2.0,train,0.0027733605453646062,1.7706859389959049,0.5137955449348452,4
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Static EG,2.0,oos,0.0018024154882917928,0.531496837291825,0.19304598601668568,1
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Rolling,1.0,train,0.002086624790765126,1.6473813024664263,0.30638909045788915,24
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Rolling,1.0,oos,0.0005137252336716077,0.24551441453833353,0.07878472825672841,7
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Rolling,1.5,train,0.0025307778157014653,2.3062135799772596,0.4228555315670803,20
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Rolling,1.5,oos,-4.475773231537202e-05,-0.022433609440177544,-0.007229554382162208,6
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Rolling,2.0,train,0.0015102930617604388,2.094315163288727,0.3614916679940146,10
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Rolling,2.0,oos,0.00030441375487564004,0.15346440091806454,0.04971255660357803,6
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Kalman MLE,1.0,train,-0.0017131320783403234,-0.9376481199829666,-0.2354767997695103,88
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Kalman MLE,1.0,oos,0.0008956617761623914,0.9701501785403893,0.22236961668442817,24
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Kalman MLE,1.5,train,-0.0022526212709746258,-1.8513995601126298,-0.40078124868488985,46
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Kalman MLE,1.5,oos,0.0008255984221278437,1.2079708568686702,0.37796386395223147,10
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Kalman MLE,2.0,train,-0.0018659879876236252,-1.6201361377243801,-0.3687816985993185,30
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Kalman MLE,2.0,oos,0.001071437953332314,1.794889318774618,0.5707869537885818,6
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Kalman fixed delta,1.0,train,0.001379869685330219,1.0129813303701758,0.2553851933589907,6
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Kalman fixed delta,1.0,oos,-7.984241029655136e-05,-0.07024284906246621,-0.015441092555673653,2
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Kalman fixed delta,1.5,train,0.0015583232099241962,1.3807263592781867,0.3904447044787966,4
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Kalman fixed delta,1.5,oos,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Kalman fixed delta,2.0,train,0.0,,,0
+"25-name cap-weighted LOO proxy, not the STI",CIT/UOL,RE developers,Kalman fixed delta,2.0,oos,0.0,,,0

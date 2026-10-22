@@ -1,0 +1,25 @@
+market,method,entry,period,mean,t_nw,sharpe
+"25-name cap-weighted LOO proxy, not the STI",Kalman MLE,1.0,train,-0.0005282876282259851,-11.446852462054144,-2.540352151971035
+"25-name cap-weighted LOO proxy, not the STI",Kalman MLE,1.0,oos,-0.0004508848481100084,-7.45356588623911,-4.232080863795199
+"25-name cap-weighted LOO proxy, not the STI",Kalman MLE,1.5,train,-0.0002508797444916292,-6.15364233284804,-1.3948736479057777
+"25-name cap-weighted LOO proxy, not the STI",Kalman MLE,1.5,oos,-0.00020570597414822634,-3.774426466207018,-2.1593935585189783
+"25-name cap-weighted LOO proxy, not the STI",Kalman MLE,2.0,train,-0.00010112603081862018,-2.843895521651852,-0.6410634069325684
+"25-name cap-weighted LOO proxy, not the STI",Kalman MLE,2.0,oos,-0.00010353663351169999,-1.9295306488390604,-1.181114298826558
+"25-name cap-weighted LOO proxy, not the STI",Kalman fixed delta,1.0,train,4.547975896054651e-05,2.508755806130967,0.5214260640020089
+"25-name cap-weighted LOO proxy, not the STI",Kalman fixed delta,1.0,oos,-9.495826307510718e-06,-0.4547365098485859,-0.2421793191775283
+"25-name cap-weighted LOO proxy, not the STI",Kalman fixed delta,1.5,train,3.302753366887716e-05,2.206385380244303,0.5394782445125232
+"25-name cap-weighted LOO proxy, not the STI",Kalman fixed delta,1.5,oos,-5.030855559888439e-06,-0.3265389871316065,-0.1501697840134257
+"25-name cap-weighted LOO proxy, not the STI",Kalman fixed delta,2.0,train,9.408005507619594e-06,1.0001341954866227,0.2313924590842421
+"25-name cap-weighted LOO proxy, not the STI",Kalman fixed delta,2.0,oos,-5.230587547808592e-06,-0.3904991448348076,-0.17651237330471933
+"25-name cap-weighted LOO proxy, not the STI",Rolling,1.0,train,8.229160081609587e-05,1.8873247870470733,0.40827442525515417
+"25-name cap-weighted LOO proxy, not the STI",Rolling,1.0,oos,-6.961091909402668e-05,-1.2655816668781192,-0.49753968240729457
+"25-name cap-weighted LOO proxy, not the STI",Rolling,1.5,train,7.760778546138439e-05,1.9302252201636811,0.4197493008855126
+"25-name cap-weighted LOO proxy, not the STI",Rolling,1.5,oos,-4.999205987589035e-05,-0.9884953316659795,-0.3836174300667067
+"25-name cap-weighted LOO proxy, not the STI",Rolling,2.0,train,5.522881048016462e-05,1.695544396623897,0.3660253859749092
+"25-name cap-weighted LOO proxy, not the STI",Rolling,2.0,oos,-4.703262751702041e-05,-1.0401152565020577,-0.3959598394022556
+"25-name cap-weighted LOO proxy, not the STI",Static EG,1.0,train,0.00032164523720111673,6.629107963106924,1.3630859155118202
+"25-name cap-weighted LOO proxy, not the STI",Static EG,1.0,oos,3.356008010296501e-05,0.8033229016655897,0.25519539934630747
+"25-name cap-weighted LOO proxy, not the STI",Static EG,1.5,train,0.00025008902396577223,6.108947934962723,1.2753182176199984
+"25-name cap-weighted LOO proxy, not the STI",Static EG,1.5,oos,3.1936070307531383e-05,0.8265804293018579,0.25576092243192466
+"25-name cap-weighted LOO proxy, not the STI",Static EG,2.0,train,0.0001781168219834114,5.0777788724445525,1.052970180311746
+"25-name cap-weighted LOO proxy, not the STI",Static EG,2.0,oos,4.1593727111482555e-05,1.0643886064979755,0.35167447106616906

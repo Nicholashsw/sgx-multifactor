@@ -2,8 +2,7 @@ Attribute VB_Name = "Module1_SGX_Bloomberg"
 Option Explicit
 
 ' =============================================================================
-' SGX MULTI-FACTOR FYP - Bloomberg Excel Add-In Data Collection
-' NTU EEE Final Year Project
+' SGX MULTI-FACTOR - Bloomberg Excel Add-In Data Collection
 '
 ' ARCHITECTURE DECISIONS (read before editing)
 ' ─────────────────────────────────────────────

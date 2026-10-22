@@ -6,9 +6,9 @@ Provenance for the figures in this folder. Each of the first 43 was matched byte
 
 | File | Module | Ledger ref | Original file (branch folder) |
 |---|---|---|---|
-| `surv_exit_mix.png` | Survivorship | B2 | `FYP SGX multifactor and momentum trading strategies/surv1_exit_mix.png` |
-| `surv_bias_both_universes.png` | Survivorship | B1/B3 | `FYP SGX multifactor and momentum trading strategies/surv2_both_universes.png` |
-| `surv_total_return_correction.png` | Survivorship | N9 | `FYP SGX multifactor and momentum trading strategies/fig3_total_return_correction.png` |
+| `surv_exit_mix.png` | Survivorship | B2 | `SGX multifactor and momentum trading strategies/surv1_exit_mix.png` |
+| `surv_bias_both_universes.png` | Survivorship | B1/B3 | `SGX multifactor and momentum trading strategies/surv2_both_universes.png` |
+| `surv_total_return_correction.png` | Survivorship | N9 | `SGX multifactor and momentum trading strategies/fig3_total_return_correction.png` |
 | `surv_leg_symmetry_pit.png` | Survivorship | B12 | `Sector-specific valuation factors for Singapore equities/pit1_survivorship.png` |
 
 ## Corrections section

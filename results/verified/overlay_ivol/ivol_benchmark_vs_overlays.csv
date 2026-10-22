@@ -1,0 +1,4 @@
+overlay,sharpe_minus_ivol,ci_lo,ci_hi,p_gt0,beats_bar_+0.10
+Constant 1.36x leverage,0.0737,-0.0952,0.2752,0.821,False
+Jump-aware ES-target @ 1.36x,0.1358,-0.0362,0.3453,0.9419,False
+GARCH vol-target (LAGGED) @ 1.36x,0.0321,-0.1557,0.2347,0.6622,False

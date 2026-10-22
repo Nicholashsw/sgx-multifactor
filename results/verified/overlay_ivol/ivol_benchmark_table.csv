@@ -1,0 +1,7 @@
+label,AvgExp,Sharpe,Ann%,Vol%,MaxDD%
+Baseline (1.00x),1.0,0.7756,10.5895,13.6539,-32.2825
+Constant 1.36x leverage,1.3639,0.7756,14.4432,18.6228,-42.5435
+Jump-aware ES-target @ 1.36x,1.3639,0.8377,15.9205,19.0053,-40.9685
+GARCH vol-target (LAGGED) @ 1.36x,1.3639,0.734,13.4642,18.3432,-39.6067
+Inverse realised vol 12m @ 1.36x,1.3639,0.7019,14.2952,20.3668,-48.0903
+Inverse realised vol 6m @ 1.36x (sensitivity),1.3639,0.6544,12.2767,18.7595,-50.8618
