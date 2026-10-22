@@ -22,9 +22,12 @@ and sold that month, so it follows each scheme's real turnover.
 
 Run: python waterfall.py
      python waterfall.py --spreads cs_spreads_traded.csv --out waterfall_schemes_traded_days.csv
+     python waterfall.py --spreads cs_spreads_traded.csv --out waterfall_schemes_traded_days.csv \
+         --monthly waterfall_monthly_traded.csv
 The default run uses the spreads the published waterfall used and also writes
 waterfall_definitive.csv (preset weights); --spreads swaps in another spread file
-built by cs_spreads.py.
+built by cs_spreads.py. --monthly also writes the Composite long-short traded stages as
+monthly returns and checks that each column gives back the alpha and t in the table.
 """
 
 import argparse
@@ -38,6 +41,7 @@ from scipy import stats
 ap = argparse.ArgumentParser()
 ap.add_argument("--spreads", default="cs_spreads_monthly.csv")
 ap.add_argument("--out", default="waterfall_schemes.csv")
+ap.add_argument("--monthly", help="file for the Composite long-short traded stages, one column per stage")
 args = ap.parse_args()
 
 MARKIT = "newz/npfsiwyafic9oihc.csv"
@@ -235,11 +239,12 @@ TRADED = [("2. + spreads on traded names", {"use_cs": True, "traded": True}),
 LONG_ONLY_TRADED = [("Long-only + spreads on traded names", {"long_only": True, "use_cs": True, "traded": True})]
 RUNS = [("Long-short", "Every month", STAGES), ("Long-short", "Traded", TRADED),
         ("Long-only", "Every month", LONG_ONLY), ("Long-only", "Traded", LONG_ONLY_TRADED)]
-out = []
+out, series = [], {}
 for score in ["Composite", "Composite_ExQuality", "Composite_Equal", "Composite_WF"]:
     for book_name, costing, stages in RUNS:
         for label, kw in stages:
             r, turnover = bt(score, **kw)
+            series[score, book_name, costing, label] = r
             out.append({"Score": score, "Book": book_name, "Costing": costing, **nwa(r, label),
                         "Turnover": round(turnover, 3)})
 res = pd.DataFrame(out)
@@ -251,3 +256,21 @@ if args.spreads == "cs_spreads_monthly.csv":
     print("\nSaved waterfall_definitive.csv")
 res.to_csv(args.out, index=False)
 print(f"Saved {args.out}")
+
+if args.monthly:
+    # gross is the same under either costing, so it comes from the every-month run
+    cols = {"gross": ("Every month", "1. Gross signal"),
+            "after_spreads": ("Traded", "2. + spreads on traded names"),
+            "after_screen": ("Traded", "3. + Markit borrow availability screen"),
+            "after_fees": ("Traded", "4. + Markit borrow fee")}
+    m = pd.DataFrame({k: series["Composite", "Long-short", c, s] for k, (c, s) in cols.items()})
+    m.index.name = "Date"
+    m.to_csv(args.monthly, date_format="%Y-%m-%d")
+    back = pd.read_csv(args.monthly, index_col="Date", parse_dates=True)
+    for k, (c, s) in cols.items():
+        row = res[(res["Score"] == "Composite") & (res["Book"] == "Long-short")
+                  & (res["Costing"] == c) & (res["Stage"] == s)].iloc[0]
+        got = nwa(back[k], s)
+        assert (got["Alpha%mo"], got["t"]) == (row["Alpha%mo"], row["t"]), (k, got, row.to_dict())
+        print(f"{k}: alpha {got['Alpha%mo']:.3f} %/mo, t {got['t']:.2f}, N {got['N']}")
+    print(f"Saved {args.monthly}")
