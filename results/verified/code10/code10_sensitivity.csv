@@ -1,0 +1,8 @@
+stage,scenario,n_forced,bias_pp_yr
+before,"baseline, no terminal adjustment",0,-0.89
+before,37 triaged wipeouts forced -100%,37,-0.6
+before,37 + 25 ambiguous forced -100%,62,-0.4
+after,confirmed insolvencies forced -100%,1,-0.88
+after,+ unresolved triaged wipeouts,37,-0.6
+after,+ unresolved triaged wipeouts and ambiguous,44,-0.55
+after,+ every unresolved exit (harshest),50,-0.5

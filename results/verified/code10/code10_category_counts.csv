@@ -1,0 +1,8 @@
+category,evidence,n
+UNRESOLVED,SDC withdrawn bid only; no completed deal,1
+UNRESOLVED,no SDC deal; Factiva query not yet run,48
+cash takeout,Factiva/BT hand adjudication,1
+solvent liquidation,Factiva/BT hand adjudication,2
+stock merger,Factiva/BT hand adjudication,1
+suspension-insolvency,Factiva/BT hand adjudication,1
+"takeout, consideration not in SDC extract",SDC completed deal,61
