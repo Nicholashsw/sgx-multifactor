@@ -6,6 +6,8 @@ Aggregated result files backing VERIFICATION_LEDGER.md, all from executed runs o
 
 `verified/code10/` holds the aggregate outcome of the code-10 exit adjudication (category counts, category by triage prior, and the terminal-return sensitivity before and after), from `code/code10_adjudication.py`; the firm-level worksheet carries SDC and Compustat fields and stays local.
 
+`verified/overlay_ivol/` holds the inverse-realised-vol benchmark for the sizing overlays (ledger L6), from `code/inverse_vol_benchmark.py`. Sharpe is the test statistic and reproduces the published overlay table exactly; MaxDD there is on compounded w x net returns and differs slightly from the published leveraged rows, so it is indicative only.
+
 `verified/attribution/` holds the STI-core attribution and leakage tables behind REPORT_FINAL §7/§10 and ledger rows E4/E8/E9/E11, with its own README. Note that `verified/attribution_loo.csv` (broad Compustat, N=366, full composite +0.526 t=1.93) and `verified/attribution/attrib_factor_loo.csv` (top-100 10-name book, full composite +0.468 t=1.67) are **different runs on different universes** and are not expected to agree.
 
 No raw vendor panels ship; these are strategy-level series and test statistics.
