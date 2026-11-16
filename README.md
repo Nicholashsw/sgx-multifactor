@@ -1,6 +1,6 @@
 # Cost-Adjusted Multi-Factor Stock Selection on the Singapore Exchange
 
-Does a multi-factor cross-sectional model earn a robust premium on the Singapore Exchange, a smaller and less-arbitraged market than the US venues where factor premia decay fast? Every headline number below traces to an executed notebook cell or result file on real vendor data, listed row by row in [VERIFICATION_LEDGER.md](VERIFICATION_LEDGER.md). Numbers from earlier drafts that could not be traced to executed evidence were removed and are listed in [EXCLUSIONS.md](EXCLUSIONS.md).
+Does a multi-factor cross-sectional model earn a robust premium on the Singapore Exchange, a smaller and less-arbitraged market than the US venues where factor premia decay fast? Every headline number below traces to an executed notebook cell or result file on real vendor data, listed row by row in [VERIFICATION_LEDGER.md](VERIFICATION_LEDGER.md). Numbers from earlier drafts that could not be traced to executed evidence were removed and are listed in [EXCLUSIONS.md](EXCLUSIONS.md). Several of the notebooks the ledger cites are not in this repository, so four cells in the table below cannot be rechecked from the files here: the 59% takeout share, the 694-firm count, the 36.4 bp half-spread and the TSMOM comparison.
 
 The answer: the Singapore market has real, correctly signed, replicable cross-sectional return structure, and its trading frictions remove it before it becomes tradeable at institutional scale. Two findings generalise beyond Singapore: survivorship bias on SGX runs in the opposite direction to the textbook prediction, and the reference literature's factor premia do not reproduce under proper multiple-testing control.
 
@@ -12,14 +12,14 @@ The answer: the Singapore market has real, correctly signed, replicable cross-se
 | Survivorship correction reverses the broad long-short | survivor t=1.01 vs point-in-time t=3.82 | Broad Compustat, 1991–2026 |
 | Result does not hinge on the factor weights | preset 1.32%/mo (t=3.82), equal 1.01 (t=3.08), walk-forward 1.72 (t=4.58) | Broad Compustat, 1991–2026 |
 | Blue-chip naive backtest vs corrected | Sharpe 1.002 → 0.447 | 71-name PIT roster |
-| Cost waterfall on the winning composite | gross 1.661%/mo (t=5.13) → 0.366%/mo (t=1.08) fully costed; 0.06 to 0.54 across cost conventions, never significant | Broad Compustat, 2003–2026 |
+| Cost waterfall on the preset composite | gross 1.661%/mo (t=5.13) → 0.366%/mo (t=1.08) fully costed; 0.06 to 0.54 across the four cost conventions, none significant. The walk-forward composite keeps more: 0.45 to 1.01, with t=2.03 and t=2.57 when costs are charged only on the names traded | Broad Compustat, 2003–2026 |
 | Dominant cost | Corwin-Schultz spreads, 0.741%/mo (traded-days median half-spread 36.4 bp) | same |
 | Long-only top decile after spreads | 0.09%/mo (t=0.36): the signal lives in the short leg, where borrow binds | same |
 | Implementable long-short with real borrow (Markit) | +0.764%/mo (t=2.23) at S$50m AUM | top-100 |
 | STI-core strategy | +0.396%/mo, NW-t 2.26; reproduces independently on Compustat at +0.36 (t=2.26) | PIT STI top-6 |
 | Multiple-testing discipline | 65-test specification grid: 24 clear t=1.96, one clears t=3.0, zero survive BHY | dev window 1995–2019 |
 | Reference paper's Table I | does not reproduce: 0 of 9 factors survive Bonferroni (best 2.767 vs 2.77) | PIT STI |
-| Overlays (Barra, HMM, GBM, jump models, GARCH, Markov, IBES, jump sizing) | 8 tested, 8 failed to add risk-adjusted return | STI-core |
+| Overlays (statistical jump model, IBES revisions, jump-aware sizing, GARCH targeting, Markov switching) | 5 tested with executed evidence, 5 failed to add risk-adjusted return. Barra, HMM and GBM overlays also failed in early sessions whose outputs are not kept (ledger E20, E21) | STI-core |
 | Risk is jump-dominated | 57.9% jump variance; Gaussian understates 99% ES by 1.60pp (34%) | STI-core daily |
 | TSMOM combination with fundamentals | reverses under borrow constraints (combo 0.460 < TSMOM 0.543) | liquid100 |
 
@@ -42,11 +42,11 @@ The answer: the Singapore market has real, correctly signed, replicable cross-se
 | [EXCLUSIONS.md](EXCLUSIONS.md) | Everything cut from the report, and why |
 | [MODULE_MAP.md](MODULE_MAP.md), `modules/` | How the research branches fit into one core result plus seven modules |
 | [DATA.md](DATA.md) | Sources, licensing and reproduction routes; no licensed data ships |
-| `figures/` | 46 figures at 200 dpi, all from real-data runs, indexed in [figures/README.md](figures/README.md); three are redrawn from shipped results by `code/make_figures.py` |
+| `figures/` | 46 figures at 200 dpi from real-data runs, except two that document corrections (`corr_synthetic_data_audit.png` plots the fabricated series that was caught, `core_deciles_precorrection.png` the payoff before a bug fix), indexed in [figures/README.md](figures/README.md); three are redrawn from shipped results by `code/make_figures.py` |
 | `code/` | Pipeline, factor model, backtest, point-in-time engines, canonical re-runs and sensitivity scripts; [code/README.md](code/README.md) maps each headline result to the script or result file behind it |
 | `src/` | VBA data layer: Bloomberg and CapIQ pulls, point-in-time index membership |
 | `results/verified/` | Result files behind the ledger |
-| `notebooks/` | Survivorship backtest; `backtest_survivorship_final.ipynb` is the canonical quarterly point-in-time run. It ships without cell outputs, because running it needs licensed Bloomberg/Compustat panels and saved outputs would contain vendor rows. Its numbers are in `results/verified/survivorship_summary_final.csv` (ledger B1, B9, B11). |
+| `notebooks/` | Survivorship backtest; `backtest_survivorship_final.ipynb` is the canonical quarterly point-in-time run. Running it needs licensed Bloomberg/Compustat panels. It ships with its summary printout only (aggregate statistics, no vendor rows). Its numbers are in `results/verified/survivorship_summary_final.csv` (ledger B1, B9, B11). |
 
 ## Reproduce
 
@@ -61,6 +61,8 @@ python factor_model.py
 python backtest.py
 python make_figures.py      # redraws three figures from results/verified/; needs no licensed data
 ```
+
+`canonical_rerun.py` reads `sg_broad_quarterly.csv`, the quarterly Compustat panel behind the broad-universe tables. The script that builds that panel is not in the repository yet.
 
 Each script stops with an error if an input is missing. No script generates or falls back to made-up data. Without the licensed exports, the result files in `results/verified/` and the ledger are the evidence.
 

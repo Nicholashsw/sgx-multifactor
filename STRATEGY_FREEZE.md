@@ -5,7 +5,7 @@ Frozen on 17 October 2026. From this date the main strategy below does not chang
 ## Main strategy
 
 - **Universe.** WRDS World Indices Singapore constituents, point in time (the latest June snapshot at each month end), 1991 to 2026. Prices and fundamentals from Compustat Global. Delisted firms stay in until their last trading month.
-- **Factors.** Eight, winsorised at 1% and 99% and z-scored each month: 12-1 and 6-1 momentum, book-to-market, dividend yield, earnings yield, ROE, small size (minus log market cap) and Amihud liquidity (signed so liquid scores high). Fundamentals are lagged four months.
+- **Factors.** Eight, z-scored each month. An earlier version of this note said they were also winsorised at 1% and 99%; the panel behind the tables is not (its largest z-scores are near 21). The eight are: 12-1 and 6-1 momentum, book-to-market, dividend yield, earnings yield, ROE, small size (minus log market cap) and Amihud liquidity (signed so liquid scores high). Fundamentals are lagged four months.
 - **Composite.** Fixed weights from the project's first factor model on the Bloomberg STI panel, never fitted to this universe: 12-1 momentum, book-to-market and ROE 0.20 each; dividend yield, earnings yield and Amihud 0.10 each; 6-1 momentum and small size 0.05 each. Weights are rescaled over the factors present, and a stock needs at least four.
 - **Portfolio.** Monthly rebalance, equal-weighted deciles, long the top decile and short the bottom.
 - **Evaluation.** IC is the Spearman correlation with next month's return, joined on the calendar. Alpha is the intercept on the WRDS Singapore market return. Both use Newey-West standard errors with 6 lags.

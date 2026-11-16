@@ -3,7 +3,9 @@
 The aggregated result files behind the attribution and leakage claims in
 [`REPORT_FINAL.md`](../../../REPORT_FINAL.md) §7 and §10, and behind ledger rows **E4, E8, E9, E11**
 in [`VERIFICATION_LEDGER.md`](../../../VERIFICATION_LEDGER.md). Produced by the
-`SGX_Alpha_Attribution_Leakage` and `SGX_Attribution_Holdings_Brinson` notebooks.
+`SGX_Alpha_Attribution_Leakage` and `SGX_Attribution_Holdings_Brinson` notebooks. Those two
+notebooks are not in this repository, so the `NW_t` columns here cannot be recomputed from it.
+`code/attribution.py` is a separate analysis on the 30-name panel and reports plain t-statistics.
 
 ## Two different leave-one-out tables: do not confuse them
 
