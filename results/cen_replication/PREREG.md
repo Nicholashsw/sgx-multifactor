@@ -66,4 +66,5 @@ The four timing rules in the work plan (3-month trend filter, price above its 10
 
 | Date | Change | Reason |
 |---|---|---|
-| | | |
+| 17 Nov 2026 | A1 universe: 21 names, not 22. D01, H78 and J36 are not in the Compustat SGP extract (Bermuda-incorporated Jardine group). Yangzijiang Shipbuilding (BS6) is not in it either; the only Yangzijiang gvkeys are the 2022 and 2025 spin-offs, and the Capital IQ map had matched BS6 to one of them (status weak). C07 is Jardine Cycle & Carriage, gvkey 100296, checked by name; the map had rejected it and matched it to another firm. The other 20 come from the map at status dividends and were checked by name. No Bloomberg pull was made. | Universe |
+| 17 Nov 2026 | A1 data: Compustat Security Daily, primary SGX issue, 2012-01-03 to 2022-12-30 only (indicators warm up inside the window). High, low and close are divided by ajexdi, and volume is cshtrd. Compustat has no open, so the open is the previous day's adjusted close. In ta 0.11.0 none of the 86 add_all_ta_features outputs reads the open (checked by scaling it), so the proxy changes nothing. Return: total return from prccd / ajexdi x trfd. Daily slopes need at least 5 names on the day. | Data and open proxy |
