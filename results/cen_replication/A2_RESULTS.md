@@ -134,7 +134,7 @@ Run once on 18 Nov 2026 on the frozen code (A2 frozen at 30cfe3c, code unchanged
 - **In the broad universe the oscillator effect is stronger than in development, and now shows monthly too.** All five oscillators are significantly negative weekly (t -8.6 to -14.5) and monthly (t -3.5 to -6.7).
 - **In the STI universe it disappears.** No STI oscillator cell is significant at either horizon, and three weekly development passes flip to small positive t.
 - **Reversal explains less of it than before.** Williams %R keeps 81% of its weekly t with the reversal control, and Keltner %B keeps 54%.
-- **Still untradable at estimated Corwin-Schultz spreads.** No long-short cell clears 2.99. Williams %R weekly (+0.37% a week, t = 2.71) and Keltner %B weekly (+0.37%, t = 2.37) are positive net of costs. Williams %R weekly is positive at half cost in both periods (+1.19% a week, t = 8.61, here). Among the larger two thirds of stocks every weekly cell loses money at full cost again.
+- **Still untradable at estimated Corwin-Schultz spreads.** No long-short cell clears 2.99. Williams %R weekly (+0.37% a week, t = 2.71) and Keltner %B weekly (+0.37%, t = 2.37) are positive net of costs; exploratory, not findings. Williams %R weekly is positive at half cost in both periods (+1.19% a week, t = 8.61, here). Among the larger two thirds of stocks every weekly cell loses money at full cost again.
 
 ### Primary: Fama-MacBeth t, bar 3.20 (11 of 36 pass, in bold)
 
@@ -194,12 +194,11 @@ Benjamini-Yekutieli puts 24 of the 74 at q < 0.05: 11 primary, 7 mechanism and 6
 | Primary reversal, STI weekly | 4.77 | 1.24 | yes |
 | Primary MFI, broad monthly | 5.04 | 1.55 | yes |
 
-**Findings under the registered rule.** The rule: clears its bar in development, keeps its sign in the hold-out, and has a net long-short t above 1.96. PREREG does not say which period's net t is meant.
+**Findings under the registered rule: none.** The rule: clears its bar in development, keeps its sign in the hold-out, and has a net long-short t above 1.96. PREREG did not say which period's net t is meant.
 
-- **Development net t:** no signal qualifies. The best weekly development net t is Keltner %B at -0.33.
-- **Hold-out net t:** two signals qualify. Williams %R weekly has a hold-out net t of 2.71 and Keltner %B weekly 2.37. Both passed their broad weekly primary test in development and kept the sign.
-
-Neither reading lets any net long-short book clear its own Bonferroni bar of 2.99 in either period.
+- **Decision:** taken on 18 Nov 2026 and logged in PREREG. The net t must exceed 1.96 in development. This is the stricter reading. It was chosen after the ambiguity surfaced, which was after the hold-out, so the stricter reading is taken.
+- **Result:** no signal qualifies. The best weekly development net t is Keltner %B at -0.33.
+- **Exploratory, not findings:** in the hold-out, Williams %R weekly (+0.37% a week, t = 2.71) and Keltner %B weekly (+0.37% a week, t = 2.37) are positive net of costs. Both passed their broad weekly primary test in development and kept the sign. Their development net t was -1.15 and -0.33, and neither clears its Bonferroni bar of 2.99 in either period.
 
 ### Hypotheses in the hold-out
 
@@ -247,4 +246,4 @@ Net return per period, with t:
 
 Cen's oscillators predict next-week returns of Singapore stocks in both periods, but only across the broad universe. The effect is concentrated in the smallest names and is absent among STI-sized stocks in the hold-out.
 
-It is untradable at estimated Corwin-Schultz spreads. Williams %R weekly is positive at half cost in both periods, and in the hold-out it is also positive at full cost (t = 2.71), though below its bar of 2.99. Whether that counts as a registered finding depends on which period the rule's net t refers to; see above.
+It is untradable at estimated Corwin-Schultz spreads. Williams %R weekly is positive at half cost in both periods, and in the hold-out it is also positive at full cost (t = 2.71), though below its bar of 2.99. This is exploratory, not a finding: under the registered rule, read as net t above 1.96 in development, nothing qualifies.
