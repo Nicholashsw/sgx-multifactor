@@ -130,7 +130,7 @@ ledger are the evidence.
 | [EXCLUSIONS.md](EXCLUSIONS.md) | Everything cut from the report, and why |
 | [MODULE_MAP.md](MODULE_MAP.md), `modules/` | How the research branches fit into one core result plus seven modules |
 | [DATA.md](DATA.md) | Sources, licensing and reproduction routes; no licensed data ships |
-| `figures/` | 46 figures at 200 dpi from real-data runs, except two that document corrections (`corr_synthetic_data_audit.png` plots the fabricated series that was caught, `core_deciles_precorrection.png` the payoff before a bug fix), indexed in [figures/README.md](figures/README.md); three are redrawn from shipped results by `code/make_figures.py` |
+| `figures/` | 47 figures at 200 dpi from real-data runs, except two that document corrections (`corr_synthetic_data_audit.png` plots the fabricated series that was caught, `core_deciles_precorrection.png` the payoff before a bug fix), indexed in [figures/README.md](figures/README.md); three are redrawn from shipped results by `code/make_figures.py`, and `hero.png` by `figures.py` |
 | `code/` | Pipeline, factor model, backtest, point-in-time engines, canonical re-runs and sensitivity scripts; [code/README.md](code/README.md) maps each headline result to the script or result file behind it |
 | `src/` | VBA data layer: Bloomberg pulls, point-in-time index membership |
 | `results/verified/` | Result files behind the ledger |

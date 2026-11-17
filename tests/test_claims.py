@@ -286,8 +286,8 @@ add(R, "Errors paragraph", "Markov smoothed probabilities worth a spurious +0.52
     [("0.525", "Sharpe(smoothed) - Sharpe(filtered)", lambda: MS("MS SMOOTHED (look-ahead, INVALID)", "Sharpe") - MS("MS FILTERED (legitimate)", "Sharpe"))])
 add(R, "Errors paragraph", "overstated the passive alternative by 0.395%/mo", "attribution/leakage_funnel.csv",
     [("0.395", "corrected minus raw benchmark alpha", lambda: FUN("1. Corrected benchmark (investable cohort)", "alpha_pct_mo") - FUN("0. Raw, contaminated benchmark (as published)", "alpha_pct_mo"))])
-add(R, "What is where", "46 figures", "figures/*.png",
-    [("46", "count of png files", npng, 0.5)])
+add(R, "What is where", "47 figures", "figures/*.png",
+    [("47", "count of png files", npng, 0.5)])
 
 # ======================= code/README.md and results/README.md =======================
 add("codeREADME", "bracket row", "@| Survivorship bias of", "code10/code10_sensitivity.csv; survivorship_sensitivity_output.txt",

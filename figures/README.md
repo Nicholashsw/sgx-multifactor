@@ -104,3 +104,7 @@ These three are drawn by [`code/make_figures.py`](../code/make_figures.py), whic
 | `cost_waterfall_definitive.png` | Cost/capacity/borrow | D1c | `results/verified/waterfall_schemes_traded_days.csv`, drawn by `code/make_figures.py` |
 | `spec_grid_65_tests.png` | Multiple testing | G1 | `results/verified/spec_results_N65.csv` |
 | `table1_fama_macbeth.png` | Reference Table I | E2 | `results/verified/rederived_table1_fm.csv` |
+
+## Summary chart
+
+`hero.png`: gross decile returns (`results/verified/sgx3_deciles_corrected.csv`) beside the composite long-short cost waterfall (`results/verified/waterfall_schemes_traded_days.csv`), drawn by `figures.py` from shipped results.
