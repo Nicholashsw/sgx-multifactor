@@ -177,70 +177,76 @@ def tradability(u, signal, sign, ppy, lags, members=None):
     return gross, net, turnover
 
 
-d = load_daily()
-sig = pd.concat([stock_signals(x) for _, x in d.groupby("gvkey")])
-d = d.join(sig)
-top30 = sti_top30(d)
-fm = pd.read_csv(FSSTI_MAP, dtype=str).dropna(subset=["SecID"])
-fssti = {(int(y), s.split("_")[0].zfill(6)) for y, s in zip(fm.applies_year, fm.SecID)}
 
-rows, robust, terciles = [], [], []
-for horizon, (freq, lags, ppy) in HORIZONS.items():
-    x = add_universes(period_table(d, freq), top30, fssti)
-    assert x.Date.max() <= END and x.datadate.max() <= END
-    z = {u: zscore(x, "u_" + u) for u in ["broad", "sti", "fssti"]}
-    for universe in ["broad", "sti", "fssti"]:
-        out = rows if universe != "fssti" else robust
-        prim = {}
-        for s in SIGNALS:
-            coef, t, n = fama_macbeth(z[universe], [s + "_z"], lags)
-            prim[s] = t
-            out.append({"family": "primary", "signal": s, "universe": universe, "horizon": horizon,
-                        "coef": coef, "t": t, "n_periods": n, "bar": BAR["primary"]})
-        for s in OSC:
-            coef, t, n = fama_macbeth(z[universe], [s + "_z", "reversal_z"], lags)
-            out.append({"family": "mechanism", "signal": s, "universe": universe, "horizon": horizon,
-                        "coef": coef, "t": t, "n_periods": n, "bar": BAR["mechanism"],
-                        "primary_t": prim[s], "t_ratio": abs(t) / abs(prim[s])})
-        if universe == "broad":
-            DIRECTION["mfi"] = int(np.sign(prim["mfi"]))
-            ub = costs_table(z["broad"], d)
+def main():
+    d = load_daily()
+    sig = pd.concat([stock_signals(x) for _, x in d.groupby("gvkey")])
+    d = d.join(sig)
+    top30 = sti_top30(d)
+    fm = pd.read_csv(FSSTI_MAP, dtype=str).dropna(subset=["SecID"])
+    fssti = {(int(y), s.split("_")[0].zfill(6)) for y, s in zip(fm.applies_year, fm.SecID)}
+
+    rows, robust, terciles = [], [], []
+    for horizon, (freq, lags, ppy) in HORIZONS.items():
+        x = add_universes(period_table(d, freq), top30, fssti)
+        assert x.Date.max() <= END and x.datadate.max() <= END
+        z = {u: zscore(x, "u_" + u) for u in ["broad", "sti", "fssti"]}
+        for universe in ["broad", "sti", "fssti"]:
+            out = rows if universe != "fssti" else robust
+            prim = {}
             for s in SIGNALS:
-                gross, net, turnover = tradability(ub, s, DIRECTION[s], ppy, lags)
-                rows.append({"family": "tradability", "signal": s, "universe": "broad", "horizon": horizon,
-                             "direction": DIRECTION[s], "coef": net.mean(), "t": nw_t(net, lags),
-                             "n_periods": len(net), "bar": BAR["tradability"], "gross_mean": gross.mean(),
-                             "gross_t": nw_t(gross, lags), "turnover": turnover})
-            if horizon == "weekly":  # H4: gross by size third
-                ub["size_third"] = ub.groupby("Date").mcap_lag.transform(
-                    lambda v: pd.qcut(v.rank(method="first"), 3, labels=["small", "mid", "large"]))
-                for third in ["small", "mid", "large"]:
-                    sets = {dt: set(g.SecID) for dt, g in ub[ub.size_third == third].groupby("Date")}
-                    for s in SIGNALS:
-                        gross, _, _ = tradability(ub, s, DIRECTION[s], ppy, lags, members=sets)
-                        terciles.append({"signal": s, "size_third": third, "direction": DIRECTION[s],
-                                         "gross_mean": gross.mean(), "gross_t": nw_t(gross, lags), "n_periods": len(gross)})
+                coef, t, n = fama_macbeth(z[universe], [s + "_z"], lags)
+                prim[s] = t
+                out.append({"family": "primary", "signal": s, "universe": universe, "horizon": horizon,
+                            "coef": coef, "t": t, "n_periods": n, "bar": BAR["primary"]})
+            for s in OSC:
+                coef, t, n = fama_macbeth(z[universe], [s + "_z", "reversal_z"], lags)
+                out.append({"family": "mechanism", "signal": s, "universe": universe, "horizon": horizon,
+                            "coef": coef, "t": t, "n_periods": n, "bar": BAR["mechanism"],
+                            "primary_t": prim[s], "t_ratio": abs(t) / abs(prim[s])})
+            if universe == "broad":
+                DIRECTION["mfi"] = int(np.sign(prim["mfi"]))
+                ub = costs_table(z["broad"], d)
+                for s in SIGNALS:
+                    gross, net, turnover = tradability(ub, s, DIRECTION[s], ppy, lags)
+                    rows.append({"family": "tradability", "signal": s, "universe": "broad", "horizon": horizon,
+                                 "direction": DIRECTION[s], "coef": net.mean(), "t": nw_t(net, lags),
+                                 "n_periods": len(net), "bar": BAR["tradability"], "gross_mean": gross.mean(),
+                                 "gross_t": nw_t(gross, lags), "turnover": turnover})
+                if horizon == "weekly":  # H4: gross by size third
+                    ub["size_third"] = ub.groupby("Date").mcap_lag.transform(
+                        lambda v: pd.qcut(v.rank(method="first"), 3, labels=["small", "mid", "large"]))
+                    for third in ["small", "mid", "large"]:
+                        sets = {dt: set(g.SecID) for dt, g in ub[ub.size_third == third].groupby("Date")}
+                        for s in SIGNALS:
+                            gross, _, _ = tradability(ub, s, DIRECTION[s], ppy, lags, members=sets)
+                            terciles.append({"signal": s, "size_third": third, "direction": DIRECTION[s],
+                                             "gross_mean": gross.mean(), "gross_t": nw_t(gross, lags), "n_periods": len(gross)})
 
-    if horizon == "weekly":  # yearly overlap of the two STI lists, Jan of each year
-        overlap = []
-        for y in range(2009, 2020):
-            ld = max(k for k in top30 if k < pd.Timestamp(f"{y}-01-01"))
-            f = {g for yy, g in fssti if yy == y}
-            overlap.append({"year": y, "fssti_mapped": len(f), "top30": len(top30[ld]), "both": len(f & top30[ld])})
+        if horizon == "weekly":  # yearly overlap of the two STI lists, Jan of each year
+            overlap = []
+            for y in range(2009, 2020):
+                ld = max(k for k in top30 if k < pd.Timestamp(f"{y}-01-01"))
+                f = {g for yy, g in fssti if yy == y}
+                overlap.append({"year": y, "fssti_mapped": len(f), "top30": len(top30[ld]), "both": len(f & top30[ld])})
 
-res = pd.DataFrame(rows)
-res["p"] = 2 * stats.norm.sf(res.t.abs())
-res["by_q"] = multipletests(res.p, method="fdr_by")[1]
-res["pass"] = np.where(res.family == "tradability", res.t >= res.bar, res.t.abs() >= res.bar)
-assert len(res) == 74, len(res)
-rob = pd.DataFrame(robust)
-rob["pass"] = rob.t.abs() >= rob.bar
+    res = pd.DataFrame(rows)
+    res["p"] = 2 * stats.norm.sf(res.t.abs())
+    res["by_q"] = multipletests(res.p, method="fdr_by")[1]
+    res["pass"] = np.where(res.family == "tradability", res.t >= res.bar, res.t.abs() >= res.bar)
+    assert len(res) == 74, len(res)
+    rob = pd.DataFrame(robust)
+    rob["pass"] = rob.t.abs() >= rob.bar
 
-for name, df in [("a2_dev.csv", res), ("a2_dev_fssti.csv", rob), ("a2_sti_overlap.csv", pd.DataFrame(overlap)),
-                 ("a2_size_terciles.csv", pd.DataFrame(terciles))]:
-    df.round(6).to_csv(RESULTS / name, index=False)
-pd.set_option("display.width", 250)
-print(res.round(4).to_string(index=False))
-print(rob.round(4).to_string(index=False))
-print(pd.DataFrame(overlap).to_string(index=False))
-print(pd.DataFrame(terciles).round(5).to_string(index=False))
+    for name, df in [("a2_dev.csv", res), ("a2_dev_fssti.csv", rob), ("a2_sti_overlap.csv", pd.DataFrame(overlap)),
+                     ("a2_size_terciles.csv", pd.DataFrame(terciles))]:
+        df.round(6).to_csv(RESULTS / name, index=False)
+    pd.set_option("display.width", 250)
+    print(res.round(4).to_string(index=False))
+    print(rob.round(4).to_string(index=False))
+    print(pd.DataFrame(overlap).to_string(index=False))
+    print(pd.DataFrame(terciles).round(5).to_string(index=False))
+
+
+if __name__ == "__main__":
+    main()
