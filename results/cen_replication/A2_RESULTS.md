@@ -124,3 +124,127 @@ Each year, 22 to 25 of the mapped FSSTI names are also in the top-30 list (`a2_s
 
 - **Formation rule:** changed before the hold-out (see the amendment log). The cross-check row keeps the as-run numbers. The change weakened results, and mechanism Keltner %B weekly went from pass (-3.93) to fail (-2.90).
 - **Return windows:** they never extend past 2019-12-31, because no data after that date is read in the development run.
+
+## Hold-out, 2020-01 to 2026-06
+
+Run once on 18 Nov 2026 on the frozen code (A2 frozen at 30cfe3c, code unchanged since 364b857). It used the same rules, with tradability directions taken from development. The sample is 339 weeks and 77 months. Tables: `a2_holdout.csv`, `a2_holdout_size_terciles.csv`, `a2_holdout_cost_robustness.csv`. The FSSTI roster check covers 2009 to 2019 only and is not part of the hold-out.
+
+### In plain English
+
+- **In the broad universe the oscillator effect is stronger than in development, and now shows monthly too.** All five oscillators are significantly negative weekly (t -8.6 to -14.5) and monthly (t -3.5 to -6.7).
+- **In the STI universe it disappears.** No STI oscillator cell is significant at either horizon, and three weekly development passes flip to small positive t.
+- **Reversal explains less of it than before.** Williams %R keeps 81% of its weekly t with the reversal control, and Keltner %B keeps 54%.
+- **Still untradable at estimated Corwin-Schultz spreads.** No long-short cell clears 2.99. Williams %R weekly (+0.37% a week, t = 2.71) and Keltner %B weekly (+0.37%, t = 2.37) are positive net of costs. Williams %R weekly is positive at half cost in both periods (+1.19% a week, t = 8.61, here). Among the larger two thirds of stocks every weekly cell loses money at full cost again.
+
+### Primary: Fama-MacBeth t, bar 3.20 (11 of 36 pass, in bold)
+
+| Signal | Broad weekly | Broad monthly | STI weekly | STI monthly |
+|---|---|---|---|---|
+| Williams %R | **-14.54** | **-6.61** | -0.19 | 0.27 |
+| RSI | **-9.62** | **-3.51** | 0.37 | 1.29 |
+| Bollinger %B | **-11.35** | **-6.09** | 0.08 | 1.47 |
+| Keltner %B | **-11.34** | **-6.67** | 0.08 | 1.14 |
+| Stochastic signal | **-8.63** | **-3.65** | 0.59 | 0.87 |
+| Trend | -2.18 | 1.81 | 0.55 | 0.99 |
+| ATR / close | 2.04 | 0.55 | -1.33 | -0.90 |
+| MFI | 0.63 | 1.55 | 1.39 | 1.81 |
+| Reversal | **9.44** | 1.77 | 1.24 | -0.78 |
+
+### Mechanism: oscillator t with the reversal control, bar 3.02 (7 of 20 pass)
+
+| Signal | Broad weekly | Broad monthly | STI weekly | STI monthly |
+|---|---|---|---|---|
+| Williams %R | **-11.84** | **-6.68** | 0.66 | -0.61 |
+| RSI | **-3.19** | -1.96 | 1.41 | -0.05 |
+| Bollinger %B | **-3.97** | **-3.24** | 1.09 | 0.28 |
+| Keltner %B | **-6.18** | **-3.54** | 0.80 | -0.14 |
+| Stochastic signal | -2.91 | -2.92 | 1.83 | -0.21 |
+
+### Tradability: broad universe decile long-short, bar 2.99 (0 of 18 pass)
+
+| Signal | Weekly gross (t) | Weekly net (t) | Monthly gross (t) | Monthly net (t) |
+|---|---|---|---|---|
+| Williams %R | +2.29% (16.62) | +0.37% (2.71) | +2.28% (7.60) | -0.13% (-0.26) |
+| RSI | +1.02% (6.84) | -0.06% (-0.44) | +1.07% (2.91) | -0.99% (-2.03) |
+| Bollinger %B | +1.33% (9.90) | -0.41% (-3.07) | +1.49% (3.76) | -0.76% (-1.46) |
+| Keltner %B | +1.61% (10.40) | +0.37% (2.37) | +1.44% (4.01) | -0.63% (-1.10) |
+| Stochastic signal | +1.32% (9.62) | -0.29% (-2.07) | +1.54% (3.96) | -0.98% (-1.47) |
+| Trend | -0.56% (-2.62) | -0.76% (-3.05) | +1.63% (2.93) | +0.92% (1.33) |
+| ATR / close | -0.34% (-1.88) | -0.68% (-3.02) | -0.04% (-0.07) | -1.47% (-1.61) |
+| MFI | +0.05% (0.44) | -1.30% (-10.73) | +0.18% (0.64) | -1.99% (-4.76) |
+| Reversal | +1.63% (9.61) | -0.82% (-4.86) | +1.52% (2.30) | -1.33% (-1.52) |
+
+Benjamini-Yekutieli puts 24 of the 74 at q < 0.05: 11 primary, 7 mechanism and 6 tradability.
+
+### Development against hold-out, for the 13 development passes
+
+| Test | Development t | Hold-out t | Same sign |
+|---|---|---|---|
+| Primary Williams %R, broad weekly | -12.90 | -14.54 | yes |
+| Primary RSI, broad weekly | -6.87 | -9.62 | yes |
+| Primary Bollinger %B, broad weekly | -9.97 | -11.35 | yes |
+| Primary Keltner %B, broad weekly | -9.70 | -11.34 | yes |
+| Primary stochastic, broad weekly | -6.52 | -8.63 | yes |
+| Primary reversal, broad weekly | 11.02 | 9.44 | yes |
+| Mechanism Williams %R, broad weekly | -7.48 | -11.84 | yes |
+| Primary Williams %R, STI weekly | -4.75 | -0.19 | yes |
+| Primary Bollinger %B, STI weekly | -3.44 | 0.08 | no |
+| Primary Keltner %B, STI weekly | -3.33 | 0.08 | no |
+| Primary stochastic, STI weekly | -3.49 | 0.59 | no |
+| Primary reversal, STI weekly | 4.77 | 1.24 | yes |
+| Primary MFI, broad monthly | 5.04 | 1.55 | yes |
+
+**Findings under the registered rule.** The rule: clears its bar in development, keeps its sign in the hold-out, and has a net long-short t above 1.96. PREREG does not say which period's net t is meant.
+
+- **Development net t:** no signal qualifies. The best weekly development net t is Keltner %B at -0.33.
+- **Hold-out net t:** two signals qualify. Williams %R weekly has a hold-out net t of 2.71 and Keltner %B weekly 2.37. Both passed their broad weekly primary test in development and kept the sign.
+
+Neither reading lets any net long-short book clear its own Bonferroni bar of 2.99 in either period.
+
+### Hypotheses in the hold-out
+
+- **H1 (all five oscillators negative): holds in the broad universe, fails in the STI universe.** All ten broad cells are negative and significant. Eight of the ten STI cells are positive, none significant.
+- **H2 (the reversal control at least halves |t|): mostly fails.** In the broad universe, weekly RSI, Bollinger %B and the stochastic are halved (34% to 35% of t kept). Williams %R (81%) and Keltner %B (54%) are not, and no monthly cell is halved (53% to 101% kept). In the STI universe there is no effect to explain.
+- **H3: fails.**
+  - Trend is negative weekly (-2.18) and positive but not significant monthly (1.81).
+  - ATR is positive in the broad universe (2.04 weekly), against the expected sign.
+  - MFI is not significant anywhere.
+- **H4 (nothing survives net of costs weekly; gross strongest in the smallest third): holds on the bar, not on the sign.**
+  - No weekly long-short clears 2.99, but Williams %R and Keltner %B are positive net (t 2.71 and 2.37).
+  - The gross effect is again strongest in the smallest third: t 9.0 to 13.0 for the oscillators, against -2.0 to 2.7 in the largest third.
+
+Gross weekly long-short t by size third:
+
+| Signal | Small | Mid | Large |
+|---|---|---|---|
+| Williams %R | 13.02 | 9.54 | 2.73 |
+| RSI | 8.96 | 0.87 | -1.97 |
+| Bollinger %B | 11.70 | 3.10 | -0.35 |
+| Keltner %B | 10.17 | 5.55 | -1.31 |
+| Stochastic signal | 10.67 | 5.10 | -0.85 |
+| Trend | -5.53 | 1.66 | 1.46 |
+| ATR / close | -2.92 | -0.83 | -0.78 |
+| MFI | 2.91 | -2.71 | -1.62 |
+| Reversal | 9.64 | 3.25 | 0.14 |
+
+### Cost sensitivity in the hold-out (outside the bars)
+
+Net return per period, with t:
+
+| Signal | Half spread, weekly | Half spread, monthly | Top two thirds, weekly | Top two thirds, monthly |
+|---|---|---|---|---|
+| Williams %R | **+1.19% (8.61)** | +0.82% (1.61) | -0.38% (-3.75) | -0.61% (-1.76) |
+| RSI | +0.39% (2.73) | -0.28% (-0.56) | -0.85% (-7.31) | -2.20% (-4.54) |
+| Bollinger %B | +0.32% (2.35) | +0.08% (0.15) | -1.00% (-8.45) | -1.56% (-3.64) |
+| Keltner %B | **+0.84% (5.31)** | +0.07% (0.12) | -0.60% (-4.94) | -1.87% (-3.26) |
+| Stochastic signal | +0.40% (2.83) | -0.12% (-0.18) | -0.97% (-9.36) | -1.63% (-4.26) |
+| Trend | -0.51% (-2.11) | +1.41% (2.08) | -0.13% (-0.72) | +1.24% (2.11) |
+| ATR / close | -0.46% (-2.03) | -0.90% (-0.98) | -0.65% (-3.44) | -1.68% (-2.30) |
+| MFI | -0.71% (-5.90) | -1.05% (-2.53) | -1.38% (-14.63) | -1.30% (-2.89) |
+| Reversal | +0.28% (1.67) | -0.29% (-0.32) | -1.33% (-9.50) | -2.54% (-3.61) |
+
+### Overall
+
+Cen's oscillators predict next-week returns of Singapore stocks in both periods, but only across the broad universe. The effect is concentrated in the smallest names and is absent among STI-sized stocks in the hold-out.
+
+It is untradable at estimated Corwin-Schultz spreads. Williams %R weekly is positive at half cost in both periods, and in the hold-out it is also positive at full cost (t = 2.71), though below its bar of 2.99. Whether that counts as a registered finding depends on which period the rule's net t refers to; see above.
