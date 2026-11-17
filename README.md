@@ -99,14 +99,6 @@ spurious 1,400%/month turnover figure, the Corwin-Schultz liquidity-ordering inv
 one-month target leak in the walk-forward of `code/backtest.py`. The research corrections are
 logged in REPORT_FINAL.md section 12.
 
-## What I learned
-
-<!-- TODO Nick: three bullets in your own words. -->
-
-- 
-- 
-- 
-
 ## How to run
 
 ```bash
