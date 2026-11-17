@@ -6,8 +6,9 @@ gvkey link cannot be joined. Names are matched instead, then checked against
 dividends: a Capital IQ firm's ex-dividend dates should fall on days Compustat shows
 a dividend going ex for the matched gvkey.
 
-Needs: sgx_keydev_1990_2026.parquet, sgx_daily_rets.parquet, sgx_div_dates.parquet
-Writes: ciq_gvkey_map.csv, one row per Capital IQ firm, with a status column
+Reads the Key Developments extract and the outputs of daily_returns.py (paths in
+_paths.py). Writes derived_sgx_keydev_gvkey_map_static.csv, one row per Capital IQ firm,
+with a status column:
   dividends  at least 5 ex-dividend dates inside the Compustat window, 60% or more hit
              a Compustat ex-dividend day within 3 days
   name       exact cleaned-name match with overlapping dates, and no clear dividend
@@ -17,19 +18,16 @@ Writes: ciq_gvkey_map.csv, one row per Capital IQ firm, with a status column
   weak       anything else
 Only dividends and name go into the tests.
 
-Run: python match_firms.py --keydev path/to/sgx_keydev_1990_2026.parquet
+Run: python code/news/match_firms.py
 """
 
-import argparse
 import re
 
 import numpy as np
 import pandas as pd
 from rapidfuzz import fuzz, process
 
-ap = argparse.ArgumentParser()
-ap.add_argument("--keydev", default="sgx_keydev_1990_2026.parquet")
-args = ap.parse_args()
+from _paths import DIVS, KEYDEV, MAP, RETS
 
 ABBR = {"HLDGS": "HOLDINGS", "HLDG": "HOLDING", "INTL": "INTERNATIONAL", "GRP": "GROUP", "CORP": "CORPORATION",
         "TECH": "TECHNOLOGY", "TECHNOLOGIES": "TECHNOLOGY", "IND": "INDUSTRIES", "INDS": "INDUSTRIES",
@@ -52,15 +50,15 @@ def similarity(a, b, **_):
     return max(fuzz.token_sort_ratio(a, b), partial)
 
 
-kd = pd.read_parquet(args.keydev, columns=["date", "type", "sgx_ticker", "sgx_company"]).dropna(subset=["sgx_company"])
+kd = pd.read_parquet(KEYDEV, columns=["date", "type", "sgx_ticker", "sgx_company"]).dropna(subset=["sgx_company"])
 kd["day"] = kd.date.dt.normalize()
 ciq = kd.groupby(["sgx_ticker", "sgx_company"]).day.agg(["min", "max", "size"]).reset_index()
 exdiv = kd[kd.type.str.startswith("Ex-Dividend")].groupby(["sgx_ticker", "sgx_company"]).day.apply(np.unique)
 
-rets = pd.read_parquet("sgx_daily_rets.parquet", columns=["gvkey", "conm", "datadate"])
+rets = pd.read_parquet(RETS, columns=["gvkey", "conm", "datadate"])
 cs = rets.groupby("gvkey").agg(conm=("conm", "last"), min=("datadate", "min"), max=("datadate", "max")).reset_index()
 cs["clean"] = cs.conm.map(clean)
-divs = pd.read_parquet("sgx_div_dates.parquet").groupby("gvkey").datadate.apply(lambda s: np.sort(s.values))
+divs = pd.read_parquet(DIVS).groupby("gvkey").datadate.apply(lambda s: np.sort(s.values))
 
 
 def dividend_hits(ciq_dates, gvkey, start, end):
@@ -97,7 +95,7 @@ m["status"] = np.select(
 rank = m.status.map({"dividends": 0, "name": 1, "weak": 2, "rejected": 3})
 best = (m.assign(rank=rank).sort_values(["rank", "div_hit", "score"], ascending=[True, False, False])
         .drop_duplicates(["sgx_ticker", "sgx_company"]).drop(columns="rank"))
-best.to_csv("ciq_gvkey_map.csv", index=False)
+best.to_csv(MAP, index=False)
 
 summary = best.groupby("status").agg(firms=("sgx_ticker", "size"), events=("n_events", "sum"))
 print(summary.to_string())

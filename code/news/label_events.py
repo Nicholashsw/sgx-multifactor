@@ -2,9 +2,9 @@
 Attach returns to Capital IQ Key Developments for the announcement-drift test
 (results/news_text/PREREG.md).
 
-Needs: sgx_keydev_1990_2026.parquet, ciq_gvkey_map.csv, sgx_daily_rets.parquet
-Writes: sgx_keydev_labelled.parquet (licensed-derived, does not ship) and
-        results/news_text/coverage.csv (counts only)
+Reads the Key Developments extract, the gvkey map and the daily returns (paths in
+_paths.py). Writes derived_sgx_keydev_labelled_evt_2002_2026.parquet (licensed-derived,
+does not ship) and results/news_text/coverage.csv (counts only).
 
 Timing follows the pre-registration. Day 0 is the first trading day on or after the
 announced date (Singapore time when Capital IQ gives a time, the calendar date when it
@@ -21,29 +21,23 @@ test uses those events only; small names outside the list carry extreme 60-day r
 Dropped before labelling: forecast dates ("Earnings Release Date, Estimated"),
 anything dated after the last price, and firms whose match is not "dividends" or "name".
 
-Run: python label_events.py --keydev path/to/sgx_keydev_1990_2026.parquet \
-         --coverage path/to/repo/results/news_text/coverage.csv
+Run: python code/news/label_events.py
 """
-
-import argparse
 
 import numpy as np
 import pandas as pd
 
-ap = argparse.ArgumentParser()
-ap.add_argument("--keydev", default="sgx_keydev_1990_2026.parquet")
-ap.add_argument("--coverage", default="coverage.csv")
-args = ap.parse_args()
+from _paths import KEYDEV, LABELLED, MAP, RESULTS, RETS
 
 WINDOWS = {"car_m5m1": (-5, -1), "car_0p1": (0, 1), "car_p2p6": (2, 6), "car_p2p21": (2, 21), "car_p2p61": (2, 61)}
 
-kd = pd.read_parquet(args.keydev)
-mp = pd.read_csv("ciq_gvkey_map.csv", dtype={"gvkey": str})
+kd = pd.read_parquet(KEYDEV)
+mp = pd.read_csv(MAP, dtype={"gvkey": str})
 mp = mp[mp.status.isin(["dividends", "name"])]
 kd = kd.merge(mp[["sgx_ticker", "sgx_company", "gvkey", "status"]], on=["sgx_ticker", "sgx_company"], how="inner")
 kd = kd[~kd.type.str.contains("Estimated")]
 
-d = pd.read_parquet("sgx_daily_rets.parquet", columns=["gvkey", "datadate", "ret", "mkt_ew", "mcap_lag", "in_index"])
+d = pd.read_parquet(RETS, columns=["gvkey", "datadate", "ret", "mkt_ew", "mcap_lag", "in_index"])
 d = d[d.ret.notna() & d.mkt_ew.notna()].sort_values(["gvkey", "datadate"])
 d["ar"] = d.ret - d.mkt_ew
 
@@ -74,7 +68,7 @@ for gvkey, ev in kd.groupby("gvkey"):
 
 lab = pd.concat(out, ignore_index=True)
 assert (lab.day0.dropna().values >= lab.loc[lab.day0.notna(), "announced"].values).all(), "day 0 before announcement"
-lab.to_parquet("sgx_keydev_labelled.parquet", index=False)
+lab.to_parquet(LABELLED, index=False)
 
 earn = lab.type.eq("Announcement of Earnings")
 cov = (lab.assign(year=lab.announced.dt.year, earnings=earn, labelled=lab.car_p2p21.notna())
@@ -82,7 +76,7 @@ cov = (lab.assign(year=lab.announced.dt.year, earnings=earn, labelled=lab.car_p2
                                           firms=("gvkey", "nunique"), with_time=("has_time", "mean"))
        .reset_index())
 cov["with_time"] = cov.with_time.round(3)
-cov.to_csv(args.coverage, index=False)
+cov.to_csv(RESULTS / "coverage.csv", index=False)
 
 e = lab[earn & lab.car_p2p21.notna()]
 print(f"events {len(lab):,}, firms {lab.gvkey.nunique()}, earnings labelled {len(e):,} "
