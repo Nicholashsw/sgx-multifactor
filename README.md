@@ -92,10 +92,9 @@ Errors found and fixed along the way. An early version of the pipeline fell back
 seeded random generator when a Bloomberg export was missing, so its outputs were fabricated. That
 was caught, every result downstream of it was thrown out and rebuilt on real data, and the
 generator was reproduced exactly to confirm the contamination. Others: a forward-return alignment
-bug that produced a false U-shaped payoff, a GARCH look-ahead that inflated Sharpe from 0.73 to
-1.05, Markov smoothed probabilities worth a spurious +0.525 Sharpe, a benchmark built from t+1
+bug that produced a false U-shaped payoff, a GARCH look-ahead that inflated the Sharpe ratio, Markov smoothed probabilities worth a spurious +0.525 Sharpe, a benchmark built from t+1
 index members that overstated the passive alternative by 0.395%/mo, a cost-base error behind a
-spurious 1,400%/month turnover figure, the Corwin-Schultz liquidity-ordering inversion, and a
+spurious turnover figure, the Corwin-Schultz liquidity-ordering inversion, and a
 one-month target leak in the walk-forward of `code/backtest.py`. The research corrections are
 logged in REPORT_FINAL.md section 12.
 
