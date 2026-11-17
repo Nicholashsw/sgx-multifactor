@@ -17,6 +17,6 @@ LABELLED = DERIVED_SGX_EQUITIES / "derived_sgx_keydev_labelled_evt_2002_2026.par
 TONE = DERIVED_SGX_EQUITIES / "derived_sgx_keydev_tone_evt_2002_2026.parquet"
 PANEL = DERIVED_SGX_EQUITIES / "derived_sgx_broad_panel_m_1991_2026.csv"
 IBES = WRDS_SGX_EQUITIES / "wrds_ibes_sg_statsum_m_2002_2026.zip"
-SUE = DERIVED_SGX_EQUITIES / "derived_sgx_ibes_sue_evt_2004_2026.parquet"
+SUE = DERIVED_SGX_EQUITIES / "derived_sgx_ibes_sue_evt_2002_2026.parquet"
 
 RESULTS = REPO / "results" / "news_text"
