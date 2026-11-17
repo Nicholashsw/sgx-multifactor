@@ -1,0 +1,7 @@
+test,score,window,coef,t,n,bar,result
+placebo,lm_tone,car_p2p6,-0.00045,-0.26,512,2.64,pass
+placebo,lm_tone,car_p2p21,0.00505,1.34,512,2.64,pass
+placebo,lm_tone,car_p2p61,-0.00071,-0.11,507,2.64,pass
+placebo,finbert_tone,car_p2p6,-0.00016,-0.08,512,2.64,pass
+placebo,finbert_tone,car_p2p21,0.00404,0.97,512,2.64,pass
+placebo,finbert_tone,car_p2p61,0.00726,1.08,507,2.64,pass
