@@ -13,7 +13,8 @@ Universes: broad = the point-in-time WRDS index list (latest June list), deliste
 included; sti = top 30 of the broad list by lagged market cap at each June rebalance.
 Robustness only, outside the bars: fssti = Bloomberg FSSTI year-end rosters, 2009-2019.
 Horizons: weekly (last trading day of the week) and monthly (last trading day of the
-month); the return is the next period's compounded total return.
+month). A stock enters a cross-section only if it traded on that period's last market
+day; the return is the next period's compounded total return.
 
 Each signal is winsorised at 1/99 and z-scored across the universe on each date.
   primary      Fama-MacBeth slope on one signal, NW t (4 lags weekly, 6 monthly), bar 3.20
@@ -27,9 +28,12 @@ overlap of the two STI lists, and gross weekly long-short by size third (H4).
 Writes results/cen_replication/a2_dev.csv, a2_dev_fssti.csv, a2_sti_overlap.csv,
 a2_size_terciles.csv (statistics only).
 
-Run: python code/cen/extend.py
+Run: python code/cen/extend.py                      development, 2003-01 to 2019-12
+     python code/cen/extend.py --sample holdout     once, 2020-01 to 2026-06: a2_holdout.csv,
+                                                    a2_holdout_size_terciles.csv, development directions
 """
 
+import argparse
 import warnings
 
 import numpy as np
@@ -44,7 +48,11 @@ from ta.volume import MFIIndicator
 from _paths import FSSTI_MAP, INDEX, MARKIT, RESULTS, RETS, SECD, SPREADS_TRADED, XW
 from costs import long_short, markit_by_secid
 
-LOAD_FROM, START, END = "2001-06-01", pd.Timestamp("2003-01-01"), pd.Timestamp("2019-12-31")
+SAMPLES = {"dev": ("2001-06-01", "2003-01-01", "2019-12-31"), "holdout": ("2018-06-01", "2020-01-01", "2026-06-30")}
+_ap = argparse.ArgumentParser()
+_ap.add_argument("--sample", choices=list(SAMPLES), default="dev")
+SAMPLE = _ap.parse_known_args()[0].sample
+LOAD_FROM, START, END = SAMPLES[SAMPLE][0], pd.Timestamp(SAMPLES[SAMPLE][1]), pd.Timestamp(SAMPLES[SAMPLE][2])
 OSC = ["wr", "rsi", "bbp", "kcp", "stoch_signal"]
 SIGNALS = OSC + ["trend", "atr", "mfi", "reversal"]
 WARMUP = {"wr": 14, "rsi": 14, "bbp": 20, "kcp": 20, "stoch_signal": 16, "trend": 200, "atr": 14, "mfi": 14}
@@ -105,6 +113,7 @@ def period_table(d, freq):
     nxt = g.Ret.shift(-1)
     x["next_ret"] = np.where((g.period.shift(-1) - x.period).map(lambda p: getattr(p, "n", np.nan)) == 1, nxt, np.nan)
     x["reversal"] = x.rev5 if freq == "W-FRI" else -x.Ret
+    x["fresh"] = x.datadate == x.groupby("period").datadate.transform("max")  # traded on the last market day
     x["Date"] = x.period.dt.end_time.dt.normalize()
     return x[x.Date.between(START, END)]
 
@@ -124,9 +133,9 @@ def add_universes(x, top30, fssti):
     lists = np.array(sorted(top30), dtype="datetime64[ns]")
     pos = np.searchsorted(lists, x.datadate.values, side="right") - 1
     x["list_date"] = np.where(pos >= 0, lists[np.maximum(pos, 0)], np.datetime64("NaT"))
-    x["u_broad"] = x.in_index
-    x["u_sti"] = [ld in top30 and g in top30[ld] for ld, g in zip(x.list_date, x.gvkey)]
-    x["u_fssti"] = [(y, g) in fssti for y, g in zip(x.Date.dt.year, x.gvkey)]
+    x["u_broad"] = x.in_index & x.fresh
+    x["u_sti"] = x.fresh & pd.Series([ld in top30 and g in top30[ld] for ld, g in zip(x.list_date, x.gvkey)], index=x.index)
+    x["u_fssti"] = x.fresh & pd.Series([(y, g) in fssti for y, g in zip(x.Date.dt.year, x.gvkey)], index=x.index)
     return x
 
 
@@ -166,15 +175,30 @@ def costs_table(x, d):
     return x.merge(c, on=["SecID", "cost_month"], how="left")
 
 
-def tradability(u, signal, sign, ppy, lags, members=None):
-    q = u[["SecID", "Date", "Ret", "cs_half_bp_l", "avail_l", "fee_l"]].copy()
-    q["score"] = sign * u[signal + "_z"]
-    # the period table's Ret is the return over the period ending at Date, as long_short expects;
-    # members default to everyone in u at that date
-    sets = {dt: set(g.SecID) for dt, g in u.groupby("Date")} if members is None else members
-    gross, _ = long_short(q, "score", sets.get, START, ppy)
-    net, turnover = long_short(q, "score", sets.get, START, ppy, use_cs=True, screen=True, fee=True, traded=True)
+def broad_frame(x, d):
+    """All period rows with broad z-scores (blank outside the universe) and known-at-formation costs."""
+    z = zscore(x, "u_broad")[[s + "_z" for s in SIGNALS]]
+    return costs_table(x.join(z), d)
+
+
+def members_of(frame, mask):
+    return {dt: set(g.SecID) for dt, g in frame[mask].groupby("Date")}
+
+
+def tradability(frame, signal, sign, ppy, lags, members):
+    """Decile long-short; names are picked from members at formation, and each held name's
+    next-period return comes from all rows, as in waterfall.py."""
+    q = frame[["SecID", "Date", "Ret", "cs_half_bp_l", "avail_l", "fee_l"]].copy()
+    q["score"] = sign * frame[signal + "_z"]
+    gross, _ = long_short(q, "score", members.get, START, ppy)
+    net, turnover = long_short(q, "score", members.get, START, ppy, use_cs=True, screen=True, fee=True, traded=True)
     return gross, net, turnover
+
+
+def frozen_directions():
+    """Tradability directions recorded in the development results (used for the hold-out)."""
+    r = pd.read_csv(RESULTS / "a2_dev.csv").query("family == 'tradability'")
+    return r.set_index(["signal", "horizon"]).direction.astype(int).to_dict()
 
 
 
@@ -186,12 +210,14 @@ def main():
     fm = pd.read_csv(FSSTI_MAP, dtype=str).dropna(subset=["SecID"])
     fssti = {(int(y), s.split("_")[0].zfill(6)) for y, s in zip(fm.applies_year, fm.SecID)}
 
-    rows, robust, terciles = [], [], []
+    universes = ["broad", "sti", "fssti"] if SAMPLE == "dev" else ["broad", "sti"]
+    frozen = frozen_directions() if SAMPLE == "holdout" else None
+    rows, robust, terciles, overlap = [], [], [], []
     for horizon, (freq, lags, ppy) in HORIZONS.items():
         x = add_universes(period_table(d, freq), top30, fssti)
-        assert x.Date.max() <= END and x.datadate.max() <= END
-        z = {u: zscore(x, "u_" + u) for u in ["broad", "sti", "fssti"]}
-        for universe in ["broad", "sti", "fssti"]:
+        assert x.Date.between(START, END).all() and x.datadate.max() <= END
+        z = {u: zscore(x, "u_" + u) for u in universes}
+        for universe in universes:
             out = rows if universe != "fssti" else robust
             prim = {}
             for s in SIGNALS:
@@ -205,26 +231,29 @@ def main():
                             "coef": coef, "t": t, "n_periods": n, "bar": BAR["mechanism"],
                             "primary_t": prim[s], "t_ratio": abs(t) / abs(prim[s])})
             if universe == "broad":
-                DIRECTION["mfi"] = int(np.sign(prim["mfi"]))
-                ub = costs_table(z["broad"], d)
+                if frozen:
+                    DIRECTION.update({s: frozen[s, horizon] for s in SIGNALS})
+                else:
+                    DIRECTION["mfi"] = int(np.sign(prim["mfi"]))
+                ub = broad_frame(x, d)
+                broad = members_of(ub, ub.u_broad)
                 for s in SIGNALS:
-                    gross, net, turnover = tradability(ub, s, DIRECTION[s], ppy, lags)
+                    gross, net, turnover = tradability(ub, s, DIRECTION[s], ppy, lags, broad)
                     rows.append({"family": "tradability", "signal": s, "universe": "broad", "horizon": horizon,
                                  "direction": DIRECTION[s], "coef": net.mean(), "t": nw_t(net, lags),
                                  "n_periods": len(net), "bar": BAR["tradability"], "gross_mean": gross.mean(),
                                  "gross_t": nw_t(gross, lags), "turnover": turnover})
                 if horizon == "weekly":  # H4: gross by size third
-                    ub["size_third"] = ub.groupby("Date").mcap_lag.transform(
+                    ub["size_third"] = ub[ub.u_broad].groupby("Date").mcap_lag.transform(
                         lambda v: pd.qcut(v.rank(method="first"), 3, labels=["small", "mid", "large"]))
                     for third in ["small", "mid", "large"]:
-                        sets = {dt: set(g.SecID) for dt, g in ub[ub.size_third == third].groupby("Date")}
+                        sets = members_of(ub, ub.size_third == third)
                         for s in SIGNALS:
-                            gross, _, _ = tradability(ub, s, DIRECTION[s], ppy, lags, members=sets)
+                            gross, _, _ = tradability(ub, s, DIRECTION[s], ppy, lags, sets)
                             terciles.append({"signal": s, "size_third": third, "direction": DIRECTION[s],
                                              "gross_mean": gross.mean(), "gross_t": nw_t(gross, lags), "n_periods": len(gross)})
 
-        if horizon == "weekly":  # yearly overlap of the two STI lists, Jan of each year
-            overlap = []
+        if horizon == "weekly" and SAMPLE == "dev":  # yearly overlap of the two STI lists, Jan of each year
             for y in range(2009, 2020):
                 ld = max(k for k in top30 if k < pd.Timestamp(f"{y}-01-01"))
                 f = {g for yy, g in fssti if yy == y}
@@ -235,16 +264,16 @@ def main():
     res["by_q"] = multipletests(res.p, method="fdr_by")[1]
     res["pass"] = np.where(res.family == "tradability", res.t >= res.bar, res.t.abs() >= res.bar)
     assert len(res) == 74, len(res)
-    rob = pd.DataFrame(robust)
-    rob["pass"] = rob.t.abs() >= rob.bar
-
-    for name, df in [("a2_dev.csv", res), ("a2_dev_fssti.csv", rob), ("a2_sti_overlap.csv", pd.DataFrame(overlap)),
-                     ("a2_size_terciles.csv", pd.DataFrame(terciles))]:
+    outputs = {"dev": [("a2_dev.csv", res), ("a2_size_terciles.csv", pd.DataFrame(terciles))],
+               "holdout": [("a2_holdout.csv", res), ("a2_holdout_size_terciles.csv", pd.DataFrame(terciles))]}[SAMPLE]
+    if SAMPLE == "dev":
+        rob = pd.DataFrame(robust)
+        rob["pass"] = rob.t.abs() >= rob.bar
+        outputs += [("a2_dev_fssti.csv", rob), ("a2_sti_overlap.csv", pd.DataFrame(overlap))]
+    for name, df in outputs:
         df.round(6).to_csv(RESULTS / name, index=False)
     pd.set_option("display.width", 250)
     print(res.round(4).to_string(index=False))
-    print(rob.round(4).to_string(index=False))
-    print(pd.DataFrame(overlap).to_string(index=False))
     print(pd.DataFrame(terciles).round(5).to_string(index=False))
 
 
