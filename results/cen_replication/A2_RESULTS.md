@@ -203,7 +203,7 @@ Neither reading lets any net long-short book clear its own Bonferroni bar of 2.9
 
 ### Hypotheses in the hold-out
 
-- **H1 (all five oscillators negative): holds in the broad universe, fails in the STI universe.** All ten broad cells are negative and significant. Eight of the ten STI cells are positive, none significant.
+- **H1 (all five oscillators negative): holds in the broad universe, fails in the STI universe.** All ten broad cells are negative and significant. Nine of the ten STI cells are positive, none significant.
 - **H2 (the reversal control at least halves |t|): mostly fails.** In the broad universe, weekly RSI, Bollinger %B and the stochastic are halved (34% to 35% of t kept). Williams %R (81%) and Keltner %B (54%) are not, and no monthly cell is halved (53% to 101% kept). In the STI universe there is no effect to explain.
 - **H3: fails.**
   - Trend is negative weekly (-2.18) and positive but not significant monthly (1.81).
