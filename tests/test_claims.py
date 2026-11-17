@@ -29,7 +29,8 @@ from scipy import stats
 
 ROOT = Path(__file__).resolve().parent.parent
 RES = ROOT / "results" / "verified"
-DOCS = {"README": ROOT / "README.md", "tex": ROOT / "paper" / "sgx_multifactor.tex"}
+DOCS = {"README": ROOT / "README.md", "tex": ROOT / "paper" / "sgx_multifactor.tex",
+        "codeREADME": ROOT / "code" / "README.md", "resultsREADME": ROOT / "results" / "README.md"}
 
 
 # ---------------------------------------------------------------- source readers
@@ -151,6 +152,34 @@ def grep_text(path, pat):
     m = re.search(pat, Path(path).read_text()); assert m, pat; return float(m.group(1))
 
 
+def report_final(): return (ROOT / "REPORT_FINAL.md").read_text()
+
+
+def report_overlays():
+    """Items of the overlay list in REPORT_FINAL.md ('Eight overlays were tested ... : a, b, and c [E21')."""
+    m = re.search(r"Eight overlays were tested and eight failed to add risk-adjusted return: (.*?) \[E21", report_final())
+    assert m
+    items, depth, cur = [], 0, ""
+    for ch in m.group(1):
+        depth += ch == "("
+        depth -= ch == ")"
+        if ch == "," and depth == 0:
+            items.append(cur); cur = ""
+        else:
+            cur += ch
+    items.append(cur)
+    return [re.sub(r"^\s*(and )?", "", i) for i in items if i.strip()]
+
+
+def rf(pat): return grep_text(ROOT / "REPORT_FINAL.md", pat)
+
+
+def sti_stats():
+    d = csv("sti_core_returns.csv")
+    c = (1 + d["net"]).cumprod()
+    return (c.iloc[-1] ** (12 / len(d)) - 1) * 100, ((c / c.cummax()) - 1).min() * 100
+
+
 # ---------------------------------------------------------------- claim rows
 CLAIMS = []  # (doc, where, snippet, printed, source, field, expected_fn, tol, unverifiable_reason)
 
@@ -242,18 +271,44 @@ add(R, "What didn't work row 6", "@| Reference paper's Table I", "rederived_tabl
      ("9", "factors", lambda: float(len(csv("rederived_table1_fm.csv"))), 0.5),
      ("2.767", "max NW_t", lambda: float(csv("rederived_table1_fm.csv").NW_t.max())),
      ("2.77", "Bonferroni z for 9 tests, two-sided 5%", lambda: float(stats.norm.ppf(1 - 0.05 / 9 / 2)), 0.0051)])
-add(R, "What didn't work row 7", "8 tested, 8 failed", None,
-    [("8", "overlays tested", None)], "Barra, HMM and GBM outputs are not kept (README says so); IBES output file not shipped")
-add(R, "What didn't work row 7", "8 failed to add", None,
-    [("8", "overlays failed", None)], "Barra, HMM and GBM outputs are not kept (README says so); IBES output file not shipped")
+add(R, "What didn't work row 7", "8 tested, 8 failed", "REPORT_FINAL.md section 9.5",
+    [("8", "overlays tested: items in REPORT_FINAL's overlay list", lambda: float(len(report_overlays())), 0.5)])
+add(R, "What didn't work row 7", "8 failed to add", "REPORT_FINAL.md section 9.5",
+    [("8", "overlays failed: REPORT_FINAL says 'eight failed'", lambda: float(len(report_overlays())) if "eight failed to add" in report_final() else -1.0, 0.5)])
 add(R, "What didn't work row 8", "(combo 0.460 < TSMOM 0.543)", None,
     [("0.460", "TSMOM combination Sharpe", None), ("0.543", "TSMOM Sharpe", None)], UNV_README)
+add(R, "Errors paragraph", "a GARCH look-ahead that inflated Sharpe from", "REPORT_FINAL.md section 12 item 3",
+    [("0.73", "REPORT_FINAL text: Sharpe before", lambda: rf(r"inflated Sharpe (0\.73) to 1\.05")),
+     ("1.05", "REPORT_FINAL text: Sharpe after", lambda: rf(r"inflated Sharpe 0\.73 to (1\.05)"))])
+add(R, "Errors paragraph", "a cost-base error behind a spurious", "REPORT_FINAL.md section 12 item 6",
+    [("1,400", "REPORT_FINAL text: turnover %/month", lambda: float(re.search(r"spurious ([\d,]+)%/month", report_final()).group(1).replace(",", "")), 0.5)])
 add(R, "Errors paragraph", "Markov smoothed probabilities worth a spurious +0.525 Sharpe", "ms_sizing_results.csv",
     [("0.525", "Sharpe(smoothed) - Sharpe(filtered)", lambda: MS("MS SMOOTHED (look-ahead, INVALID)", "Sharpe") - MS("MS FILTERED (legitimate)", "Sharpe"))])
 add(R, "Errors paragraph", "overstated the passive alternative by 0.395%/mo", "attribution/leakage_funnel.csv",
     [("0.395", "corrected minus raw benchmark alpha", lambda: FUN("1. Corrected benchmark (investable cohort)", "alpha_pct_mo") - FUN("0. Raw, contaminated benchmark (as published)", "alpha_pct_mo"))])
 add(R, "What is where", "46 figures", "figures/*.png",
     [("46", "count of png files", npng, 0.5)])
+
+# ======================= code/README.md and results/README.md =======================
+add("codeREADME", "bracket row", "@| Survivorship bias of", "code10/code10_sensitivity.csv; survivorship_sensitivity_output.txt",
+    [("-0.89", "baseline", lambda: C10("baseline, no terminal adjustment")),
+     ("-0.88", "after/confirmed insolvencies", lambda: C10("confirmed insolvencies forced -100%")),
+     ("-0.50", "after/every unresolved exit", lambda: C10("+ every unresolved exit (harshest)")),
+     ("-0.40", "survivorship_sensitivity_output.txt, 37+25 ambiguous forced", lambda: grep_text(RES / "survivorship_sensitivity_output.txt", r"ambiguous forced (-0\.4)"))])
+add("resultsREADME", "code10 paragraph", "Its sensitivity file gives the bracket", "code10/code10_sensitivity.csv; survivorship_sensitivity_output.txt",
+    [("-0.88", "after/confirmed insolvencies", lambda: C10("confirmed insolvencies forced -100%")),
+     ("-0.50", "after/every unresolved exit", lambda: C10("+ every unresolved exit (harshest)")),
+     ("-0.89", "baseline", lambda: C10("baseline, no terminal adjustment")),
+     ("-0.40", "survivorship_sensitivity_output.txt, 37+25 ambiguous forced", lambda: grep_text(RES / "survivorship_sensitivity_output.txt", r"ambiguous forced (-0\.4)"))])
+
+
+def test_unconstrained_row_uses_three_nw_lags():
+    """constrained_backtest.csv unconstrained row (0.392, t 2.24) vs the headline (0.396, t 2.26 at 6 lags)."""
+    d = csv("sti_core_returns.csv")
+    x = (d["net"] - d["bm"]) * 100
+    assert abs(nw_mean(x, 3)[1] - CB("Unconstrained (paper primary)", "t")) < 0.005
+    assert abs(nw_mean(x, 6)[1] - 2.26) < 0.005
+
 
 # ======================= paper =======================
 add(X, "abstract", "alpha $1.32$\\%/month, $t=3.82$", "canonical_table4.csv",
@@ -421,7 +476,7 @@ add(X, "attribution", "A holdings-based attribution gives momentum", "attributio
      ("-0.150", "RESIDUAL", lambda: HO("RESIDUAL", "contrib_pct_mo"))])
 add(X, "STI-core", "It earns $+0.396$", "sti_core_returns.csv / constrained_backtest.csv",
     [("0.396", "mean(net-bm)", lambda: diff_vs_bm("sti_core_returns.csv")[0]), ("2.26", "NW-6 t", lambda: diff_vs_bm("sti_core_returns.csv")[1]),
-     ("10.1", "ann%", lambda: CB("Unconstrained (paper primary)", "ann"), 0.051), ("-50.3", "maxdd", lambda: CB("Unconstrained (paper primary)", "maxdd"), 0.051)])
+     ("10.1", "compounded annual return of net, %", lambda: sti_stats()[0], 0.051), ("-50.3", "max drawdown of net, %", lambda: sti_stats()[1], 0.051)])
 add(X, "STI-core", "A Compustat-only reproduction", "compustat_backtest_quarterly.csv / compustat_backtest.csv",
     [("0.36", "quarterly", lambda: diff_vs_bm("compustat_backtest_quarterly.csv")[0]), ("2.26", "t", lambda: diff_vs_bm("compustat_backtest_quarterly.csv")[1]),
      ("0.27", "annual", lambda: diff_vs_bm("compustat_backtest.csv")[0]), ("1.82", "t", lambda: diff_vs_bm("compustat_backtest.csv")[1])])
@@ -527,7 +582,7 @@ def norm_text(s, tex=True):
 def doc_lines(name):
     raw = DOCS[name].read_text().split("\n")
     out = []
-    if name == "README":
+    if name != "tex":
         fence = False
         for ln in raw:
             if ln.strip().startswith("```"):
