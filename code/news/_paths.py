@@ -16,6 +16,7 @@ MAP = DERIVED_SGX_EQUITIES / "derived_sgx_keydev_gvkey_map_static.csv"
 LABELLED = DERIVED_SGX_EQUITIES / "derived_sgx_keydev_labelled_evt_2002_2026.parquet"
 TONE = DERIVED_SGX_EQUITIES / "derived_sgx_keydev_tone_evt_2002_2026.parquet"
 PANEL = DERIVED_SGX_EQUITIES / "derived_sgx_broad_panel_m_1991_2026.csv"
+SPREADS = DERIVED_SGX_EQUITIES / "derived_sgx_cs_spreads_m_1992_2026.csv"
 IBES = WRDS_SGX_EQUITIES / "wrds_ibes_sg_statsum_m_2002_2026.zip"
 SUE = DERIVED_SGX_EQUITIES / "derived_sgx_ibes_sue_evt_2002_2026.parquet"
 

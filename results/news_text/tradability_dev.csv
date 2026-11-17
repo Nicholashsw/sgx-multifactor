@@ -1,0 +1,5 @@
+score,basis,long,short,long_short,t,n_long,n_short
+lm_tone,gross,-0.00057,0.00269,0.00212,1.07,3048,3789
+lm_tone,net of spreads,-0.00612,-0.00412,-0.01024,-5.15,3048,3789
+finbert_tone,gross,0.00121,0.00372,0.00493,2.28,3179,4088
+finbert_tone,net of spreads,-0.0048,-0.00313,-0.00794,-3.58,3179,4088

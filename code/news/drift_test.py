@@ -1,8 +1,9 @@
 """
-Announcement-drift test, development window only (results/news_text/PREREG.md, Part B).
+Announcement-drift test (results/news_text/PREREG.md, Part B).
 
-Sample: index earnings firm-days, one per gvkey and day 0, day 0 from 2003-01-01 to
-2019-12-31, with both tone scores. The 2020+ hold-out is never read into a regression.
+Sample: index earnings firm-days, one per gvkey and day 0, with both tone scores. The
+default is the development window, day 0 from 2003-01-01 to 2019-12-31; every regression
+asserts that no row outside the chosen window is read.
 
 Each regression: window return (car_p2p6, car_p2p21, car_p2p61) on tone (z-scored
 within year) plus the surprise, car_0p1, log mcap_lag, book-to-market and 12-month
@@ -17,10 +18,14 @@ continuous controls are winsorised at 1/99 within each regression sample.
 result: main and second pass when t >= 2.64 (H5 is a positive coefficient); the placebo
 passes when |t| < 2.64.
 
-Writes results/news_text/drift_dev.csv and drift_placebo.csv (estimates only).
+Writes results/news_text/drift_dev.csv and drift_placebo.csv (estimates only). With
+--sample holdout the same code runs once on day 0 from 2020-01-01 to 2026-06-30 and writes
+drift_holdout.csv and drift_holdout_placebo.csv.
 
-Run: python code/news/drift_test.py
+Run: python code/news/drift_test.py [--sample holdout]
 """
+
+import argparse
 
 import numpy as np
 import pandas as pd
@@ -29,8 +34,12 @@ import statsmodels.api as sm
 from _paths import LABELLED, PANEL, RESULTS, RETS, SUE, TONE
 from earnings_text import documents, ni_change
 
-DEV_START, DEV_END = pd.Timestamp("2003-01-01"), pd.Timestamp("2019-12-31")
-HOLDOUT = pd.Timestamp("2020-01-01")
+SAMPLES = {"dev": ("2003-01-01", "2019-12-31", "drift_dev.csv", "drift_placebo.csv"),
+           "holdout": ("2020-01-01", "2026-06-30", "drift_holdout.csv", "drift_holdout_placebo.csv")}
+ap = argparse.ArgumentParser()
+ap.add_argument("--sample", choices=list(SAMPLES), default="dev")
+START, END, OUT_TESTS, OUT_PLACEBO = SAMPLES[ap.parse_args().sample]
+START, END = pd.Timestamp(START), pd.Timestamp(END)
 WINDOWS = {"car_p2p6": (2, 6), "car_p2p21": (2, 21), "car_p2p61": (2, 61)}
 SCORES = ["lm_tone", "finbert_tone"]
 CONTROLS = ["car_0p1", "log_mcap", "bm", "mom"]
@@ -93,7 +102,7 @@ lab = pd.read_parquet(LABELLED, columns=["gvkey", "day0", "announced", "type", "
                                          "car_0p1", *WINDOWS])
 lab = lab[lab.type.eq("Announcement of Earnings") & lab.day0.notna()]
 earnings_days = lab.groupby("gvkey").day0.apply(lambda s: np.unique(s.values))  # dates only, for the placebo
-lab = lab[lab.in_index & lab.day0.between(DEV_START, DEV_END)]
+lab = lab[lab.in_index & lab.day0.between(START, END)]
 assert (lab.announced <= lab.day0).all(), "text dated after day 0"  # PREREG leakage check (2)
 fd = lab.drop_duplicates(["gvkey", "day0"]).drop(columns=["announced", "type", "in_index"])
 
@@ -106,7 +115,7 @@ fd = fd[fd.gvkey.isin(series.keys())].reset_index(drop=True)
 fd["log_mcap"] = np.log(fd.mcap_lag)
 fd["mom"] = momentum(fd)
 fd["bm"] = book_to_market(fd)
-assert fd.day0.max() < HOLDOUT
+assert fd.day0.between(START, END).all()
 
 check = pd.concat([at_days(g, x.day0.values).set_index(x.index) for g, x in fd.groupby("gvkey")])
 assert np.allclose(check.car_p2p21, fd.car_p2p21, equal_nan=True), "rebuilt windows differ from labelled"
@@ -114,7 +123,7 @@ assert np.allclose(check.car_p2p21, fd.car_p2p21, equal_nan=True), "rebuilt wind
 
 def regress(df, score, window, surprise):
     x = df.dropna(subset=[window, score, surprise, *CONTROLS]).copy()
-    assert x.day0.max() < HOLDOUT, "hold-out row in a regression"
+    assert x.day0.between(START, END).all(), "row outside the sample window in a regression"
     for c in [window, surprise, *CONTROLS]:
         x[c] = winsor(x[c])
     year = x.groupby(x.day0.dt.year)[score]
@@ -154,10 +163,10 @@ for r in main.sort_values(["gvkey", "day0"]).itertuples():
 pl = pd.DataFrame(picks)
 pl = pd.concat([pd.concat([x, at_days(g, x.day0.values).set_index(x.index)], axis=1) for g, x in pl.groupby("gvkey")])
 pl["bm"] = book_to_market(pl)
-assert pl.day0.max() < HOLDOUT
+assert pl.day0.between(START, END).all()
 placebo = pd.DataFrame(run(pl, "placebo", "sue", lambda t: abs(t) < BAR))
 
-for name, df in [("drift_dev.csv", dev), ("drift_placebo.csv", placebo)]:
+for name, df in [(OUT_TESTS, dev), (OUT_PLACEBO, placebo)]:
     df.round({"coef": 5, "t": 2}).to_csv(RESULTS / name, index=False)
     print(df.round({"coef": 5, "t": 2}).to_string(index=False), "\n")
 print(f"firm-days: sample {len(fd):,}, with SUE {len(main):,}, with parsed change {len(second):,}, "
