@@ -28,7 +28,7 @@ takeout share, the 694-firm count, the 36.4 bp half-spread and the TSMOM compari
 
 ## Data
 
-Licensed: Bloomberg, WRDS (Compustat Global, IBES, Markit securities lending, SDC), Capital IQ,
+Licensed: Bloomberg, WRDS (Compustat Global, IBES, Markit securities lending, SDC),
 CEIC and JKP extracts. No licensed data ships with this repository; `DATA.md` lists the sources,
 licences and reproduction routes. Universes:
 
@@ -132,7 +132,7 @@ ledger are the evidence.
 | [DATA.md](DATA.md) | Sources, licensing and reproduction routes; no licensed data ships |
 | `figures/` | 46 figures at 200 dpi from real-data runs, except two that document corrections (`corr_synthetic_data_audit.png` plots the fabricated series that was caught, `core_deciles_precorrection.png` the payoff before a bug fix), indexed in [figures/README.md](figures/README.md); three are redrawn from shipped results by `code/make_figures.py` |
 | `code/` | Pipeline, factor model, backtest, point-in-time engines, canonical re-runs and sensitivity scripts; [code/README.md](code/README.md) maps each headline result to the script or result file behind it |
-| `src/` | VBA data layer: Bloomberg and CapIQ pulls, point-in-time index membership |
+| `src/` | VBA data layer: Bloomberg pulls, point-in-time index membership |
 | `results/verified/` | Result files behind the ledger |
 | `notebooks/` | Survivorship backtest; `backtest_survivorship_final.ipynb` is the canonical quarterly point-in-time run. Running it needs licensed Bloomberg/Compustat panels. It ships with its summary printout only (aggregate statistics, no vendor rows). Its numbers are in `results/verified/survivorship_summary_final.csv` (ledger B1, B9, B11). |
 
