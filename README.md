@@ -57,8 +57,8 @@ does not hinge on the factor weights:
 | Result | Number | Universe |
 |---|---|---|
 | Survivorship correction reverses the broad long-short | survivor t=1.01 vs point-in-time t=3.82 | Broad Compustat, 1991–2026 |
-| Result does not hinge on the factor weights | preset 1.32%/mo (t=3.82), equal 1.01 (t=3.08), walk-forward 1.72 (t=4.58) | Broad Compustat, 1991–2026 |
-| Delisting survivorship bias is negative (dead names raise returns; 59% of exits are takeouts) | −0.89 pp/yr (bracket −0.89 to −0.40 under harsh terminal-return assumptions) | 694-firm survivorship-free Compustat SGP |
+| Result does not hinge on the factor weights | preset 1.32%/mo (t=3.82), equal 1.01 (t=3.08), walk-forward 1.72 (t=4.58), at a flat 20 bp cost | Broad Compustat, 1991 to 2026 |
+| Delisting survivorship bias is negative (dead names raise returns; 59% of exits are takeouts) | −0.89 pp/yr (bracket −0.88 to −0.50 under harsh terminal-return assumptions) | 694-firm survivorship-free Compustat SGP |
 | Implementable long-short with real borrow (Markit) | +0.764%/mo (t=2.23) at S$50m AUM | top-100 |
 | STI-core strategy | +0.396%/mo, NW-t 2.26; reproduces independently on Compustat at +0.36 (t=2.26) | PIT STI top-6 |
 | Risk is jump-dominated | 57.9% jump variance; Gaussian understates 99% ES by 1.60pp (34%) | STI-core daily |
@@ -81,7 +81,7 @@ multiple-testing control.
 | Blue-chip naive backtest vs corrected | Sharpe 1.002 → 0.447 | 71-name PIT roster |
 | Multiple-testing discipline | 65-test specification grid: 24 clear t=1.96, one clears t=3.0, zero survive BHY | dev window 1995–2019 |
 | Reference paper's Table I | does not reproduce: 0 of 9 factors survive Bonferroni (best 2.767 vs 2.77) | PIT STI |
-| Overlays (statistical jump model, IBES revisions, jump-aware sizing, GARCH targeting, Markov switching) | 5 tested with executed evidence, 5 failed to add risk-adjusted return. Barra, HMM and GBM overlays also failed in early sessions whose outputs are not kept (ledger E20, E21) | STI-core |
+| Overlays (Barra, HMM, GBM, statistical jump model, IBES revisions, jump-aware sizing, GARCH targeting, Markov switching) | 8 tested, 8 failed to add risk-adjusted return. The last five have executed evidence; the Barra, HMM and GBM rows come from early sessions whose outputs are not kept, so they cannot be checked in detail (ledger E20, E21) | STI-core |
 | TSMOM combination with fundamentals | reverses under borrow constraints (combo 0.460 < TSMOM 0.543) | liquid100 |
 
 ![Cost waterfall: gross alpha to fully costed](figures/cost_waterfall_definitive.png)
