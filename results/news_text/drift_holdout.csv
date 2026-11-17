@@ -1,0 +1,13 @@
+test,score,window,coef,t,n,bar,result
+main,lm_tone,car_p2p6,-0.00908,-1.59,209,2.64,fail
+main,lm_tone,car_p2p21,-0.01354,-1.21,209,2.64,fail
+main,lm_tone,car_p2p61,-0.00918,-0.98,206,2.64,fail
+main,finbert_tone,car_p2p6,-0.00443,-1.25,209,2.64,fail
+main,finbert_tone,car_p2p21,-0.00012,-0.02,209,2.64,fail
+main,finbert_tone,car_p2p61,0.00048,0.05,206,2.64,fail
+second,lm_tone,car_p2p6,0.00208,1.49,2260,2.64,fail
+second,lm_tone,car_p2p21,0.00231,0.93,2258,2.64,fail
+second,lm_tone,car_p2p61,-0.00807,-1.76,2204,2.64,fail
+second,finbert_tone,car_p2p6,-0.00166,-1.47,2260,2.64,fail
+second,finbert_tone,car_p2p21,-0.00237,-1.05,2258,2.64,fail
+second,finbert_tone,car_p2p61,0.00456,1.1,2204,2.64,fail
