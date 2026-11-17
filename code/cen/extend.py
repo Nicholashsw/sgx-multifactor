@@ -75,17 +75,18 @@ def stock_signals(x):
     a = x.ajexdi.fillna(1.0)
     c = x.prccd / a
     h, lo, v = (x.prchd / a).fillna(c), (x.prcld / a).fillna(c), x.cshtrd.fillna(0.0)
-    s = pd.DataFrame(index=x.index)
+    s = pd.DataFrame(np.nan, index=x.index, columns=list(WARMUP))
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        s["wr"] = WilliamsRIndicator(h, lo, c, lbp=14).williams_r()
-        s["rsi"] = RSIIndicator(c, window=14).rsi()
-        s["bbp"] = BollingerBands(c, window=20, window_dev=2).bollinger_pband()
-        s["kcp"] = KeltnerChannel(h, lo, c, window=20, window_atr=10, original_version=True).keltner_channel_pband()
-        s["stoch_signal"] = StochasticOscillator(h, lo, c, window=14, smooth_window=3).stoch_signal()
-        s["trend"] = c / c.rolling(200).mean() - 1
-        s["atr"] = AverageTrueRange(h, lo, c, window=14).average_true_range() / c
-        s["mfi"] = MFIIndicator(h, lo, c, v, window=14).money_flow_index()
+        if len(x) >= 20:  # ta fails below its window; shorter stocks get no indicator values
+            s["wr"] = WilliamsRIndicator(h, lo, c, lbp=14).williams_r()
+            s["rsi"] = RSIIndicator(c, window=14).rsi()
+            s["bbp"] = BollingerBands(c, window=20, window_dev=2).bollinger_pband()
+            s["kcp"] = KeltnerChannel(h, lo, c, window=20, window_atr=10, original_version=True).keltner_channel_pband()
+            s["stoch_signal"] = StochasticOscillator(h, lo, c, window=14, smooth_window=3).stoch_signal()
+            s["trend"] = c / c.rolling(200).mean() - 1
+            s["atr"] = AverageTrueRange(h, lo, c, window=14).average_true_range() / c
+            s["mfi"] = MFIIndicator(h, lo, c, v, window=14).money_flow_index()
     age = np.arange(len(x))
     for k, w in WARMUP.items():
         s.loc[age < w, k] = np.nan
