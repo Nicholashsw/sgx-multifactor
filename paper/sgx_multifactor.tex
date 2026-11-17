@@ -1,0 +1,276 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\title{Cost-Adjusted Multi-Factor Stock Selection on the Singapore Exchange}
+\author{Nicholas Hong\\School of Electrical and Electronic Engineering, Nanyang Technological University\\Supervisor: Prof. Patricia Wong}
+\date{}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We evaluate a multi-factor long-short strategy on the Singapore Exchange (SGX) using a survivorship-free Compustat panel, point-in-time index membership, estimated bid-ask spreads and Markit securities-lending data. Ranking stocks on eight characteristics gives a correctly signed and statistically significant decile long-short (alpha $1.32$\%/month, $t=3.82$). Removing delisted firms reverses the sign of the result ($t=1.01$ on survivors only). Charging spreads on the names traded, a borrow-availability screen and borrow fees reduces the gross alpha of $1.661$\%/month ($t=5.13$) to $0.366$\%/month ($t=1.08$). The short leg carries most of the signal, and borrow availability is the binding constraint. A re-derivation of a reference paper's factor table does not survive Bonferroni correction, and none of the overlays tested adds risk-adjusted return.
+\end{abstract}
+
+\section{Introduction}
+Factor-based stock selection chooses shares by measurable characteristics rather than by forecasting the prospects of individual companies. Fama and French showed that returns vary with firm size and book-to-market \cite{fama1993}, and Jegadeesh and Titman found that buying recent winners and selling recent losers earned significant returns \cite{jt1993}. Both studies used US data, so it is less certain whether these patterns hold in smaller markets. Hundreds of factors have been tested, so some appear significant by chance, and Harvey, Liu and Zhu proposed a stricter threshold of $t>3.0$ \cite{hlz2016}. Trading costs reduce factor profits, and high-turnover strategies rarely survive them \cite{nmv2016}. Backtests that omit delisted firms, or their final returns, also misstate performance \cite{shumway1997}.
+
+Singapore is a timely setting. The Monetary Authority of Singapore has reported few new high-quality listings and low trading volumes in the local market \cite{mas2025}, and local factor evidence is limited. Hameed, Ni and Tan found no significant overall momentum from 2011 to 2022 except among large, high-priced stocks \cite{hameed2023}. The closest local precedent tested a multi-factor strategy on 25 index stocks from 2012 to 2022 and reported returns before trading costs \cite{cen2023}. This paper evaluates the performance and implementability of a combined factor strategy on SGX: whether including delisted firms changes measured returns, and how much performance remains after bid-ask spreads and stock-borrowing costs.
+
+\section{Data and universes}
+The broad universe is the survivorship-free Compustat Global panel for Singapore, with point-in-time index eligibility. Eligibility averages $199$ names per month (range $37$ to $292$) over $427$ months, from 1991 to 2026. A second universe is a point-in-time roster of STI and mid-cap constituents built from quarterly index snapshots, with delisting returns taken at each name's exit; its top-six book defines the STI-core strategy. A 30-name Bloomberg monthly panel of current constituents is used for diagnostics only.
+
+Supporting data are IBES summary estimates, Markit Securities Finance (availability and indicative fees), SDC mergers and acquisitions records, and daily Bloomberg market series. Licensed vendor data does not ship with the repository; only aggregated result files do.
+
+\section{Methods}
+\paragraph{Factors and composite.} Eight factors are z-scored each month: 12-1 and 6-1 momentum, book-to-market, dividend yield, earnings yield, return on equity, small size and Amihud liquidity. Fundamentals are lagged four months. The composite uses fixed weights of $0.20$ on 12-1 momentum, book-to-market and ROE, $0.10$ on dividend yield, earnings yield and Amihud liquidity, and $0.05$ on 6-1 momentum and small size, rescaled over the factors present and requiring at least four. Three alternatives are compared: the composite without ROE, equal weights, and walk-forward weights set each month from the mean of past rank ICs, with negative weights set to zero and equal weights until a factor has $36$ months of ICs.
+
+\paragraph{Portfolios and inference.} Portfolios are formed monthly. The decile long-short buys the top tenth and sells the bottom tenth by composite score, equal weighted. In the survivorship and weighting comparisons a flat deduction of $10$ bp per month is charged on the long leg and $20$ bp per month on the long-short book. Alphas are intercepts of a regression on the SGP market return, and all $t$-statistics use Newey-West standard errors with $6$ lags.
+
+\paragraph{Costs.} Half-spreads are estimated per name with the Corwin-Schultz method, corrected for non-trading days, and are charged on the names bought and sold each month. The cost waterfall adds Corwin-Schultz spreads, then a Markit availability screen on the short side, then Markit borrow fees. Measured turnover is $31$\% of each leg per month.
+
+\section{Results}
+\subsection{Survivorship bias}
+Table~\ref{tab:surv} compares the strategy on survivors only with the point-in-time universe, from the same panel. Restricting to survivors turns a significant long-short alpha ($t=3.82$) into an insignificant one ($t=1.01$).
+
+\begin{table}[h]
+\centering
+\caption{Survivor-only versus point-in-time, broad universe, 1991 to 2026.}
+\label{tab:surv}
+\begin{tabular}{llrrrrr}
+\toprule
+Universe & Book & Ann.\% & Sharpe & MaxDD\% & Alpha \%/mo & $t$ \\
+\midrule
+Survivor-only & Long & 14.9 & 0.59 & $-63.2$ & 0.87 & 2.25 \\
+Survivor-only & Long-short & $-2.3$ & 0.11 & $-92.5$ & 0.46 & 1.01 \\
+Point-in-time & Long & 11.6 & 0.55 & $-69.0$ & 0.54 & 2.08 \\
+Point-in-time & Long-short & 8.0 & 0.46 & $-87.6$ & 1.32 & 3.82 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For the delisting bias itself, including delisted names raises measured universe returns: the bias from dropping them is $-0.89$ pp/yr. Of the 115 exits coded as non-standard deletions, 61 are takeouts completed in SDC, 5 were adjudicated by hand and 49 remain unresolved. Forcing a $-100$\% terminal return on the confirmed insolvency gives $-0.88$ pp/yr, adding the unresolved exits triaged as likely wipeouts gives $-0.60$, adding those triaged as ambiguous gives $-0.55$, and forcing every unresolved exit gives $-0.50$. The sign is unchanged across the bracket.
+
+On the 71-name blue-chip roster, the naive survivor backtest earns $17.37$\%/yr at Sharpe $1.002$ with a maximum drawdown of $-44.2$\%. The quarterly point-in-time run earns $7.91$\%/yr at Sharpe $0.447$ with a drawdown of $-62.7$\%. The long-short Sharpe ratio falls from $0.586$ to $0.313$.
+
+\subsection{Signal strength}
+Table~\ref{tab:ic} gives mean monthly rank ICs on the point-in-time broad universe. Dividend yield, ROE, earnings yield and both momentum horizons are significantly positive; small size has the wrong sign ($-0.0496$, smaller names did worse), and book-to-market and Amihud liquidity are insignificant.
+
+\begin{table}[h]
+\centering
+\caption{Mean rank IC and Newey-West $t$, point-in-time broad universe.}
+\label{tab:ic}
+\begin{tabular}{lrr}
+\toprule
+Factor & Mean IC & $t$ \\
+\midrule
+Dividend yield & 0.0769 & 14.22 \\
+ROE & 0.0674 & 9.19 \\
+Earnings yield & 0.0622 & 7.50 \\
+Momentum 12-1 & 0.0599 & 6.08 \\
+Composite & 0.0488 & 5.15 \\
+Momentum 6-1 & 0.0503 & 5.09 \\
+Book-to-market & 0.0038 & 0.47 \\
+Amihud liquidity & $-0.0054$ & $-0.91$ \\
+Small size & $-0.0496$ & $-6.45$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Signal strength rises down the size ladder (Table~\ref{tab:tier}). The long-short alpha is not significant among the 30 largest names ($t=0.81$), is significant among mid caps, and is strongest among small caps, where a liquidity-screened book reaches $1.92$\%/month ($t=5.12$).
+
+\begin{table}[h]
+\centering
+\caption{Composite by size tier, point-in-time universe.}
+\label{tab:tier}
+\begin{tabular}{lrrrrrr}
+\toprule
+Tier & Avg names & IC & IC $t$ & LS Sharpe & Alpha \%/mo & $t$ \\
+\midrule
+Large & 30 & 0.0150 & 1.14 & $-0.01$ & 0.25 & 0.81 \\
+Mid & 69 & 0.0381 & 3.77 & 0.32 & 0.78 & 2.99 \\
+Small & 132 & 0.0803 & 7.91 & 0.68 & 1.38 & 4.13 \\
+Small, liquidity-screened & 90 & & & 0.85 & 1.92 & 5.12 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The result does not depend on the factor weights (Table~\ref{tab:wt}). All four weightings give a significant decile long-short. Equal weights are lower because they give small size $12.5$\% of the score.
+
+\begin{table}[h]
+\centering
+\caption{Composite weighting schemes, point-in-time universe.}
+\label{tab:wt}
+\begin{tabular}{lrrrr}
+\toprule
+Score & Mean IC & IC $t$ & LS alpha \%/mo & $t$ \\
+\midrule
+Preset weights & 0.0488 & 5.15 & 1.32 & 3.82 \\
+Without ROE & 0.0473 & 4.88 & 1.29 & 3.65 \\
+Equal weights & 0.0270 & 3.09 & 1.01 & 3.08 \\
+Walk-forward weights & 0.0689 & 7.11 & 1.72 & 4.58 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Costs}
+Table~\ref{tab:wf} gives the cost waterfall for the preset composite over 2003 to 2026. Gross alpha is $1.661$\%/month ($t=5.13$). Corwin-Schultz spreads charged on the names traded take it to $0.920$ ($t=2.74$), the Markit availability screen to $0.611$ ($t=1.81$), and borrow fees to $0.366$ ($t=1.08$). Spreads are the largest single cost at $0.741$\%/month.
+
+\begin{table}[h]
+\centering
+\caption{Cost waterfall, preset composite decile long-short, spreads on traded names.}
+\label{tab:wf}
+\begin{tabular}{lrrrr}
+\toprule
+Stage & Ann.\% & Sharpe & Alpha \%/mo & $t$ \\
+\midrule
+Gross signal & 15.73 & 0.84 & 1.661 & 5.13 \\
+Plus spreads on traded names & 5.85 & 0.39 & 0.920 & 2.74 \\
+Plus Markit availability screen & 1.72 & 0.20 & 0.611 & 1.81 \\
+Plus Markit borrow fee & $-1.20$ & 0.07 & 0.366 & 1.08 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The conclusion does not depend on how spreads are charged. Across the two spread estimators and two charging rules, the fully costed alpha is $0.060$ ($t=0.18$) when the corrected estimator is charged on every held name each month, $0.282$ ($t=0.85$) for the uncorrected estimator charged on every held name, $0.366$ ($t=1.08$) for the corrected estimator on traded names, and $0.535$ ($t=1.58$) for the uncorrected estimator on traded names. No convention is significant.
+
+The long side alone cannot pay its spreads. The top decile held long-only earns a gross alpha of $0.404$\%/month ($t=1.64$) and $0.091$ ($t=0.36$) after spreads on traded names, so the signal sits mostly in the short leg, where borrowing binds. Table~\ref{tab:wfall} shows the same for each weighting. Only the walk-forward weights keep a significant alpha after all costs ($0.809$\%/month, $t=2.03$, $274$ months), with an annualised return of $-1.29$\%, Sharpe $0.17$ and maximum drawdown of $-90.8$\%.
+
+\begin{table}[h]
+\centering
+\caption{Gross and fully costed alpha by weighting (\%/month, spreads on traded names).}
+\label{tab:wfall}
+\begin{tabular}{lrrrr}
+\toprule
+Score & Gross & $t$ & Fully costed & $t$ \\
+\midrule
+Preset weights & 1.661 & 5.13 & 0.366 & 1.08 \\
+Without ROE & 1.612 & 4.86 & 0.307 & 0.88 \\
+Equal weights & 1.435 & 5.17 & 0.376 & 1.40 \\
+Walk-forward weights & 2.282 & 6.36 & 0.809 & 2.03 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Borrow.} Charging Markit fees alone, without an availability screen, turns the top-100 short book negative ($-0.02$\%/month, $t=-0.11$, average fee $46$ bp). Requiring genuine inventory forces the book into large caps and restores it, with $t$-statistics between $2.18$ and $3.47$ for assets under management up to S\$500m. For the implementable long-short at S\$50m with real borrow, the long leg earns $+0.392$\%/month ($t=1.40$), the short leg $+0.372$ ($t=2.72$), and the combined book $+0.764$ ($t=2.23$). On the price-signal book, the borrow-feasibility screen cuts the long-short from $1.661$ ($t=4.94$) to $0.712$ ($t=2.53$), a $57$\% reduction, while a long-only top-30\% book earns $+0.713$\%/month ($t=4.19$, Sharpe $0.85$) with no borrow required.
+
+\paragraph{Capacity.} Table~\ref{tab:cap} gives the capacity of the STI-core top-six book at a 10\% participation cap. Net alpha stays at $0.28$\%/month at S\$1bn notional, but capacity is bound by position feasibility: $5$\% of months cannot be traded at S\$50m and $43$\% at S\$200m.
+
+\begin{table}[h]
+\centering
+\caption{STI-core capacity, 218 months.}
+\label{tab:cap}
+\begin{tabular}{lrr}
+\toprule
+AUM & Net alpha \%/mo & Infeasible months \\
+\midrule
+S\$1m & 0.35 & 0 \\
+S\$10m & 0.30 & 0 \\
+S\$50m & 0.29 & 10 \\
+S\$200m & 0.28 & 94 \\
+S\$1bn & 0.28 & 169 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Factor anatomy}
+On the broad universe the equal-weight top-100 long-short earns $+0.526$\%/month ($t=1.93$). Sector-neutral ranking takes it to $+0.169$ ($t=0.69$). A 12\% volatility target lifts the alpha to $+0.663$ ($t=3.08$). The one-way break-even cost is $86$ bp against a median Corwin-Schultz half-spread of $23.5$ bp over $143{,}978$ name-months. A Brinson-Fachler decomposition of the long book against the cap-weighted universe gives $+0.51$ allocation, $+1.28$ selection and $+2.98$ interaction, a sum of $+4.78$ against an actual active return of $+5.12$ (\%/yr).
+
+Weighting matters. Cap-weighting removes the alpha: equal-weight $+0.53$ ($t=1.93$) against value-weight $-0.08$ ($t=-0.27$). A $10$\% cap on value weights gives $0.25$ ($t=0.88$), and a $5$\% cap on a 100-name book is equal weighting in effect (maximum weight $5.4$\% against $5.2$\%).
+
+In a leave-one-factor-out analysis on the broad universe, dropping 12-1 momentum has the largest effect (alpha $0.157$, $t=0.68$, a change of $-0.369$). On the top-100 ten-name book, quality contributes $-50.2$ bp per month, and dropping it raises alpha to $0.970$ ($t=4.71$), while momentum contributes $+12.3$ bp. A holdings-based attribution gives momentum $+0.427$ ($t=2.61$), value $+0.257$ ($t=3.86$) and quality $+0.023$ ($t=0.26$) on an average quality exposure of $0.985$, with a residual of $-0.150$\%/month.
+
+\subsection{STI-core strategy}
+The STI-core strategy holds the top six names by composite on the point-in-time roster. It earns $+0.396$\%/month over the investable benchmark (Newey-West $t=2.26$), an annualised return of $10.1$\% and a maximum drawdown of $-50.3$\%. A Compustat-only reproduction earns $+0.36$\%/month ($t=2.26$) with quarterly fundamentals and $+0.27$ ($t=1.82$) with annual fundamentals.
+
+The corrected decile profile is monotone: the bottom decile earns $-0.518$\%/month ($t=-3.08$), the top $+0.476$, and the spread is $+0.995$ ($t=2.74$). The long leg contributes $+0.492$ ($t=1.75$) and the short leg $+0.547$ ($t=3.30$), a $47$/$53$ split in which the short leg is far more reliable. Constraints do not hurt: a $33$\% sector cap gives $+0.489$ ($t=2.51$) against $+0.392$ ($t=2.24$) unconstrained.
+
+The active return is regime dependent. By sub-period the alpha is $0.084$ ($t=0.13$) for 2008 to 2013, $0.141$ ($t=0.43$) for 2014 to 2019 and $1.187$ ($t=3.52$) for 2020 to 2026. In calm markets it is $+1.205$ ($t=3.91$) and in turbulent markets $-0.123$ ($t=-0.34$). The top name accounts for $27.9$\% of cumulative active return, the top five for $69.9$\% and the top ten for $96.7$\%.
+
+\subsection{Multiple testing and replication}
+A re-derivation of the reference paper's Table I gives no factor that survives Bonferroni correction at $t=2.77$ for nine factors (Table~\ref{tab:ref}); the best is book-to-market at $2.767$.
+
+\begin{table}[h]
+\centering
+\caption{Fama-MacBeth premia, point-in-time STI roster.}
+\label{tab:ref}
+\begin{tabular}{lrr}
+\toprule
+Factor & Premium \%/mo & $t$ \\
+\midrule
+Book-to-market & 0.261 & 2.767 \\
+Earnings yield & 0.413 & 1.939 \\
+Dividend yield & 0.230 & 2.560 \\
+ROE & 0.037 & 0.406 \\
+Momentum 12-1 & 0.111 & 0.888 \\
+Momentum 6-1 & 0.048 & 0.413 \\
+Momentum 3-1 & 0.060 & 0.597 \\
+Small size & $-0.070$ & $-0.876$ \\
+Amihud illiquidity & $-0.010$ & $-0.115$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The choice of benchmark matters. A benchmark built from members present at $t+1$ credits the benchmark with entrant appreciation that no portfolio formed at $t$ can earn; the measured contamination is $0.395$\%/month. The STI-core result is unaffected ($t=2.56$ against $2.52$), but under the investable benchmark the larger books become significant (Table~\ref{tab:bench}).
+
+\begin{table}[h]
+\centering
+\caption{Alpha by book size under the contaminated (A) and investable (B) benchmark, \%/month.}
+\label{tab:bench}
+\begin{tabular}{lrrrrr}
+\toprule
+Universe & Names & Alpha A & $t$ & Alpha B & $t$ \\
+\midrule
+STI & 6 & 0.443 & 2.56 & 0.438 & 2.52 \\
+Top-50 & 5 & 0.334 & 1.14 & 0.520 & 1.74 \\
+Top-100 & 10 & 0.073 & 0.24 & 0.468 & 1.67 \\
+Top-150 & 15 & 0.302 & 1.12 & 0.861 & 3.30 \\
+Top-200 & 20 & 0.209 & 0.79 & 0.860 & 3.61 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A specification grid of $65$ tests on the development window (1995 to 2019) gives $24$ with $|t|>1.96$ unadjusted and exactly one with $|t|>3.0$ (an equal-weight index-universe long-short at $t=3.67$). None survives Benjamini-Hochberg-Yekutieli control (minimum adjusted $p=0.074$).
+
+\subsection{Risk and overlays}
+On the STI-core daily return series a Merton jump-diffusion fits well: $57.9$\% of return variance is jump variance, with about $58$ implied jumps per year at $1.86$\% jump volatility, and a Kolmogorov-Smirnov statistic of $0.016$ against $0.072$ for the Gaussian. At the 99\% level the Gaussian expected shortfall is $-3.13$\% against an empirical $-4.73$\%, an understatement of $1.60$ pp ($34$\%); the jump model gives $-4.43$\%. As a conditional forecaster, GJR-GARCH with skew-$t$ innovations beats the Merton model by $713$ BIC points, and is the only model passing conditional VaR backtests at both the 95\% and 99\% levels.
+
+Overlays on the STI-core series (a statistical jump model, jump-aware sizing, GARCH volatility targeting and Markov switching, among others) did not add risk-adjusted return. Jump-aware expected-shortfall sizing raises the Sharpe ratio from $0.666$ to $0.715$, a gain of $0.05$ against a pre-registered bar of $0.10$. A Markov-switching overlay using filtered probabilities has Sharpe $0.433$ against $0.958$ for smoothed probabilities, which use look-ahead; the difference is $0.525$. Against an inverse-realised-volatility benchmark with Sharpe $0.702$, constant leverage ($0.776$), jump-aware sizing ($0.838$) and GARCH targeting ($0.734$) are higher on the point estimate by $0.074$, $0.136$ and $0.032$, but no difference has a bootstrap interval excluding zero (for example $-0.036$ to $0.345$ for jump-aware sizing).
+
+\subsection{Kalman hedge ratios}
+An extension tests whether a Kalman-filter beta hedges single stocks better than static, rolling or EWMA betas. Table~\ref{tab:kal} gives mean out-of-sample hedge effectiveness. The Kalman beta does not hedge better than the 36-month rolling beta on the monthly 30-name panel ($30.7$\% against $31.5$\%). The daily tests set a Bonferroni bar of $|t|>3.76$ over $295$ tests. The Kalman pairs portfolio loses money after costs ($t=-7.45$ at entry $1.0$).
+
+\begin{table}[h]
+\centering
+\caption{Mean out-of-sample hedge effectiveness across single names (\%).}
+\label{tab:kal}
+\begin{tabular}{lrrrr}
+\toprule
+Run & Static OLS & Rolling & EWMA & Kalman \\
+\midrule
+Monthly, 30 names, STI & 28.4 & 31.5 & 31.1 & 30.7 \\
+Monthly, 25 names, STI & 32.1 & 33.8 & 33.6 & 33.3 \\
+Monthly, 25 names, proxy & 28.0 & 29.2 & 29.3 & 28.7 \\
+Daily, 25 names, proxy & 30.0 & 32.4 & 33.4 & 33.1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Limitations}
+No licensed vendor data ships with the repository, so the numbers above are reproduced from the aggregated result files. The sample ends in mid-2026 across panels. The Kalman extension covers a 25-name universe of current STI constituents and uses a cap-weighted proxy for the hedge instrument rather than STI futures, with no financing cost or dividend basis. Several registered studies depend on data not yet obtained: SGX/HKEX cross-listing arbitrage, the STI futures-cash basis, the STI index effect and a real-estate ownership crosswalk.
+
+\section{Conclusion}
+Singapore contains a correctly signed, replicable cross-sectional return structure that is significant on a survivorship-free universe and does not depend on the factor weights. Spreads, borrow availability and borrow fees remove it before it can be traded at institutional scale, and the short leg, where borrow binds, carries most of it. Survivorship bias on SGX runs against the textbook prediction, and a reference paper's factor premia do not reproduce under multiple-testing control.
+
+\begin{thebibliography}{9}
+\bibitem{fama1993} E. F. Fama and K. R. French, ``Common risk factors in the returns on stocks and bonds,'' \textit{Journal of Financial Economics}, vol. 33, no. 1, pp. 3--56, 1993.
+\bibitem{jt1993} N. Jegadeesh and S. Titman, ``Returns to buying winners and selling losers: Implications for stock market efficiency,'' \textit{The Journal of Finance}, vol. 48, no. 1, pp. 65--91, 1993.
+\bibitem{hlz2016} C. R. Harvey, Y. Liu, and H. Zhu, ``\ldots and the cross-section of expected returns,'' \textit{The Review of Financial Studies}, vol. 29, no. 1, pp. 5--68, 2016.
+\bibitem{nmv2016} R. Novy-Marx and M. Velikov, ``A taxonomy of anomalies and their trading costs,'' \textit{The Review of Financial Studies}, vol. 29, no. 1, pp. 104--147, 2016.
+\bibitem{shumway1997} T. Shumway, ``The delisting bias in CRSP data,'' \textit{The Journal of Finance}, vol. 52, no. 1, pp. 327--340, 1997.
+\bibitem{mas2025} Monetary Authority of Singapore, ``Annex: Equities Market Review Group's first set of measures to strengthen the competitiveness of Singapore's equities market,'' 2025.
+\bibitem{hameed2023} A. Hameed, Z. Ni, and C. A. Tan, ``Momentum and individual investor trades: Evidence from Singapore,'' \textit{Pacific-Basin Finance Journal}, vol. 82, Art. 102186, 2023.
+\bibitem{cen2023} Y. Cen, ``Systematic multi-factor trading strategy based on SGX market,'' Final Year Project report, Nanyang Technological University, 2023.
+\end{thebibliography}
+\end{document}
