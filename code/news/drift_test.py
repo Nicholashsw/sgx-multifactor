@@ -148,7 +148,8 @@ main = fd[fd.sue.notna()]
 second = fd[fd.ni_chg.notna()]
 dev = pd.DataFrame(run(main, "main", "sue", lambda t: t >= BAR) + run(second, "second", "ni_chg", lambda t: t >= BAR))
 
-# Placebo: same firm, same year, at least PLACEBO_GAP trading days from any earnings day 0
+# Placebo: same firm, same year, inside the sample window, at least PLACEBO_GAP trading days
+# from any earnings day 0
 rng = np.random.default_rng(SEED)
 picks = []
 for r in main.sort_values(["gvkey", "day0"]).itertuples():
@@ -156,7 +157,9 @@ for r in main.sort_values(["gvkey", "day0"]).itertuples():
     eidx = np.searchsorted(dates, earnings_days[r.gvkey])
     idx = np.arange(len(dates))
     clear = np.abs(idx[:, None] - eidx[None, :]).min(axis=1) > PLACEBO_GAP
-    pool = idx[clear & (dates.astype("datetime64[Y]").astype(int) + 1970 == r.day0.year)]
+    same_year = dates.astype("datetime64[Y]").astype(int) + 1970 == r.day0.year
+    in_window = (dates >= START.to_datetime64()) & (dates <= END.to_datetime64())
+    pool = idx[clear & same_year & in_window]
     if len(pool):
         picks.append({"gvkey": r.gvkey, "day0": dates[rng.choice(pool)], "sue": r.sue,
                       "lm_tone": r.lm_tone, "finbert_tone": r.finbert_tone})
