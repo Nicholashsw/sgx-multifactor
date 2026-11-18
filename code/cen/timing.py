@@ -144,7 +144,7 @@ def main():
     d = d.join(pd.concat([stock_signals(x) for _, x in d.groupby("gvkey")]))
     assert d.datadate.max() <= END
     daily = {s: (g.datadate.values.astype("datetime64[ns]"), g.logr.values) for s, g in d.groupby("SecID")}
-    x = period_table(d, "W-FRI")
+    x = period_table(d, "W-FRI").assign(u_broad=lambda t: t.in_index & t.fresh)  # as in robust_costs.py
     assert x.Date.between(START, END).all()
     ub = broad_frame(x, d)
     broad = members_of(ub, ub.u_broad)
