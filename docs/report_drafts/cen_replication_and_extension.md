@@ -8,7 +8,7 @@ Cen (2023) tested 86 technical-analysis signals from the Python `ta` package on 
 
 1. Rebuilt his setup as closely as the data allow (Part A1).
 2. Tested his five signals, plus three others and a reversal control, on a much larger point-in-time universe with trading costs (Part A2).
-3. Planned to test four entry and exit timing rules on the main strategy's book (Part A3). This part was not run; see below.
+3. Planned to test four entry and exit timing rules on the main strategy's book (Part A3). This part was withdrawn before any run; see below.
 
 ## A1: replicating his setup
 
@@ -118,15 +118,15 @@ Under that rule **nothing qualifies as a finding**. Williams %R and Keltner %B w
 - **Real STI members.** On the Bloomberg year-end STI rosters for 2009 to 2019, mapped to Compustat, the weekly oscillators stay negative: Williams %R t = -3.84. Each year 22 to 25 of the mapped STI names are also in our top-30 list (`a2_dev_fssti.csv`, commit 028cb2b; `a2_sti_overlap.csv`, commit 8ff0d18).
 - **Independent rebuild.** An independent rebuild of the broad-universe cells was compared cell by cell. With both using the same formation rule, nine of the ten differing weekly cells matched within 0.3. Weekly reversal (1.2 apart) and three small monthly cells still differed. The formation rule was then changed before the hold-out, and the reason is logged (`PREREG.md`, rows "Independent cross-check" and "Formation rule").
 
-## A3: timing rules (not run)
+## A3: timing rules (withdrawn)
 
-A3 would have tested four entry and exit rules on the main strategy's top-decile book. It was not run, for three reasons:
+A3 would have tested four entry and exit rules on the main strategy's top-decile book. It was withdrawn before any run, for three reasons:
 
-- `PREREG.md` names the rules but defines them only "in the work plan", which is not in the repository or the backups.
-- The registration does not say which markout horizon is each rule's test.
+- The rules were never specified beyond "the work plan": no thresholds, entry trigger or test horizon were registered.
 - There is no daily STI index series for the STI 200-day filter.
+- Defining the rules after the A2 results were known would have been post hoc.
 
-Defining the rules now, after seeing A2, would have meant making design choices after the results (`PREREG.md`, row "A3 skipped").
+No A3 code was written and no A3 data was read (`PREREG.md`, row "A3 withdrawn").
 
 ## Conclusion
 
