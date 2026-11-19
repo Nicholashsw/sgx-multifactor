@@ -1,0 +1,7 @@
+signal,weights,gross_ann_pct,net_ann_pct,net_sharpe,net_max_dd_pct,turnover_ann_pct,avg_holdings,avg_hold_half_spread_bp,months,first,last,common_months,net_diff_pct_mo,net_diff_nw_t
+momentum_12_1,equal,37.05,16.38,0.85,-30.78,429.3,34.04,62.16,78,2020-01,2026-06,,,
+momentum_12_1,inverse_vol,32.55,14.6,0.77,-22.96,480.26,34.04,49.29,78,2020-01,2026-06,,,
+momentum_12_1,hrp,34.55,15.63,0.8,-16.34,573.2,34.04,44.68,78,2020-01,2026-06,,,
+residual_momentum,equal,29.6,14.41,0.85,-15.71,442.96,37.68,46.8,78,2020-01,2026-06,78.0,-0.18,-0.33
+residual_momentum,inverse_vol,20.09,7.57,0.54,-17.9,488.03,37.68,35.35,78,2020-01,2026-06,78.0,-0.6,-1.61
+residual_momentum,hrp,15.35,1.99,0.21,-20.1,580.14,37.68,32.9,78,2020-01,2026-06,78.0,-1.14,-3.49

@@ -14,3 +14,4 @@ fred_data/
 outputs/
 *.parquet
 sim/
+results/resmom/holdout_diagnostic_names.md
